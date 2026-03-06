@@ -1,0 +1,7 @@
+networkx
+rich
+python-dotenv
+tree-sitter
+tree-sitter-typescript
+chromadb
+sentence-transformers
