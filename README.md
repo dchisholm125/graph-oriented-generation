@@ -12,73 +12,21 @@ This repository evaluates the efficiency of **Symbolic Reasoning Model (SRM)** c
 *   **SRM Engine:** Uses `networkx` to build a dependency graph of the codebase and isolate relevant files for a given prompt.
 *   **Benchmark Harness:** A/B tests the context load and execution time between a full codebase dump (RAG) and isolated context (GOG).
 
-## 🛑 Current Status
-
-**Active Research Prototype — Contributions Welcome**
-
-> **Update:** Thank you for the incredible response on Hacker News and Reddit!  
-> The project reached **20+ stars and multiple forks within the first 24 hours.**
-
-GOG is currently an **active research prototype** (Paper #2 in progress).  
-My limited development time is focused on advancing the **core mathematical engine**, specifically:
-
-- **$O(1)$ plasticity**
-- **deterministic traversal**
-
-If you're interested in helping build the surrounding ecosystem, **community contributions are highly encouraged.**
-
-If the idea of helping **challenge traditional Vector RAG architectures** sounds interesting, take a look at the open issues.
-
 ---
 
-## 🗺️ Roadmap & Areas for Contribution
+# Contributing to Graph-Oriented Generation (GOG)
 
-Below are several areas where contributions would have a meaningful impact.
+First off, thank you for considering contributing to GOG! This is an active research prototype, and community help is essential to scaling this deterministic architecture.
 
-### 🌍 Language Expansion
+### How Can I Contribute?
+1. **Check the Issues:** Look for issues tagged `good first issue` or `help wanted`.
+2. **Language Parsers:** We desperately need AST parsers for languages beyond Python/TS (Go, Rust, Java).
+3. **Benchmarks:** Help us test the GOG engine against different local models (Llama 3, Mistral) and document the token reductions.
 
-The **SRM AST parser** is currently optimized for:
-
-- Python
-- TypeScript
-
-Additional language support would be valuable for:
-
-- Go
-- Rust
-- Java
-
----
-
-### 🧪 Model Benchmarking
-
-The current benchmark suite focuses on **Qwen 0.8B**.
-
-Next steps include expanding the benchmark gauntlet to evaluate:
-
-- **Llama 3 (8B)**
-- **Mistral variants**
-- additional lightweight models
-
----
-
-### 🖥 CLI & Benchmark Output
-
-Improving the **terminal output and visualization** of benchmark results, particularly:
-
-- clearer **$O(1)$ speed comparisons**
-- more intuitive **token reduction metrics**
-- improved CLI readability for rapid experimentation
-
----
-
-If you're interested in contributing, feel free to:
-
-- open a PR
-- comment on an issue
-- suggest improvements to the roadmap
-
-All help is appreciated!
+### Pull Request Process
+- Ensure your code doesn't break the existing Python/TS parsers.
+- Add a brief description of the logic (especially if dealing with graph math/networkx).
+- I will review PRs as quickly as my research schedule allows!
 
 ---
 
