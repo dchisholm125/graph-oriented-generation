@@ -37,18 +37,13 @@ The benchmark consists of three core components:
 
 ## Architecture Overview
 
-User Prompt
-     │
-     ▼
-Dependency Graph (SRM)
-     │
-deterministic traversal
-     │
-     ▼
-Relevant Files Only
-     │
-     ▼
-LLM Context Window
+```mermaid
+flowchart TD
+    A["User Prompt"] --> B["Dependency Graph: SRM"]
+    B --> C["Deterministic Traversal"]
+    C --> D["Relevant Files Only"]
+    D --> E["LLM Context Window"]
+```
 
 ###### Note: I am currently seeking an arXiv endorser in the cs.IR and cs.AI category for the formal preprint of this paper. If you are eligible and find this work valuable, please reach out or endorse directly at https://urldefense.com/v3/__https://arxiv.org/auth/endorse?x=OVESPR__;!!DaRZpAeNFA!bDQ8GlkoWQn5HCz0RtmrPvpR_l4miMk56L2WuvsMq0eBQiWcGhq05BYb-bQV0b13Ewtg7RMYyl0fmLttsZM$!
 
