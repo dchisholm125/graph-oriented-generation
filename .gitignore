@@ -16,3 +16,5 @@ htmlcov/
 .idea/
 .vscode/
 node_modules/
+Modelfile*
+output*
