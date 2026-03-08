@@ -68,6 +68,12 @@ Setup takes ~2–3 minutes on a typical machine.
     python3 generate_dummy_repo.py
     ```
 
+4.  **Seed RAG and GOG Environments:**
+    Initialize the Vector DB and build the dependency graph. This step is required before running benchmarks.
+    ```bash
+    python3 seed_RAG_and_GOG.py
+    ```
+
 ## Running the Benchmark
 
 There are two primary ways to run the benchmark: via the Cloud-based OpenCode CLI or purely locally using an open-source Small Language Model (SLM) via Ollama.

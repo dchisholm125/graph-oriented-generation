@@ -26,7 +26,7 @@ def run_control_pipeline(prompt, repo_path):
     
     db_path = os.path.join(os.path.dirname(__file__), "vector_db")
     if not os.path.exists(db_path):
-         return {"time": 0, "tokens_in": 0, "tokens_out": 0, "response": "Error: ChromaDB not found. Run seed_RAG_and_GOG.py first."}
+         return {"time": 0, "local_time": 0, "api_time": 0, "tokens_in": 0, "tokens_out": 0, "response": "Error: ChromaDB not found. Run seed_RAG_and_GOG.py first."}
 
     import chromadb
     client_db = chromadb.PersistentClient(path=db_path)
@@ -67,7 +67,7 @@ def run_srm_pipeline(prompt, repo_path):
     
     graph_path = os.path.join(os.path.dirname(__file__), "gog_graph.pkl")
     if not os.path.exists(graph_path):
-         return {"time": 0, "tokens_in": 0, "tokens_out": 0, "response": "Error: Graph not found. Run seed_RAG_and_GOG.py first."}
+         return {"time": 0, "local_time": 0, "api_time": 0, "tokens_in": 0, "tokens_out": 0, "response": "Error: Graph not found. Run seed_RAG_and_GOG.py first."}
          
     import pickle
     with open(graph_path, "rb") as f:
