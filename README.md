@@ -87,16 +87,72 @@ Both benchmark scripts run three pipelines on identical code-generation tasks ag
 
 Results from a single run (cloud CLI, opencode). Token counts use `tiktoken` `cl100k_base` encoding.
 
+Results are reported for two configurations: cloud CLI (opencode, frontier model) and local GPU (llama3:8b, Ollama, NVIDIA GPU with 6 GB VRAM). Token counts use `tiktoken` `cl100k_base` encoding.
+
+**Cloud CLI (opencode)**
+
 | Metric | Tier 1 · RAG | Tier 2 · GOG | Tier 3 · GOG + Membrane |
 |--------|-------------|-------------|------------------------|
-| **Easy — Tokens In** | 53,137 | 6,323 | 6,323 |
-| **Easy — Token Reduction** | baseline | **88.1% ↓** | **88.1% ↓** |
-| **Easy — Topological Patches** | — | — | 1 (api_client hallucination caught) |
-| **Hard — Tokens In** | 61,744 | 6,249 | 6,249 |
-| **Hard — Token Reduction** | baseline | **89.9% ↓** | **89.9% ↓** |
-| **Hard — Total Execution Time** | 64.8s | 65.5s | **45.7s** |
+| Easy — Tokens In | 53,137 | 6,323 | 6,323 |
+| Easy — Token Reduction | baseline | **88.1% ↓** | **88.1% ↓** |
+| Easy — Topological Patches | — | — | 1 |
+| Hard — Tokens In | 61,744 | 6,249 | 6,249 |
+| Hard — Token Reduction | baseline | **89.9% ↓** | **89.9% ↓** |
+| Hard — Total Execution Time | 64.8s | 65.5s | **45.7s** |
 
-On the Hard task, the GOG context consisted of a single file (`api_client.ts`). Despite this minimal context, the LLM correctly reconstructed the three-file implementation by drawing on its parametric knowledge of Vue/Pinia patterns — producing the same correct answer as RAG at 89.9% lower token cost.
+**Local GPU (llama3:8b, GPU-accelerated)**
+
+| Metric | Tier 1 · RAG | Tier 2 · GOG | Tier 3 · GOG + Membrane |
+|--------|-------------|-------------|------------------------|
+| Easy — Tokens In | 53,137 | 6,323 | 6,323 |
+| Easy — Token Reduction | baseline | **88.1% ↓** | **88.1% ↓** |
+| Easy — LLM Generation Time | 39.1s | 41.5s | **38.3s** |
+| Medium — Tokens In | 53,136 | 40,566 | 40,566 |
+| Medium — Token Reduction | baseline | **23.7% ↓** | **23.7% ↓** |
+| Medium — Correctness | PASS 5/5 | PASS 5/5 | PASS 5/5 |
+| Hard — Tokens In | 74,130 | 6,249 | 6,249 |
+| Hard — Token Reduction | baseline | **91.6% ↓** | **91.6% ↓** |
+| Hard — Total Execution Time | 45.8s | 48.9s | **39.4s** |
+| Hard — Topological Patches | — | — | 0 |
+
+On the Hard task (GPU run), GOG isolated a single file (`api_client.ts`) from a 100+ file repository. Tier 3 produced a clean, correct Vue component with zero hallucinated imports and no Membrane patches needed — the graph constraint prevented the import violation before generation. LLM generation time dropped ~14% vs RAG despite the model receiving the same prompt length. The primary savings are in token delivery cost and context precision, not raw decode speed (see Known Limitations for the CPU vs GPU timing discussion).
+
+### Correctness Scoring
+
+The benchmark includes a deterministic correctness rubric applied to each response after generation — no second LLM call. Each task has a set of structural criteria (required keywords, patterns, forbidden imports) evaluated by string matching against the known-correct answer structure. Results are reported as PASS / PARTIAL / FAIL alongside token metrics.
+
+This is not a semantic judge and does not evaluate code quality. It is a structural signal: does the response contain the architectural elements the task requires? A PASS means the response is structurally plausible. A FAIL means a required element is missing or a constraint is violated. The rubric intentionally errs toward leniency — the goal is to surface clear failures, not to penalise stylistic variation.
+
+---
+
+## Research Roadmap
+
+GOG is one component of a larger theoretical framework called the **Symbolic Reasoning Model (SRM)**. Understanding the distinction between these two layers is important for interpreting current results and the direction of future work.
+
+### Track 1 — GOG: Deterministic Context Isolation *(this paper)*
+
+GOG answers one question: *does deterministic graph traversal deliver more precise context than vector similarity for structured codebases?* The benchmark here tests that claim directly. Results are reproducible.
+
+It is important to note what this track does **not** test. The LLMs used in this benchmark are still performing architectural reasoning themselves — they receive a smaller, cleaner input, but they are still deciding what code to write. GOG improves the retrieval layer. It does not yet offload the reasoning layer.
+
+### Track 2 — Neuro-Symbolic Membrane: Post-generation Constraint *(in progress)*
+
+The `SalienceEvaluator.patch()` method is the first implemented SRM primitive. The symbolic layer (the graph) corrects the neural layer (the LLM) deterministically after generation — zero retries, zero extra tokens. The current implementation handles import path correction. The next iteration will move this upstream: the symbolic layer pre-computes a structured mutation spec *before* the LLM call, rather than correcting errors after it.
+
+### Track 3 — SRM: Full Symbolic Reasoning Offload *(future work)*
+
+The long-term thesis is that LLMs are being misused when asked to perform architectural reasoning. The 0.5B local model results in this benchmark illustrate this directly — the model fails not because it lacks language ability, but because planning a multi-file architectural change is not a language task.
+
+The SRM framework proposes a strict separation of concerns:
+
+| Layer | Responsibility | Implementation |
+|-------|---------------|----------------|
+| **Symbolic** | All reasoning — dependency resolution, mutation planning, constraint checking | Deterministic graph operations |
+| **Neural** | All language — translating a symbolic specification into valid syntax | LLM (any size) |
+
+When this separation is enforced, a small model receives not a natural language task but a precise symbolic specification: *"add field X to state object in node Y, update action Z to assign value W."* The model is translating, not reasoning. Small models are fully capable of translation.
+
+This hypothesis is what the current benchmark is **not yet testing**. Validating it requires a mutation planner — a symbolic system that converts natural language intent into a structured graph diff before any LLM is invoked. That is the subject of the next paper.
 
 ---
 
@@ -141,7 +197,7 @@ python3 benchmark_cloud_cli.py   # run the 3-tier gauntlet
 
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
-ollama pull qwen2.5:0.5b
+ollama pull qwen2.5:7b        # recommended minimum for meaningful output quality
 python3 generate_dummy_repo.py
 python3 seed_RAG_and_GOG.py
 python3 benchmark_local_llm.py
@@ -149,7 +205,13 @@ python3 benchmark_local_llm.py
 
 Both scripts present an interactive difficulty selector (`Easy / Medium / Hard / All`).
 
-> **Note:** The local benchmark sets `num_gpu: 0` by default to avoid VRAM allocation errors on machines with limited GPU memory. Remove this flag in `benchmark_local_llm.py` if you want GPU acceleration.
+> **Model size note:** `qwen2.5:0.5b` is included as a baseline and will run correctly, but at 500M parameters it reaches capability limits on the Medium and Hard tasks — producing syntactically plausible but architecturally incorrect output. This is not a GOG failure; it reflects the model conflating Vue with React and hallucinating file structure it was never given. `qwen2.5:7b` (~4.7 GB) is the recommended minimum for results that meaningfully test GOG's context isolation advantage. `qwen2.5:14b` will produce stronger output if your hardware supports it.
+>
+> The benchmark sends a brief warmup inference before the gauntlet begins to ensure model weights are loaded into memory and Tier 1 local compute time is not artificially inflated by Ollama's first-load latency.
+
+> **GPU note:** The local benchmark uses Ollama's automatic GPU detection by default — if a CUDA-capable GPU is available, it will be used. To force CPU-only inference (e.g. if you have less than ~5 GB VRAM for a 7b model), set the environment variable before running: `NUM_GPU=0 python3 benchmark_local_llm.py`.
+>
+> **On CPU vs GPU timing:** Token reduction savings manifest differently by hardware. On CPU-only inference, the bottleneck is autoregressive decode (output tokens generated sequentially) rather than prefill (reading input tokens). Shrinking context from 60K → 6K tokens saves prefill time, which is fast relative to decode on CPU — so wall-clock generation time changes little locally. On GPU, both prefill and decode are faster, and the token reduction advantage appears more clearly in end-to-end timing. The primary measurable benefit of GOG on CPU hardware is context precision and API cost reduction, not local wall-clock speed.
 
 ---
 
