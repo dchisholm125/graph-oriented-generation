@@ -5,7 +5,7 @@
 **Active Research Prototype — Contributions Welcome**
 
 Thank you to everyone who checked out the project after the Hacker News and Reddit posts.
-The repository reached **24+ stars and 3 forks within the first day**, which is very encouraging for an early research prototype.
+The repository reached **40+ stars and 6 forks within the first 48 hours!**, which is very encouraging for an early research prototype.
 
 GOG is currently under active development as part of an ongoing research effort (Paper #2 in progress).
 
