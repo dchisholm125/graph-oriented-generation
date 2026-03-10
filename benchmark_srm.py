@@ -212,6 +212,9 @@ def print_srm_benchmark_results(rag_m, vanilla_m, srm_m, prompt_text, level=None
     """
     Print 3-tier comparison table with Tier 3-SRM.
 
+    For Hard task (multi-file): includes per-file breakdown showing which files
+    were successfully rendered structurally vs which had issues.
+
     Args:
         rag_m: Tier 1 (RAG Control) results dict.
         vanilla_m: Tier 2 (GOG Vanilla) results dict.
@@ -275,6 +278,15 @@ def print_srm_benchmark_results(rag_m, vanilla_m, srm_m, prompt_text, level=None
 
     console.print(table)
     console.print("\n")
+
+    # ── Per-File Breakdown for Hard Task (Multi-File) ───────────────────────────
+    if level == "Hard" and srm_m.get("is_multi_file"):
+        console.print("[bold]Per-File Rendering Breakdown (SRM Pipeline)[/bold]")
+        file_render_order = srm_m.get("file_render_order", [])
+        if file_render_order:
+            for i, file_rel in enumerate(file_render_order, 1):
+                console.print(f"  [{i}/{len(file_render_order)}] {file_rel}")
+        console.print()
 
     # ── Response panels ─────────────────────────────────────────────────────
     rag_content = (

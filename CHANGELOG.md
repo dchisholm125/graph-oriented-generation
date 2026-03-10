@@ -5,6 +5,26 @@ Format: dated entries, one line per change, design decisions noted where relevan
 
 ---
 
+## 2026-03-10 (continued) — Measurement Integrity Fix: Structural completeness validation
+
+**Problem:** String-matching rubric allowed structurally incomplete responses to score PASS if they happened
+to contain required keywords. Example: missing `state:` definition but containing `lastLogin` string elsewhere
+would falsely pass. This obscured whether the LLM actually rendered code or just injected keywords.
+
+**Solution:** Implement `_is_structurally_complete_pinia()` and `_is_structurally_complete_vue()` validators
+- Check structure (defineStore, state, actions for Pinia; <script> and <template> for Vue) BEFORE string matching
+- Structurally incomplete responses immediately return FAIL with specific reason (e.g., "missing state definition")
+- Separates "code block is missing" (structural failure) from "code exists but content is wrong" (semantic failure)
+
+**Rationale:** The SRM hypothesis requires accurate measurement of whether the LLM renders structurally
+complete code from symbolic specs. String matching alone cannot distinguish between a wrong implementation
+and a missing implementation. Structural validation is the prerequisite for falsifiability.
+
+**Impact:** Measurement is now more conservative (fewer false positives). A response passing Easy task
+must genuinely render a complete Pinia store, not just mention the right keywords.
+
+---
+
 ## 2026-03-10 — SRM Phase 2 COMPLETE: Per-file rendering achieves PASS 5/5 on all three difficulties
 
 **EMPIRICAL RESULT:** The SRM hypothesis is confirmed across all three task difficulties (Easy, Medium, Hard).
