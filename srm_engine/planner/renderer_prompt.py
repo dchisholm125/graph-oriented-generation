@@ -133,6 +133,102 @@ def build_renderer_prompt(plan: MutationPlan) -> str:
         return _build_singlefile_spec(plan)
 
 
+def build_single_file_renderer_prompt(plan: MutationPlan, target_file_rel: str) -> str:
+    """
+    Renders a single file from a multi-file MutationPlan in isolation.
+
+    This is used for per-file LLM calls (separate rendering pass per file).
+    The renderer receives only the operations and content for one file,
+    eliminating the need for the LLM to parse multi-file structure.
+
+    Args:
+        plan: MutationPlan from mutation_planner.plan_mutations().
+        target_file_rel: Relative path of the file to render (e.g., "src/stores/authStore.ts").
+
+    Returns:
+        Single-file symbolic spec ready for LLM (with MUZZLE to be appended).
+
+    Raises:
+        ValueError: If target_file_rel not in plan.operations_by_file.
+    """
+    if target_file_rel not in plan.operations_by_file:
+        raise ValueError(f"File {target_file_rel} not found in mutation plan")
+
+    operations = plan.operations_by_file[target_file_rel]
+    file_content = plan.file_contents[target_file_rel]
+
+    from .intent_parser import (
+        AddFieldOperation, MutateActionOperation, AddImportOperation,
+        AddTemplateElementOperation, AddSetupBindingOperation,
+        AddMethodOperation, AddActionOperation
+    )
+
+    # Build operations text for this file
+    operations_text = ""
+    for i, op in enumerate(operations, 1):
+        if isinstance(op, AddFieldOperation):
+            operations_text += (
+                f"{i}. ADD_FIELD to state object:\n"
+                f"   - name: {op.field_name}\n"
+                f"   - type: {op.field_type}\n"
+                f"   - default: {op.default_value}\n"
+            )
+        elif isinstance(op, MutateActionOperation):
+            operations_text += (
+                f"{i}. MUTATE_ACTION '{op.target_action}':\n"
+                f"   - add statement: {op.add_statement}\n"
+            )
+        elif isinstance(op, AddImportOperation):
+            operations_text += f"{i}. ADD_IMPORT:\n   {op.import_statement}\n"
+        elif isinstance(op, AddTemplateElementOperation):
+            operations_text += (
+                f"{i}. ADD_TEMPLATE_ELEMENT (next to '{op.insert_adjacent_to}'):\n"
+                f"   {op.element_html}\n"
+            )
+        elif isinstance(op, AddSetupBindingOperation):
+            operations_text += f"{i}. ADD_SETUP_BINDING:\n   {op.binding_statement}\n"
+        elif isinstance(op, AddMethodOperation):
+            operations_text += (
+                f"{i}. ADD_METHOD '{op.method_name}':\n"
+                f"   {op.method_body}\n"
+            )
+        elif isinstance(op, AddActionOperation):
+            operations_text += (
+                f"{i}. ADD_ACTION '{op.action_name}':\n"
+                f"   {op.action_body}\n"
+            )
+
+    # Determine file type and choose appropriate stripper
+    is_vue = target_file_rel.endswith('.vue')
+    clean_content = _extract_vue_skeleton(file_content) if is_vue else _extract_store_skeleton(file_content)
+
+    # Use appropriate instructions based on file type
+    file_type = "Vue component" if is_vue else "TypeScript/Pinia store"
+    instructions = (
+        f"Render the complete updated {file_type}.\n"
+        f"Do not add imports that are not already present (except ADD_IMPORT operations).\n"
+        f"Do not add fields or actions beyond those specified above."
+        if not is_vue
+        else f"Render the complete updated {file_type}.\n"
+             f"Preserve all existing template blocks, script sections, and style blocks.\n"
+             f"Only add the elements and bindings specified in the operations above."
+    )
+
+    spec = f"""SYMBOLIC SPECIFICATION — DO NOT DEVIATE
+
+File: {target_file_rel}
+Current content provided below.
+
+Operations to apply:
+{operations_text}
+{instructions}
+
+=== CURRENT FILE CONTENT ===
+{clean_content}"""
+
+    return spec
+
+
 def _build_singlefile_spec(plan: MutationPlan) -> str:
     """Build symbolic spec for single-file tasks (Easy, Medium)."""
     from .intent_parser import (

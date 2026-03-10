@@ -28,7 +28,7 @@ from srm_engine.token_utils import count_tokens_in_files as get_token_count
 
 from srm_engine.planner.intent_parser import parse_intent, IntentParseError
 from srm_engine.planner.mutation_planner import plan_mutations, PlannerError
-from srm_engine.planner.renderer_prompt import build_renderer_prompt
+from srm_engine.planner.renderer_prompt import build_renderer_prompt, build_single_file_renderer_prompt
 
 from benchmark_local_llm import (
     OllamaClient,
@@ -47,9 +47,44 @@ client = OllamaClient(model="qwen2.5:0.5b")
 # Tier 3-SRM: The SRM Pipeline
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _get_topological_render_order(graph, target_files_abs: list) -> list:
+    """
+    Determine render order for multiple target files using topological sort from DAG.
+
+    The planner (not the LLM) determines the dependency order. Each file is rendered
+    in isolation, in the order determined by the import/dependency graph, so that
+    dependent files see the operations applied to their dependencies first.
+
+    Args:
+        graph: NetworkX DiGraph (GOG graph with import relationships).
+        target_files_abs: List of absolute file paths to render.
+
+    Returns:
+        List of absolute file paths in topological order (dependencies first).
+    """
+    import networkx as nx
+
+    # Get the subgraph containing only the target files
+    subgraph_nodes = [n for n in graph.nodes() if n in target_files_abs]
+
+    # Topological sort ensures dependencies come before dependents
+    # If there's a cycle or the graph doesn't contain all files, fall back to input order
+    try:
+        topo_order = list(nx.topological_sort(graph.subgraph(subgraph_nodes)))
+        # Filter to only include target files
+        return [f for f in topo_order if f in target_files_abs]
+    except:
+        # Fall back to input order if topological sort fails
+        return target_files_abs
+
+
 def run_srm_pipeline(prompt_text: str, target_repo: str, graph) -> dict:
     """
-    Tier 3-SRM: Intent Parser → Mutation Planner → Renderer Prompt → LLM Renderer
+    Tier 3-SRM: Intent Parser → Mutation Planner → Renderer Prompts → LLM Renderers
+
+    Multi-file handling: For tasks with multiple files, renders each file separately
+    in topological order (dependencies first). The planner determines order; the LLM
+    renders atomically per file (renderer, not planner).
 
     Args:
         prompt_text: Natural language instruction from user (used by parser only).
@@ -91,27 +126,60 @@ def run_srm_pipeline(prompt_text: str, target_repo: str, graph) -> dict:
             "plan_error": str(e),
         }
 
-    # ── Step 3: Build Renderer Prompt (deterministic) ────────────────────────
-    renderer_prompt = build_renderer_prompt(plan) + MUZZLE
+    # ── Step 3: Determine file rendering order (deterministic) ─────────────────
+    target_files_abs = list(plan.file_paths_abs.values())
+    is_multi_file = len(plan.operations_by_file) > 1
+
+    # Get topological render order from the graph (dependencies first)
+    render_order_abs = _get_topological_render_order(graph, target_files_abs)
+
+    # Map back to relative paths for accessing the plan
+    file_rel_by_abs = {v: k for k, v in plan.file_paths_abs.items()}
+    render_order_rel = [file_rel_by_abs[abs_path] for abs_path in render_order_abs]
 
     # Count tokens in all target files (this is what the LLM sees)
-    target_files_abs = list(plan.file_paths_abs.values())
     tokens_in = get_token_count(target_files_abs)
     local_time = time.time() - start_time
 
-    # ── Step 4: LLM Renderer (single call, no retry) ─────────────────────────
+    # ── Step 4: LLM Rendering ────────────────────────────────────────────────
     api_start = time.time()
+    responses = []
+    renderer_prompts = []
+
     if not client.is_present:
         time.sleep(0.5)
         response = "Mocked SRM result (Ollama is not running)"
-    else:
-        # CRITICAL: The LLM receives ONLY the renderer prompt.
-        # It does NOT see the original natural language prompt.
-        # context_files=[] because all context is in the renderer_prompt itself.
-        response = client.complete(renderer_prompt, context_files=[])
-    api_time = time.time() - api_start
+        responses = [response]
+    elif is_multi_file:
+        # Multi-file: separate LLM call per file, in topological order
+        console.print(f"\n[dim]Rendering {len(render_order_rel)} files in topological order...[/dim]")
+        for i, target_file_rel in enumerate(render_order_rel, 1):
+            console.print(f"[dim]  [{i}/{len(render_order_rel)}] {target_file_rel}[/dim]", end=" ")
 
+            # Build single-file spec (all context contained within)
+            single_file_spec = build_single_file_renderer_prompt(plan, target_file_rel) + MUZZLE
+            renderer_prompts.append(single_file_spec)
+
+            # Call LLM for this file only
+            file_response = client.complete(single_file_spec, context_files=[])
+            responses.append(file_response)
+            console.print("[dim]done[/dim]")
+
+        # Concatenate responses with file separators
+        response = "\n\n".join(
+            f"# ─── {render_order_rel[i]} ───\n{responses[i]}"
+            for i in range(len(responses))
+        )
+    else:
+        # Single-file: standard rendering
+        renderer_prompt = build_renderer_prompt(plan) + MUZZLE
+        renderer_prompts = [renderer_prompt]
+        response = client.complete(renderer_prompt, context_files=[])
+        responses = [response]
+
+    api_time = time.time() - api_start
     execution_time = local_time + api_time
+
     return {
         "time": execution_time,
         "local_time": local_time,
@@ -120,9 +188,11 @@ def run_srm_pipeline(prompt_text: str, target_repo: str, graph) -> dict:
         "tokens_out": 150,
         "response": response,
         "patches_applied": 0,
-        "renderer_prompt": renderer_prompt,  # For debugging/verification
+        "renderer_prompts": renderer_prompts,  # For debugging/verification
         "operations": ops,
         "plan": plan,
+        "is_multi_file": is_multi_file,
+        "file_render_order": render_order_rel,
     }
 
 

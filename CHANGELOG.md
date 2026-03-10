@@ -5,6 +5,29 @@ Format: dated entries, one line per change, design decisions noted where relevan
 
 ---
 
+## 2026-03-10 — Per-file LLM rendering for multi-file SRM tasks
+
+- Implemented per-file rendering architecture for Hard task (and any multi-file task)
+  - Each file rendered in separate LLM call (renderer, not planner)
+  - Eliminates structural reasoning burden on small models
+  - Rendering order determined by topological sort from GOG graph (dependencies first)
+- Added `_get_topological_render_order()` in benchmark_srm.py
+  - Uses NetworkX DAG to determine file render sequence
+  - Planner (not LLM) decides order; LLM renders atomically per file
+  - Fallback to input order if topological sort fails
+- Modified `run_srm_pipeline()` for multi-file handling
+  - Detects multi-file vs single-file via plan.operations_by_file
+  - For multi-file: iterates through files in topological order, calls LLM once per file
+  - Concatenates responses with clear file separators for scoring
+  - Still atomic: each LLM call receives one file, one set of operations, one output
+- Added `build_single_file_renderer_prompt()` in renderer_prompt.py
+  - Renders individual files from multi-file MutationPlan
+  - Same content stripping and operation formatting as original, but for one file only
+- Architectural principle: SRM removes reasoning from LLM
+  - Multi-file in one call = LLM must reason about structure (violates SRM)
+  - Per-file calls in dependency order = LLM renders atomically (respects SRM)
+  - Timing: 3 files × 0.9s each ≈ 2.7s (still < RAG 3.6s), with cleaner instruction following
+
 ## 2026-03-10 — Constraint checking fix + SRM Phase 2 validation complete
 
 - Fixed critical measurement issue in Hard task rubric
