@@ -445,6 +445,55 @@ def print_results(rag_m, vanilla_m, membrane_m, prompt_text, level=None, isolate
 # giving the benchmark an output quality dimension independent of token count.
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _extract_code_blocks(response):
+    """Extract code blocks from LLM response keyed by filename or language.
+
+    For multi-file responses, tries to identify which file each block belongs to.
+    Returns dict of {filename: code_content} or {language: code_content} if filename unclear.
+    """
+    import re as _re
+    blocks = {}
+
+    # Pattern 1: ─── FILE: {filename} ─── markers (from SRM renderer)
+    file_blocks = _re.findall(
+        r'─+\s+FILE:\s+([^\s]+)\s+─+\n(.*?)(?=─+\s+FILE:|$)',
+        response,
+        _re.DOTALL | _re.IGNORECASE
+    )
+    if file_blocks:
+        for filename, content in file_blocks:
+            # Extract the code block from this section
+            code_match = _re.search(r'```(?:ts|typescript|vue)?\n(.*?)\n```', content, _re.DOTALL)
+            if code_match:
+                blocks[filename.strip()] = code_match.group(1)
+            else:
+                blocks[filename.strip()] = content
+        return blocks
+
+    # Pattern 2: Standard ``` code blocks with inferred filenames
+    code_blocks = _re.findall(
+        r'```(?:ts|typescript|vue)?\n(.*?)\n```',
+        response,
+        _re.DOTALL
+    )
+    if code_blocks:
+        # Try to infer filenames from content clues
+        for i, block in enumerate(code_blocks):
+            if 'deleteAccount' in block and 'post' in block and 'api_client' not in block:
+                blocks['src/services/api_client.ts'] = block
+            elif 'deleteUser' in block and 'defineStore' in block:
+                blocks['src/stores/authStore.ts'] = block
+            elif '<button' in block and 'Delete' in block:
+                blocks['src/views/UserSettings.vue'] = block
+            else:
+                blocks[f'block_{i}'] = block
+        return blocks
+
+    # No structured blocks found, return entire response as one block
+    blocks['response'] = response
+    return blocks
+
+
 def _check(response, required=(), forbidden=()):
     """Return (passed: int, total: int, failures: list[str])."""
     checks = []
@@ -524,16 +573,40 @@ def score_response(level, response, isolated_count=None):
                 forbidden=[],
             )
 
-        # Forbidden check uses re.search — plain 'in' doesn't do pattern matching
+        # Forbidden check: Vue component must NOT directly import api_client
+        # For multi-file responses, extract code blocks and check only UserSettings.vue
         import re as _re
-        has_violation = bool(_re.search(
-            r"api_client",
-            response, _re.IGNORECASE
-        )) and bool(_re.search(r"import", response, _re.IGNORECASE))
-        if has_violation:
-            passed_forbidden = 0
+        blocks = _extract_code_blocks(response)
+
+        # Find the UserSettings.vue block (by filename or heuristic)
+        vue_block = None
+        for filename, content in blocks.items():
+            if 'UserSettings' in filename or 'UserSettings.vue' in filename:
+                vue_block = content
+                break
+            # Fallback heuristic: block with Delete button and template
+            if '<button' in content and 'Delete' in content and not vue_block:
+                vue_block = content
+
+        # Check constraint only within the Vue component
+        passed_forbidden = 1  # default: no violation
+        if vue_block:
+            # Check if UserSettings.vue directly imports api_client
+            has_import = bool(_re.search(r"import", vue_block, _re.IGNORECASE))
+            has_api_client = bool(_re.search(r"api_client", vue_block, _re.IGNORECASE))
+            if has_import and has_api_client:
+                passed_forbidden = 0
         else:
-            passed_forbidden = 1
+            # If we can't extract the Vue block, check the full response but be lenient
+            # (multi-file parsing might have failed)
+            # Only flag if api_client appears directly next to import in the same line
+            has_violation = bool(_re.search(
+                r"import\s+.*api_client",
+                response, _re.IGNORECASE | _re.MULTILINE
+            ))
+            if has_violation:
+                passed_forbidden = 0
+
         total += 1
         passed += passed_forbidden
         if not passed_forbidden:

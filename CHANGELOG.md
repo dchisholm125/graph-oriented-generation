@@ -5,6 +5,17 @@ Format: dated entries, one line per change, design decisions noted where relevan
 
 ---
 
+## 2026-03-10 — Hard task constraint checking: per-file validation for multi-file responses
+
+- Fixed naïve forbidden import constraint check in benchmark_local_llm.py
+  - Old behavior: searched for "api_client" AND "import" anywhere in response (false positives on legitimate imports in authStore.ts)
+  - New behavior: extracts code blocks by filename, checks constraint only within UserSettings.vue component
+- Added `_extract_code_blocks()` helper to parse multi-file SRM responses into per-file code blocks
+  - Recognizes ─── FILE: {filename} ─── markers from SRM renderer
+  - Falls back to heuristic extraction if structured markers absent
+- Hard task now scores constraint correctly: allows `import api_client` in authStore.ts but forbids it in UserSettings.vue
+- Verification: SRM Hard task re-run confirms whether PASS was measurement artifact or architectural issue
+
 ## 2026-03-10 — SRM planner extended to Medium & Hard tasks (multi-file operations)
 
 - Extended intent_parser.py with Medium and Hard task handlers
