@@ -5,6 +5,27 @@ Format: dated entries, one line per change, design decisions noted where relevan
 
 ---
 
+## 2026-03-10 — SRM planner extended to Medium & Hard tasks (multi-file operations)
+
+- Extended intent_parser.py with Medium and Hard task handlers
+  - Medium: ADD_IMPORT + ADD_SETUP_BINDING + ADD_TEMPLATE_ELEMENT for Vue component wiring
+  - Hard: ADD_METHOD + ADD_ACTION + ADD_TEMPLATE_ELEMENT + ADD_SETUP_BINDING + FORBIDDEN_IMPORT constraint
+- Implemented 6 new operation types as dataclasses (no dict-passing between components)
+- Updated mutation_planner.py for multi-file support
+  - operations_by_file: Dict[target_file_rel -> List[operations]] groups by file
+  - constraints: separate list for enforcement rules (ForbiddenImportConstraint)
+  - Validates all target files exist in GOG graph before planning
+- Extended renderer_prompt.py to handle all operation types
+  - _build_singlefile_spec(): handles Easy and Medium in single-file format
+  - _build_multifile_spec(): per-file sections for Hard (3-file feature)
+  - Added _extract_vue_skeleton(): Vue-specific content stripper (preserves templates, scripts)
+  - Constraint enforcement in renderer prompt (symbolic hard rules, not natural language requests)
+- Updated benchmark_srm.py with interactive task selection (Easy / Medium / Hard / All)
+- Verified: Medium task produces correct ADD_IMPORT, ADD_SETUP_BINDING, ADD_TEMPLATE_ELEMENT specs
+- Hypothesis for Medium/Hard: 0.5B model with symbolic spec should enforce structural constraints better than with raw prompts
+  - Medium test: can the model wire Vue imports and bindings correctly given symbolic spec?
+  - Hard test: can ForbiddenImportConstraint prevent hallucinated api_client imports in Vue component?
+
 ## 2026-03-10 — SRM Phase 2 validation: 0.5B model with symbolic spec achieves PASS (5/5) on Easy task
 
 EMPIRICAL RESULT: The SRM hypothesis is confirmed on the Easy task.
