@@ -5,6 +5,22 @@ Format: dated entries, one line per change, design decisions noted where relevan
 
 ---
 
+## 2026-03-10 — SRM renderer: surgical content stripping (content poisoning fix)
+
+- Fixed critical issue: renderer prompt was passing entire raw file content to LLM
+  Problem: authStore.ts is 14KB with 96.6% noise (DUMMY_ASSETS base64 blobs + boilerplate comments)
+  LLM was overwhelmed, lost in noise, echoed back garbage instead of following spec
+- Implemented _extract_store_skeleton(): deterministic content sanitizer
+  Strips DUMMY_ASSETS blocks (arbitrary base64 image data)
+  Strips random boilerplate comment blocks (/** ... */ with 80+ char garbage lines)
+  Preserves only imports + defineStore definition + actions
+  Reduces authStore.ts from 14,388 chars (126 lines) to 491 chars (10 lines) — 96.6% reduction
+- Updated build_renderer_prompt() to sanitize before inserting into spec
+  LLM now sees clean symbolic spec + meaningful code, not raw file dump
+  Still deterministic — planner's job: present clean target, not raw pollution
+- Verification: no DUMMY_ASSETS in renderer prompt, no boilerplate noise
+  Actual code (defineStore, imports, actions) fully preserved for context
+
 ## 2026-03-10 — SRM Phase 2 implementation: Intent Parser + Mutation Planner + Renderer
 
 - Created `srm_engine/planner/` as a no-LLM zone (by policy, not configuration)
