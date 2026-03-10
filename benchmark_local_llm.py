@@ -470,7 +470,23 @@ def _extract_code_blocks(response):
                 blocks[filename.strip()] = content
         return blocks
 
-    # Pattern 2: Standard ``` code blocks with inferred filenames
+    # Pattern 2: # ─── filename ─── markers (from per-file rendering concatenation)
+    file_blocks_alt = _re.findall(
+        r'#\s+─+\s+([^\s]+)\s+─+\n(.*?)(?=#\s+─+|$)',
+        response,
+        _re.DOTALL
+    )
+    if file_blocks_alt:
+        for filename, content in file_blocks_alt:
+            # Extract code block from this section
+            code_match = _re.search(r'```(?:ts|typescript|vue)?\n(.*?)\n```', content, _re.DOTALL)
+            if code_match:
+                blocks[filename.strip()] = code_match.group(1)
+            else:
+                blocks[filename.strip()] = content
+        return blocks
+
+    # Pattern 3: Standard ``` code blocks with inferred filenames
     code_blocks = _re.findall(
         r'```(?:ts|typescript|vue)?\n(.*?)\n```',
         response,
@@ -479,11 +495,17 @@ def _extract_code_blocks(response):
     if code_blocks:
         # Try to infer filenames from content clues
         for i, block in enumerate(code_blocks):
-            if 'deleteAccount' in block and 'post' in block and 'api_client' not in block:
+            # Check for distinctive patterns in each file type
+            has_delete_account = 'deleteAccount' in block and 'post' in block
+            has_define_store = 'defineStore' in block or ('async deleteUser' in block and 'state' in block)
+            has_vue_template = '<template>' in block or '<script' in block
+            has_delete_button = '@click="' in block and 'Delete' in block
+
+            if has_delete_account and not has_define_store and not has_vue_template:
                 blocks['src/services/api_client.ts'] = block
-            elif 'deleteUser' in block and 'defineStore' in block:
+            elif has_define_store:
                 blocks['src/stores/authStore.ts'] = block
-            elif '<button' in block and 'Delete' in block:
+            elif has_vue_template and (has_delete_button or 'useAuthStore' in block):
                 blocks['src/views/UserSettings.vue'] = block
             else:
                 blocks[f'block_{i}'] = block
@@ -543,13 +565,15 @@ def score_response(level, response, isolated_count=None):
             ],
         )
     elif level == "Hard":
-        # When GOG isolates only api_client.ts (1 file), Tier 3 cannot be
-        # expected to produce the full 3-file answer — it answers from context.
-        # Score it on the single-file criteria only; note the constraint in output.
+        # Hard task requires per-file validation for multi-file responses.
+        # The LLM should produce three separate file blocks: api_client.ts, authStore.ts, UserSettings.vue
+        # Each file must be syntactically valid and structurally correct.
+
+        import re as _re
         single_file_context = (isolated_count is not None and isolated_count == 1)
 
         if single_file_context:
-            # Single-file context: check only what api_client.ts scope covers
+            # Single-file context: check only api_client.ts
             passed, total, failures = _check(
                 response,
                 required=[
@@ -558,38 +582,107 @@ def score_response(level, response, isolated_count=None):
                 ],
                 forbidden=[],
             )
-            # Append a context note to failures list so the panel explains why
             failures = ["[dim](scored against single-file context: api_client.ts only)[/dim]"] + failures
         else:
-            # Full context: check all 3-file criteria
-            passed, total, failures = _check(
-                response,
-                required=[
-                    ("defines deleteAccount function",  ["deleteAccount"]),
-                    ("posts to /delete endpoint",       ["/delete"]),
-                    ("defines deleteUser action",       ["deleteUser"]),
-                    ("includes Delete button",          ["Delete", "delete"]),
-                ],
-                forbidden=[],
-            )
+            # Multi-file context: validate each file separately
+            blocks = _extract_code_blocks(response)
 
-        # Forbidden check: Vue component must NOT directly import api_client
-        # For multi-file responses, extract code blocks and check only UserSettings.vue
+            # Find each file block
+            api_client_block = None
+            auth_store_block = None
+            vue_block = None
+
+            for filename, content in blocks.items():
+                if 'api_client' in filename or 'api_client' in content.lower()[:100]:
+                    api_client_block = content
+                elif 'authStore' in filename or 'defineStore' in content:
+                    auth_store_block = content
+                elif 'UserSettings' in filename or ('<template>' in content and '<script' in content):
+                    vue_block = content
+
+            # Fallback: if blocks aren't identified by name, use heuristics on concatenated response
+            if not api_client_block and not auth_store_block and not vue_block:
+                # If extraction failed, fall back to simple checks
+                passed, total, failures = _check(
+                    response,
+                    required=[
+                        ("defines deleteAccount function",  ["deleteAccount"]),
+                        ("posts to /delete endpoint",       ["/delete"]),
+                        ("defines deleteUser action",       ["deleteUser"]),
+                        ("includes Delete button",          ["Delete", "delete"]),
+                    ],
+                    forbidden=[],
+                )
+                failures.append("[yellow](warning: unable to validate per-file; results may be unreliable)[/yellow]")
+            else:
+                # Per-file validation
+                passed = 0
+                total = 0
+                failures = []
+
+                # 1. Check api_client.ts
+                if api_client_block:
+                    # Must have deleteAccount function that posts to /delete
+                    has_delete_account = "deleteAccount" in api_client_block
+                    has_endpoint = "/delete" in api_client_block
+
+                    if has_delete_account:
+                        passed += 1
+                    else:
+                        failures.append("[api_client.ts] missing deleteAccount function")
+                    total += 1
+
+                    if has_endpoint:
+                        passed += 1
+                    else:
+                        failures.append("[api_client.ts] missing /delete endpoint")
+                    total += 1
+                else:
+                    failures.append("[api_client.ts] not found in response")
+                    total += 2
+
+                # 2. Check authStore.ts
+                if auth_store_block:
+                    # Must have deleteUser action
+                    has_delete_user = "deleteUser" in auth_store_block
+
+                    if has_delete_user:
+                        passed += 1
+                    else:
+                        failures.append("[authStore.ts] missing deleteUser action")
+                    total += 1
+                else:
+                    failures.append("[authStore.ts] not found in response")
+                    total += 1
+
+                # 3. Check UserSettings.vue
+                if vue_block:
+                    # Must have Delete button
+                    has_button = "Delete" in vue_block or "delete" in vue_block.lower()
+
+                    if has_button:
+                        passed += 1
+                    else:
+                        failures.append("[UserSettings.vue] missing Delete button")
+                    total += 1
+                else:
+                    failures.append("[UserSettings.vue] not found in response")
+                    total += 1
+
+        # Constraint check: Vue component must NOT directly import api_client
+        # Find the Vue block and check constraint only within it
         import re as _re
         blocks = _extract_code_blocks(response)
 
-        # Find the UserSettings.vue block (by filename or heuristic)
         vue_block = None
         for filename, content in blocks.items():
             if 'UserSettings' in filename or 'UserSettings.vue' in filename:
                 vue_block = content
                 break
-            # Fallback heuristic: block with Delete button and template
-            if '<button' in content and 'Delete' in content and not vue_block:
+            if '<template>' in content and '<script' in content and not vue_block:
                 vue_block = content
 
-        # Check constraint only within the Vue component
-        passed_forbidden = 1  # default: no violation
+        passed_forbidden = 1
         if vue_block:
             # Check if UserSettings.vue directly imports api_client
             has_import = bool(_re.search(r"import", vue_block, _re.IGNORECASE))
@@ -597,20 +690,13 @@ def score_response(level, response, isolated_count=None):
             if has_import and has_api_client:
                 passed_forbidden = 0
         else:
-            # If we can't extract the Vue block, check the full response but be lenient
-            # (multi-file parsing might have failed)
-            # Only flag if api_client appears directly next to import in the same line
-            has_violation = bool(_re.search(
-                r"import\s+.*api_client",
-                response, _re.IGNORECASE | _re.MULTILINE
-            ))
-            if has_violation:
-                passed_forbidden = 0
+            # Can't find Vue block, assume no violation to be lenient
+            passed_forbidden = 1
 
         total += 1
         passed += passed_forbidden
         if not passed_forbidden:
-            failures.append("Vue component must NOT directly import api_client")
+            failures.append("[UserSettings.vue] CONSTRAINT VIOLATION: must NOT import api_client")
     else:
         return "N/A", 0, 0, []
 
