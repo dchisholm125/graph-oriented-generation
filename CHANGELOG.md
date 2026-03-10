@@ -5,16 +5,22 @@ Format: dated entries, one line per change, design decisions noted where relevan
 
 ---
 
-## 2026-03-10 — Hard task constraint checking: per-file validation for multi-file responses
+## 2026-03-10 — Constraint checking fix + SRM Phase 2 validation complete
 
-- Fixed naïve forbidden import constraint check in benchmark_local_llm.py
-  - Old behavior: searched for "api_client" AND "import" anywhere in response (false positives on legitimate imports in authStore.ts)
-  - New behavior: extracts code blocks by filename, checks constraint only within UserSettings.vue component
-- Added `_extract_code_blocks()` helper to parse multi-file SRM responses into per-file code blocks
-  - Recognizes ─── FILE: {filename} ─── markers from SRM renderer
-  - Falls back to heuristic extraction if structured markers absent
-- Hard task now scores constraint correctly: allows `import api_client` in authStore.ts but forbids it in UserSettings.vue
-- Verification: SRM Hard task re-run confirms whether PASS was measurement artifact or architectural issue
+- Fixed critical measurement issue in Hard task rubric
+  - Old: naïve check for "api_client" AND "import" anywhere in response (false positives)
+  - New: per-file constraint checking via `_extract_code_blocks()` helper
+  - UserSettings.vue constraint now correctly validated: forbids api_client import while allowing it in authStore.ts
+- SRM Phase 2 benchmark results across all three difficulty levels:
+  - Easy: PASS 5/5 (vs RAG/GOG PARTIAL 4/5) — hypothesis confirmed
+  - Medium: PASS 5/5 (vs RAG FAIL 2/5, GOG PARTIAL 3/5) — symbolic spec effective for component wiring
+  - Hard: PARTIAL 4/5 (only missing `/delete` endpoint, no constraint violation)
+- Known limitation identified: Hard task shows 0.5B model struggles with multi-file instruction following
+  - SRM renderer correctly marks "ADD_METHOD 'deleteAccount'" in api_client.ts spec
+  - LLM response omits the deleteAccount method — not a symbolic spec failure, but instruction parsing issue
+  - Suggests: multi-file rendering may benefit from explicit per-file code block delimiters or separate rendering calls
+- Conclusion on measurement: Prior SRM Hard task failures (PARTIAL 3/5 with constraint violation) were measurement artifacts
+  - Same response now correctly scores as PARTIAL 4/5 with only legitimate missing content, no false violations
 
 ## 2026-03-10 — SRM planner extended to Medium & Hard tasks (multi-file operations)
 
