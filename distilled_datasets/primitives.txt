@@ -1,0 +1,130 @@
+# NSM Semantic Primitives → Cowen & Keltner 27 Emotions Mapping
+# Natural Semantic Metalanguage (Anna Wierzbicka) → Emotions (Cowen & Keltner)
+# Generated: 2026-03-16
+
+# ==============================================================================
+# COWEN & KELTNER 27 EMOTIONS (for reference)
+# ==============================================================================
+# 1. Admiration      10. Confusion       19. Interest      26. Sympathy
+# 2. Adoration       11. Craving          20. Joy           27. Triumph
+# 3. Aesthetic       12. Disgust          21. Nostalgia
+#    Appreciation    13. Empathic pain    22. Romance
+# 4. Amusement       14. Entrancement     23. Sadness
+# 5. Anxiety         15. Envy             24. Satisfaction
+# 6. Awe             16. Excitement       25. Sexual desire
+# 7. Awkwardness     17. Fear
+# 8. Boredom         18. Horror
+# 9. Calmness
+
+# ==============================================================================
+# NSM PRIMITIVES AND THEIR EMOTIONAL MAPPINGS
+# ==============================================================================
+
+# --- SUBSTANTIVES ---
+I (self): Joy, Pride, Shame, Anxiety, Fear
+you: Admiration, Adoration, Romance, Sympathy, Anger
+someone: Admiration, Sympathy, Envy, Adoration
+people: Admiration, Sympathy, Contempt (if "bad people"), Awe
+something/thing: Interest, Curiosity, Craving
+body: Calmness, Excitement, Fear (if threatened), Satisfaction
+
+# --- RELATIONAL SUBSTANTIVES ---
+kind: Admiration, Adoration, Love, Sympathy
+part: Interest, Confusion (if partial understanding)
+
+# --- DETERMINERS ---
+this: Interest, Awe, Anxiety (if threatening)
+the same: Calmness, Satisfaction, Nostalgia, Admiration
+other/else: Curiosity, Anxiety, Awe, Envy, Interest
+
+# --- QUANTIFIERS ---
+one: Interest, Confusion (singular vs plural)
+two: Interest, Romance (pair bond)
+some: Curiosity, Hope, Craving
+all: Awe, Admiration, Overwhelm, Sympathy
+much/many: Awe, Excitement, Anxiety, Overwhelm
+little/few: Sadness, Boredom, Calmness, Nostalgia
+
+# --- EVALUATORS ---
+good: Joy, Satisfaction, Admiration, Calmness
+bad: Disgust, Sadness, Fear, Horror, Anger
+
+# --- DESCRIPTORS ---
+big: Awe, Fear, Admiration, Overwhelm
+small: Adoration, Calmness, Interest, Nostalgia
+
+# --- MENTAL PREDICATES ---
+think: Interest, Confusion, Curiosity, Awe
+know: Satisfaction, Calmness, Pride, Anxiety (if dangerous knowledge)
+want: Craving, Desire, Excitement, Anxiety
+don't want: Disgust, Fear, Anxiety, Calmness
+feel: (core emotion primitive) - maps to ALL emotions
+see: Aesthetic Appreciation, Interest, Awe, Fear, Joy
+hear: Aesthetic Appreciation, Interest, Awe, Fear, Calmness
+
+# --- SPEECH ---
+say: Interest, Confusion, Anxiety, Triumph (if successful)
+words: Interest, Confusion, Aesthetic Appreciation
+true: Satisfaction, Calmness, Admiration
+
+# --- ACTIONS, EVENTS, MOVEMENT ---
+do: Excitement, Triumph, Pride, Anxiety
+happen: Awe, Fear, Surprise, Interest
+move: Excitement, Awe, Fear, Interest
+
+# --- EXISTENCE, POSSESSION ---
+be (somewhere): Calmness, Anxiety, Awe
+there is: Curiosity, Awe, Interest, Excitement
+be (someone/something): Identity → Joy, Pride, Sadness, Anxiety
+(is) mine: Satisfaction, Pride, Envy, Anxiety
+
+# --- LIFE AND DEATH ---
+live: Joy, Excitement, Awe, Gratitude, Fear
+die: Horror, Fear, Sadness, Awe, Nostalgia
+
+# --- TIME ---
+when/time: Nostalgia, Anxiety, Awe, Interest
+now: Anxiety, Excitement, Calmness, Interest
+before: Nostalgia, Regret, Pride, Sadness
+after: Relief, Satisfaction, Nostalgia, Sadness
+a long time: Nostalgia, Awe, Boredom, Calmness
+a short time: Excitement, Anxiety, Interest, Urgency
+for some time: Interest, Nostalgia, Patience, Anxiety
+moment: Awe, Excitement, Fear, Interest
+
+# --- SPACE ---
+where/place: Curiosity, Nostalgia, Awe, Anxiety
+here: Calmness, Nostalgia, Safety, Anxiety
+above: Awe, Admiration, Fear (if extreme)
+below: Awe, Curiosity, Fear, Interest
+far: Nostalgia, Longing, Awe, Anxiety
+near: Calmness, Safety, Anxiety, Intimacy
+side: Interest, Confusion
+inside: Comfort, Safety, Curiosity, Claustrophobia (fear)
+touch/contact: Intimacy, Romance, Disgust (if unwanted), Joy
+
+# --- LOGICAL CONCEPTS ---
+not: (negation - context-dependent) → can invert any emotion
+maybe: Hope, Anxiety, Curiosity, Interest
+can: Excitement, Interest, Calmness, Anxiety
+because: Interest, Understanding, Confusion
+if: Hope, Anxiety, Curiosity, Interest
+
+# --- INTENSIFIER, AUGMENTOR ---
+very: Amplifies current emotion (Awe if extreme)
+more: Interest, Craving, Excitement, Envy
+
+# --- SIMILARITY ---
+like/as/way: Aesthetic Appreciation, Admiration, Calmness, Nostalgia
+
+# ==============================================================================
+# WEIGHTED MAPPING NOTES
+# ==============================================================================
+# Most primitives map to multiple emotions with varying strengths.
+# Key emotion drivers from NSM:
+# - FEEL is the core primitive for ALL emotions
+# - good/bad (evaluators) are strong emotion drivers
+# - want/don't want drive desire/fear emotions
+# - happen (events) drive surprise/interest/awe
+# - life/death are extreme emotion drivers (horror, joy, awe)
+# - touch/contact drives intimacy emotions (romance, disgust if unwanted)

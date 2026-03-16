@@ -1,0 +1,367 @@
+model_name,model_short,primitive,emotion,combo,trial,meaning_score,excitement_score,emotional_elicitation,clarity_score,universality_score,embodiment_score,novelty_score,composite_score,dominant_sensation,composite_concept,confidence,parse_failed
+qwen2.5:0.5b,qwen,I,Joy,I × Joy,1,10,0,0,10,0,0,0,4.0,joy,joy,1.0,False
+qwen2.5:0.5b,qwen,I,Joy,I × Joy,2,10,10,10,10,10,10,10,10.0,joy,joy,1.0,False
+qwen2.5:0.5b,qwen,I,Joy,I × Joy,3,10,10,10,10,10,10,10,10.0,joy,joy and happiness,1.0,False
+qwen2.5:0.5b,qwen,I,Anxiety,I × Anxiety,1,10,0,0,0,0,0,0,2.5,anxiety,anxiety,0.0,False
+qwen2.5:0.5b,qwen,I,Anxiety,I × Anxiety,2,0,0,0,0,0,0,0,0.0,anxiety,anxiety,1.0,False
+qwen2.5:0.5b,qwen,I,Anxiety,I × Anxiety,3,0,0,0,0,0,0,0,0.0,anxiety,anxiety,1.0,False
+qwen2.5:0.5b,qwen,I,Fear,I × Fear,1,10,10,10,10,10,10,10,10.0,Fear,Fear,1.0,False
+qwen2.5:0.5b,qwen,I,Fear,I × Fear,2,5,0,5,5,5,5,0,4.25,Fear,fear,1.0,False
+qwen2.5:0.5b,qwen,I,Fear,I × Fear,3,10,10,10,10,10,10,10,10.0,Fear,Fear,1.0,False
+qwen2.5:0.5b,qwen,I,Shame,I × Shame,1,1,0,0,0,0,0,0,0.25,shame,I,1.0,False
+qwen2.5:0.5b,qwen,I,Shame,I × Shame,2,10,10,10,10,10,10,10,10.0,Shame,shame,1.0,False
+qwen2.5:0.5b,qwen,I,Shame,I × Shame,3,0,0,0,0,0,0,0,0.0,None,I,0.0,False
+qwen2.5:0.5b,qwen,you,Admiration,you × Admiration,1,0,0,0,0,0,0,0,0.0,,you,1.0,False
+qwen2.5:0.5b,qwen,you,Admiration,you × Admiration,2,10,10,10,10,10,10,10,10.0,admiration,you,1.0,False
+qwen2.5:0.5b,qwen,you,Admiration,you × Admiration,3,10,10,10,10,10,10,10,10.0,adoration,you adoring,1.0,False
+qwen2.5:0.5b,qwen,you,Adoration,you × Adoration,1,0,0,0,0,0,0,0,0.0,adoration,adoration,1.0,False
+qwen2.5:0.5b,qwen,you,Adoration,you × Adoration,2,0,0,0,0,0,0,0,0.0,,,0.0,False
+qwen2.5:0.5b,qwen,you,Adoration,you × Adoration,3,10,10,10,10,10,10,10,10.0,love,adore you,1.0,False
+qwen2.5:0.5b,qwen,you,Romance,you × Romance,1,0,0,0,0,0,0,0,0.0,,romance,1.0,False
+qwen2.5:0.5b,qwen,you,Romance,you × Romance,2,10,0,0,10,10,0,10,6.0,romance,romance,1.0,False
+qwen2.5:0.5b,qwen,you,Romance,you × Romance,3,10,10,10,10,10,10,10,10.0,romance,you,1.0,False
+qwen2.5:0.5b,qwen,you,Sympathy,you × Sympathy,1,0,0,0,0,0,0,0,0.0,sympathy,sympathize with someone,1.0,False
+qwen2.5:0.5b,qwen,you,Sympathy,you × Sympathy,2,10,10,0,10,0,0,0,5.0,sympathy,you,1.0,False
+qwen2.5:0.5b,qwen,you,Sympathy,you × Sympathy,3,5,5,5,5,5,5,5,5.0,sympathy,you,1.0,False
+qwen2.5:0.5b,qwen,someone,Admiration,someone × Admiration,1,10,10,10,10,10,10,10,10.0, admiration,someone,1.0,False
+qwen2.5:0.5b,qwen,someone,Admiration,someone × Admiration,2,10,10,10,10,10,10,10,10.0,admiration,someone,1.0,False
+qwen2.5:0.5b,qwen,someone,Admiration,someone × Admiration,3,10,10,10,10,10,10,10,10.0,admirer,someone,1.0,False
+qwen2.5:0.5b,qwen,someone,Sympathy,someone × Sympathy,1,5,0,5,5,0,0,0,3.0,sympathy,someone,1.0,False
+qwen2.5:0.5b,qwen,someone,Sympathy,someone × Sympathy,2,0,1,1,0,0,1,1,0.45,someone,someone,1.0,False
+qwen2.5:0.5b,qwen,someone,Sympathy,someone × Sympathy,3,10,10,10,10,10,10,10,10.0,sympathy,someone,1.0,False
+qwen2.5:0.5b,qwen,someone,Envy,someone × Envy,1,0,0,0,0,0,0,0,0.0,n/a,someone,0.0,False
+qwen2.5:0.5b,qwen,someone,Envy,someone × Envy,2,0,0,0,0,0,0,0,0.0,not applicable in this case,"no combination can have a specific meaning, emotion, or sensation",1.0,False
+qwen2.5:0.5b,qwen,someone,Envy,someone × Envy,3,0,0,0,0,0,0,0,0.0,empty,None,1.0,False
+qwen2.5:0.5b,qwen,someone,Adoration,someone × Adoration,1,0,0,0,0,0,0,0,0.0,adoration,someone,1.0,False
+qwen2.5:0.5b,qwen,someone,Adoration,someone × Adoration,2,5,10,2,5,10,0,0,4.9,love,someone,1.0,False
+qwen2.5:0.5b,qwen,someone,Adoration,someone × Adoration,3,10,0,1,1,1,1,0,3.1,Adoration,"someone, a person",1.0,False
+qwen2.5:0.5b,qwen,people,Admiration,people × Admiration,1,10,10,10,10,10,10,10,10.0,admiration,people,1.0,False
+qwen2.5:0.5b,qwen,people,Admiration,people × Admiration,2,10,10,0,10,10,10,10,8.0,admiration,people,1.0,False
+qwen2.5:0.5b,qwen,people,Admiration,people × Admiration,3,10,10,10,10,10,10,10,10.0,admiration,people,1.0,False
+qwen2.5:0.5b,qwen,people,Sympathy,people × Sympathy,1,0,0,0,5,5,5,5,2.25,people,people,1.0,False
+qwen2.5:0.5b,qwen,people,Sympathy,people × Sympathy,2,0,0,0,0,0,0,0,0.0,sympathy,people,0.75,False
+qwen2.5:0.5b,qwen,people,Sympathy,people × Sympathy,3,0,0,0,0,0,0,0,0.0,sympathy,people,1.0,False
+qwen2.5:0.5b,qwen,people,Awe,people × Awe,1,5,5,5,5,5,5,5,5.0,awe,awe,1.0,False
+qwen2.5:0.5b,qwen,people,Awe,people × Awe,2,0,0,0,0,0,0,0,0.0,awe,people,0.0,False
+qwen2.5:0.5b,qwen,people,Awe,people × Awe,3,10,10,10,10,10,10,10,10.0,awe,awe,1.0,False
+qwen2.5:0.5b,qwen,something,Interest,something × Interest,1,8,1,8,1,1,1,0,4.1,interest,something,0.9,False
+qwen2.5:0.5b,qwen,something,Interest,something × Interest,2,10,10,10,10,10,10,10,10.0,interest,interest,1.0,False
+qwen2.5:0.5b,qwen,something,Interest,something × Interest,3,8,8,7,8,8,7,7,7.65,interest,something interest,1.0,False
+qwen2.5:0.5b,qwen,something,Craving,something × Craving,1,0,0,0,0,0,0,0,0.0,craving,something,1.0,False
+qwen2.5:0.5b,qwen,something,Craving,something × Craving,2,0,0,0,0,0,0,0,0.0,something,2-3 words — what this combination becomes,1.0,False
+qwen2.5:0.5b,qwen,something,Craving,something × Craving,3,0,0,0,0,0,0,0,0.0,,craving,1.0,False
+qwen2.5:0.5b,qwen,something,Awe,something × Awe,1,0,0,0,0,0,0,0,0.0,Awe,Awe,1.0,False
+qwen2.5:0.5b,qwen,something,Awe,something × Awe,2,0,0,0,0,0,0,0,0.0,Awe,Awe,0.0,False
+qwen2.5:0.5b,qwen,something,Awe,something × Awe,3,0,0,0,0,0,0,0,0.0,awe,awe,1.0,False
+qwen2.5:0.5b,qwen,body,Calmness,body × Calmness,1,5,5,5,5,5,5,5,5.0,calmness,body calmness,1.0,False
+qwen2.5:0.5b,qwen,body,Calmness,body × Calmness,2,5,0,5,7,5,3,0,4.35,calmness,body calmness,1.0,False
+qwen2.5:0.5b,qwen,body,Calmness,body × Calmness,3,10,10,10,10,10,10,10,10.0,calmness,calmness,1.0,False
+qwen2.5:0.5b,qwen,body,Excitement,body × Excitement,1,10,10,10,10,10,10,10,10.0,excitement,"body with excitement, emotion.",1.0,False
+qwen2.5:0.5b,qwen,body,Excitement,body × Excitement,2,10,10,10,10,10,10,10,10.0,excitement,excited body,1.0,False
+qwen2.5:0.5b,qwen,body,Excitement,body × Excitement,3,0,9,8,8,7,7,6,5.75,excitement,body excited feeling,0.9,False
+qwen2.5:0.5b,qwen,body,Fear,body × Fear,1,0,0,0,0,0,0,0,0.0,fear,body,0.0,False
+qwen2.5:0.5b,qwen,body,Fear,body × Fear,2,10,10,10,10,10,10,10,10.0,fear,fear,1.0,False
+qwen2.5:0.5b,qwen,body,Fear,body × Fear,3,9,8,9,8,8,8,9,8.5,Fear,body,1.0,False
+qwen2.5:0.5b,qwen,body,Satisfaction,body × Satisfaction,1,10,10,10,10,10,10,10,10.0,body,body,1.0,False
+qwen2.5:0.5b,qwen,body,Satisfaction,body × Satisfaction,2,10,10,10,10,10,10,10,10.0,satisfaction,body,1.0,False
+qwen2.5:0.5b,qwen,body,Satisfaction,body × Satisfaction,3,10,10,10,10,10,10,10,10.0,body,body,1.0,False
+qwen2.5:0.5b,qwen,good,Joy,good × Joy,1,10,10,10,10,10,10,10,10.0,good,good,1.0,False
+qwen2.5:0.5b,qwen,good,Joy,good × Joy,2,0,0,0,0,0,0,0,0.0,joy,good,1.0,False
+qwen2.5:0.5b,qwen,good,Joy,good × Joy,3,10,10,10,10,10,10,10,10.0,joy,joy,1.0,False
+qwen2.5:0.5b,qwen,good,Satisfaction,good × Satisfaction,1,10,10,10,10,10,10,10,10.0,satisfaction,good,1.0,False
+qwen2.5:0.5b,qwen,good,Satisfaction,good × Satisfaction,2,0,10,10,10,10,10,10,7.5,good,good,1.0,False
+qwen2.5:0.5b,qwen,good,Satisfaction,good × Satisfaction,3,10,10,10,10,10,10,10,10.0,good,good,1.0,False
+qwen2.5:0.5b,qwen,good,Admiration,good × Admiration,1,10,10,10,10,10,10,10,10.0,admiration,admiration,1.0,False
+qwen2.5:0.5b,qwen,good,Admiration,good × Admiration,2,9,10,9,9,9,8,7,8.9,good,good,0.9,False
+qwen2.5:0.5b,qwen,good,Admiration,good × Admiration,3,10,0,0,0,0,0,0,2.5,good,good,1.0,False
+qwen2.5:0.5b,qwen,good,Calmness,good × Calmness,1,0,0,0,0,0,0,0,0.0,good,good,1.0,False
+qwen2.5:0.5b,qwen,good,Calmness,good × Calmness,2,10,0,0,8,9,7,0,5.75,calmness,calmness,1.0,False
+qwen2.5:0.5b,qwen,good,Calmness,good × Calmness,3,10,10,10,10,10,10,10,10.0,calmness,calmness,1.0,False
+qwen2.5:0.5b,qwen,bad,Disgust,bad × Disgust,1,0,0,0,0,0,0,0,0.0,unrelated,bad,0.0,False
+qwen2.5:0.5b,qwen,bad,Disgust,bad × Disgust,2,0,0,0,0,0,0,0,0.0,Disgust,bad,0.0,False
+qwen2.5:0.5b,qwen,bad,Disgust,bad × Disgust,3,0,0,0,0,0,0,0,0.0,Disgust,bad,1.0,False
+qwen2.5:0.5b,qwen,bad,Sadness,bad × Sadness,1,10,10,5,5,5,5,5,6.75,sadness,sad,0.7,False
+qwen2.5:0.5b,qwen,bad,Sadness,bad × Sadness,2,5,1,0,2,5,0,0,2.4,bad,bad,1.0,False
+qwen2.5:0.5b,qwen,bad,Sadness,bad × Sadness,3,0,0,0,0,0,0,0,0.0,Sadness,bad,1.0,False
+qwen2.5:0.5b,qwen,bad,Fear,bad × Fear,1,5,0,5,3,5,3,5,4.0,feel,bad,1.0,False
+qwen2.5:0.5b,qwen,bad,Fear,bad × Fear,2,10,10,10,10,10,10,10,10.0,fear,fear,1.0,False
+qwen2.5:0.5b,qwen,bad,Fear,bad × Fear,3,0,0,0,0,0,0,0,0.0,bad,bad,1.0,False
+qwen2.5:0.5b,qwen,bad,Horror,bad × Horror,1,8,10,8,8,7,10,8,8.25,horror,horror,1.0,False
+qwen2.5:0.5b,qwen,bad,Horror,bad × Horror,2,0,0,0,0,0,0,0,0.0,bad,bad,0.9,False
+qwen2.5:0.5b,qwen,bad,Horror,bad × Horror,3,10,10,10,10,10,10,10,10.0,horror,"bad, horror",1.0,False
+qwen2.5:0.5b,qwen,think,Interest,think × Interest,1,0,0,5,0,0,5,0,1.5,think,think,1.0,False
+qwen2.5:0.5b,qwen,think,Interest,think × Interest,2,0,5,5,5,5,5,5,3.75,think,interrogate,1.0,False
+qwen2.5:0.5b,qwen,think,Interest,think × Interest,3,0,0,0,0,0,0,0,0.0,think,think,1.0,False
+qwen2.5:0.5b,qwen,think,Confusion,think × Confusion,1,0,0,0,0,0,0,0,0.0,thinking,think,1.0,False
+qwen2.5:0.5b,qwen,think,Confusion,think × Confusion,2,10,0,10,0,0,0,0,4.5,think,2-3 words — what this combination becomes,0.0,False
+qwen2.5:0.5b,qwen,think,Confusion,think × Confusion,3,8,8,9,9,8,8,8,8.35,embrace and grow,embrace and grow,1.0,False
+qwen2.5:0.5b,qwen,think,Awe,think × Awe,1,0,0,0,0,0,0,0,0.0,Awe,think,0.0,False
+qwen2.5:0.5b,qwen,think,Awe,think × Awe,2,5,1,0,5,0,0,0,2.1,Awe,think,1.0,False
+qwen2.5:0.5b,qwen,think,Awe,think × Awe,3,10,0,0,0,0,0,0,2.5,awe,awe,1.0,False
+qwen2.5:0.5b,qwen,know,Satisfaction,know × Satisfaction,1,10,10,10,10,10,10,10,10.0,happy,know,1.0,False
+qwen2.5:0.5b,qwen,know,Satisfaction,know × Satisfaction,2,0,0,0,0,0,0,0,0.0,know,know,1.0,False
+qwen2.5:0.5b,qwen,know,Satisfaction,know × Satisfaction,3,5,5,5,5,5,5,5,5.0,know,know,1.0,False
+qwen2.5:0.5b,qwen,know,Calmness,know × Calmness,1,0,0,0,0,0,0,0,0.0,know,know,1.0,False
+qwen2.5:0.5b,qwen,know,Calmness,know × Calmness,2,0,0,0,0,0,0,0,0.0,Know,Know,1.0,False
+qwen2.5:0.5b,qwen,know,Calmness,know × Calmness,3,5,2,5,5,5,5,0,4.45,calm,know,1.0,False
+qwen2.5:0.5b,qwen,know,Anxiety,know × Anxiety,1,0,0,0,0,0,0,0,0.0,know,know,1.0,False
+qwen2.5:0.5b,qwen,know,Anxiety,know × Anxiety,2,0,0,0,0,0,0,0,0.0,anxiety,know,1.0,False
+qwen2.5:0.5b,qwen,know,Anxiety,know × Anxiety,3,10,0,0,0,0,0,0,2.5,anxiety,know,1.0,False
+qwen2.5:0.5b,qwen,want,Craving,want × Craving,1,0,0,0,0,0,0,0,0.0,want,want,1.0,False
+qwen2.5:0.5b,qwen,want,Craving,want × Craving,2,10,10,10,10,10,10,10,10.0,want,want + want,1.0,False
+qwen2.5:0.5b,qwen,want,Craving,want × Craving,3,1,1,1,1,1,1,1,1.0,need,want,1.0,False
+qwen2.5:0.5b,qwen,want,Excitement,want × Excitement,1,5,5,5,5,5,5,5,5.0,want,want,1.0,False
+qwen2.5:0.5b,qwen,want,Excitement,want × Excitement,2,7,7,0,0,0,7,0,3.15,"feel excitement, wants something new",want,1.0,False
+qwen2.5:0.5b,qwen,want,Excitement,want × Excitement,3,5,5,5,5,5,5,5,5.0,love,love,1.0,False
+qwen2.5:0.5b,qwen,want,Anxiety,want × Anxiety,1,5,5,5,5,5,5,5,5.0,want,want,1.0,False
+qwen2.5:0.5b,qwen,want,Anxiety,want × Anxiety,2,0,0,0,0,0,0,0,0.0,want,want,1.0,False
+qwen2.5:0.5b,qwen,want,Anxiety,want × Anxiety,3,10,10,10,10,10,10,10,10.0,anxiety,want anxiety,1.0,False
+qwen2.5:0.5b,qwen,feel,Joy,feel × Joy,1,8,9,8,7,8,8,7,7.9,joy,feel joy,1.0,False
+qwen2.5:0.5b,qwen,feel,Joy,feel × Joy,2,0,0,0,0,0,0,0,0.0,Joy,joy,1.0,False
+qwen2.5:0.5b,qwen,feel,Joy,feel × Joy,3,0,0,0,0,0,0,0,0.0,joy,joy,1.0,False
+qwen2.5:0.5b,qwen,feel,Sadness,feel × Sadness,1,0,0,0,0,0,0,0,0.0,sadness,feel,1.0,False
+qwen2.5:0.5b,qwen,feel,Sadness,feel × Sadness,2,5,3,0,0,0,0,0,1.55,sad,feel,1.0,False
+qwen2.5:0.5b,qwen,feel,Sadness,feel × Sadness,3,0,1,1,0,1,0,0,0.45,sadness,sadness,1.0,False
+qwen2.5:0.5b,qwen,feel,Fear,feel × Fear,1,0,0,0,0,0,0,0,0.0,feeling,feeling,1.0,False
+qwen2.5:0.5b,qwen,feel,Fear,feel × Fear,2,0,0,0,0,0,0,0,0.0,fear,fear,1.0,False
+qwen2.5:0.5b,qwen,feel,Fear,feel × Fear,3,0,0,0,0,0,0,0,0.0,Feel,feel,0.9,False
+qwen2.5:0.5b,qwen,feel,Awe,feel × Awe,1,5,5,5,5,5,5,5,5.0,a feeling,"felt, sense of awe",0.9,False
+qwen2.5:0.5b,qwen,feel,Awe,feel × Awe,2,0,0,1,0,0,0,1,0.25,awe,awe,1.0,False
+qwen2.5:0.5b,qwen,feel,Awe,feel × Awe,3,10,0,0,0,0,0,0,2.5,awe,awe,1.0,False
+qwen2.5:0.5b,qwen,feel,Nostalgia,feel × Nostalgia,1,0,0,0,0,0,0,0,0.0,unrelated,feel,0.0,False
+qwen2.5:0.5b,qwen,feel,Nostalgia,feel × Nostalgia,2,10,5,5,5,5,0,5,5.75,nostalgia,feel nostalgic,0.9,False
+qwen2.5:0.5b,qwen,feel,Nostalgia,feel × Nostalgia,3,8,8,8,7,7,7,7,7.55,nostalgia,feel the nostalgia,0.8,False
+qwen2.5:0.5b,qwen,see,Aesthetic Appreciation,see × Aesthetic Appreciation,1,10,10,10,10,10,10,10,10.0,Aesthetics,see,1.0,False
+qwen2.5:0.5b,qwen,see,Aesthetic Appreciation,see × Aesthetic Appreciation,2,10,10,10,10,10,10,10,10.0,see,see,1.0,False
+qwen2.5:0.5b,qwen,see,Aesthetic Appreciation,see × Aesthetic Appreciation,3,10,0,0,8,10,0,0,5.2,see,see,1.0,False
+qwen2.5:0.5b,qwen,see,Interest,see × Interest,1,5,3,2,5,4,2,0,3.5,be seen,be seen,1.0,False
+qwen2.5:0.5b,qwen,see,Interest,see × Interest,2,0,0,0,0,0,0,0,0.0,interest,see,1.0,False
+qwen2.5:0.5b,qwen,see,Interest,see × Interest,3,0,0,0,0,0,0,0,0.0,see,see,0.0,False
+qwen2.5:0.5b,qwen,see,Awe,see × Awe,1,10,10,10,10,10,10,10,10.0,awe,awake,1.0,False
+qwen2.5:0.5b,qwen,see,Awe,see × Awe,2,10,10,10,10,10,10,10,10.0,see,speak of seeing,1.0,False
+qwen2.5:0.5b,qwen,see,Awe,see × Awe,3,10,10,10,10,10,10,10,10.0,a sense of awe,awe,1.0,False
+qwen2.5:0.5b,qwen,see,Fear,see × Fear,1,0,0,0,0,0,0,0,0.0,fear,see,1.0,False
+qwen2.5:0.5b,qwen,see,Fear,see × Fear,2,0,0,0,0,0,0,0,0.0,Fear,"fear, fear-inducing, fear-inducing-concept",0.9,False
+qwen2.5:0.5b,qwen,see,Fear,see × Fear,3,5,5,0,5,0,0,0,2.5,see,see,1.0,False
+qwen2.5:0.5b,qwen,hear,Aesthetic Appreciation,hear × Aesthetic Appreciation,1,8,9,8,6,7,6,4,7.25,hear,hear,1.0,False
+qwen2.5:0.5b,qwen,hear,Aesthetic Appreciation,hear × Aesthetic Appreciation,2,10,10,10,10,10,10,10,10.0,hear,1-2 words — what this combination becomes,1.0,False
+qwen2.5:0.5b,qwen,hear,Aesthetic Appreciation,hear × Aesthetic Appreciation,3,0,0,0,0,0,0,0,0.0,audience,the concept of hearing with a slight variation or emphasis,0.5,False
+qwen2.5:0.5b,qwen,hear,Interest,hear × Interest,1,10,10,0,10,0,0,0,5.0,hear,hear,0.0,False
+qwen2.5:0.5b,qwen,hear,Interest,hear × Interest,2,9,7,5,7,8,6,7,7.15,listen,listen,1.0,False
+qwen2.5:0.5b,qwen,hear,Interest,hear × Interest,3,0,0,0,0,0,0,0,0.0,hear,hear,1.0,False
+qwen2.5:0.5b,qwen,hear,Awe,hear × Awe,1,0,0,0,0,0,0,0,0.0,hear,hear,1.0,False
+qwen2.5:0.5b,qwen,hear,Awe,hear × Awe,2,0,0,0,0,0,0,0,0.0,hear,hear,0.0,False
+qwen2.5:0.5b,qwen,hear,Awe,hear × Awe,3,1,2,1,3,3,4,2,2.05,hear,hear words,0.9,False
+qwen2.5:0.5b,qwen,hear,Calmness,hear × Calmness,1,10,10,10,10,10,10,10,10.0,hear,hear,1.0,False
+qwen2.5:0.5b,qwen,hear,Calmness,hear × Calmness,2,10,10,10,10,10,10,10,10.0,calmness,calmness,1.0,False
+qwen2.5:0.5b,qwen,hear,Calmness,hear × Calmness,3,8,10,1,6,8,8,8,6.5,calmness,hear calmness,0.9,False
+qwen2.5:0.5b,qwen,do,Excitement,do × Excitement,1,10,10,10,10,10,10,10,10.0,do,do,1.0,False
+qwen2.5:0.5b,qwen,do,Excitement,do × Excitement,2,10,0,5,0,0,1,0,3.6,excitement,do,1.0,False
+qwen2.5:0.5b,qwen,do,Excitement,do × Excitement,3,10,10,10,10,10,10,10,10.0,excitement,excitement,1.0,False
+qwen2.5:0.5b,qwen,do,Triumph,do × Triumph,1,0,0,0,5,0,0,0,0.75,Do,do,1.0,False
+qwen2.5:0.5b,qwen,do,Triumph,do × Triumph,2,0,0,0,0,0,0,0,0.0,do,do,0.5,False
+qwen2.5:0.5b,qwen,do,Triumph,do × Triumph,3,9,8,7,6,5,4,3,6.65,emotion,do,1.0,False
+qwen2.5:0.5b,qwen,do,Anxiety,do × Anxiety,1,0,0,0,0,0,0,0,0.0,Anxiety,anxiety,1.0,False
+qwen2.5:0.5b,qwen,do,Anxiety,do × Anxiety,2,10,10,10,10,10,10,10,10.0,anxiety,anxiety,1.0,False
+qwen2.5:0.5b,qwen,do,Anxiety,do × Anxiety,3,0,0,0,0,0,0,0,0.0,do,do (verb),0.0,False
+qwen2.5:0.5b,qwen,happen,Awe,happen × Awe,1,10,10,10,10,10,10,10,10.0,"affect, experience, emotion, feeling","happening, emotional experience, feeling, sensation",1.0,False
+qwen2.5:0.5b,qwen,happen,Awe,happen × Awe,2,10,0,0,0,0,0,0,2.5,awake,awareness of happen,1.0,False
+qwen2.5:0.5b,qwen,happen,Awe,happen × Awe,3,0,0,0,0,0,0,0,0.0,Awe,Awe,1.0,False
+qwen2.5:0.5b,qwen,happen,Fear,happen × Fear,1,0,0,0,0,0,0,0,0.0,Fear,fear,0.0,False
+qwen2.5:0.5b,qwen,happen,Fear,happen × Fear,2,10,10,10,10,10,10,10,10.0,fear,fear,1.0,False
+qwen2.5:0.5b,qwen,happen,Fear,happen × Fear,3,0,0,0,0,0,0,0,0.0,fear,fear,0.0,False
+qwen2.5:0.5b,qwen,happen,Surprise,happen × Surprise,1,5,5,5,5,5,5,5,5.0,surprise,happens,1.0,False
+qwen2.5:0.5b,qwen,happen,Surprise,happen × Surprise,2,0,0,0,0,0,0,0,0.0,nothing,nothing,1.0,False
+qwen2.5:0.5b,qwen,happen,Surprise,happen × Surprise,3,9,8,7,10,10,8,10,8.75,surprise,surprised emotion,1.0,False
+qwen2.5:0.5b,qwen,happen,Interest,happen × Interest,1,0,0,0,0,0,0,0,0.0,Interest,Interest,1.0,False
+qwen2.5:0.5b,qwen,happen,Interest,happen × Interest,2,10,10,10,10,10,10,10,10.0,happy,happy,1.0,False
+qwen2.5:0.5b,qwen,happen,Interest,happen × Interest,3,0,0,0,0,0,0,0,0.0,None,A,0.0,False
+qwen2.5:0.5b,qwen,move,Excitement,move × Excitement,1,0,10,10,10,10,10,10,7.5,move,move,1.0,False
+qwen2.5:0.5b,qwen,move,Excitement,move × Excitement,2,0,9,8,7,6,5,4,5.15,move,move,0.9,False
+qwen2.5:0.5b,qwen,move,Excitement,move × Excitement,3,5,6,8,7,5,6,4,6.05,move,move,1.0,False
+qwen2.5:0.5b,qwen,move,Awe,move × Awe,1,0,0,0,0,0,0,0,0.0,move,move,0.0,False
+qwen2.5:0.5b,qwen,move,Awe,move × Awe,2,10,0,0,0,0,0,0,2.5,move,move,1.0,False
+qwen2.5:0.5b,qwen,move,Awe,move × Awe,3,0,0,0,0,0,0,0,0.0,awe,move,1.0,False
+qwen2.5:0.5b,qwen,move,Fear,move × Fear,1,0,0,0,0,0,0,0,0.0,,move,1.0,False
+qwen2.5:0.5b,qwen,move,Fear,move × Fear,2,10,0,0,0,0,0,0,2.5,move,move,1.0,False
+qwen2.5:0.5b,qwen,move,Fear,move × Fear,3,0,0,0,0,0,0,0,0.0,Fear,move,0.0,False
+qwen2.5:0.5b,qwen,move,Interest,move × Interest,1,8,8,8,8,8,8,8,8.0,move,move,1.0,False
+qwen2.5:0.5b,qwen,move,Interest,move × Interest,2,8,8,8,8,8,8,8,8.0,move,move,1.0,False
+qwen2.5:0.5b,qwen,move,Interest,move × Interest,3,10,10,10,10,10,10,10,10.0,move,move,1.0,False
+qwen2.5:0.5b,qwen,live,Joy,live × Joy,1,0,0,0,0,0,0,0,0.0,joy,joy,1.0,False
+qwen2.5:0.5b,qwen,live,Joy,live × Joy,2,10,0,0,0,0,0,0,2.5,joy,live,1.0,False
+qwen2.5:0.5b,qwen,live,Joy,live × Joy,3,10,10,10,10,10,10,10,10.0,live,live,1.0,False
+qwen2.5:0.5b,qwen,live,Excitement,live × Excitement,1,10,10,10,10,10,10,10,10.0,live,2-3 words — what this combination becomes,1.0,False
+qwen2.5:0.5b,qwen,live,Excitement,live × Excitement,2,0,9,8,0,8,9,1,4.65,live,life,0.9,False
+qwen2.5:0.5b,qwen,live,Excitement,live × Excitement,3,0,0,5,5,2,0,0,2.05,live,life process,1.0,False
+qwen2.5:0.5b,qwen,live,Awe,live × Awe,1,10,10,10,10,10,10,10,10.0,live,live,1.0,False
+qwen2.5:0.5b,qwen,live,Awe,live × Awe,2,8,6,7,5,9,1,6,6.5,live,living,0.9,False
+qwen2.5:0.5b,qwen,live,Awe,live × Awe,3,0,0,0,0,0,0,0,0.0,Awe,Awe,1.0,False
+qwen2.5:0.5b,qwen,live,Fear,live × Fear,1,0,0,0,0,0,0,0,0.0,Fear,live fear,0.0,False
+qwen2.5:0.5b,qwen,live,Fear,live × Fear,2,10,10,10,10,10,10,10,10.0,fear,live fear,1.0,False
+qwen2.5:0.5b,qwen,live,Fear,live × Fear,3,0,0,0,0,0,0,0,0.0,fear,live fear,0.0,False
+qwen2.5:0.5b,qwen,die,Horror,die × Horror,1,10,10,10,10,10,10,10,10.0,die,die,1.0,False
+qwen2.5:0.5b,qwen,die,Horror,die × Horror,2,10,10,10,10,10,10,10,10.0,die,die,1.0,False
+qwen2.5:0.5b,qwen,die,Horror,die × Horror,3,10,10,10,10,10,10,10,10.0,die,die,1.0,False
+qwen2.5:0.5b,qwen,die,Fear,die × Fear,1,8,8,7,7,5,5,5,6.75,die,"die, the fear of a dead end, the dread of a failed attempt, the sense of impending doom",0.9,False
+qwen2.5:0.5b,qwen,die,Fear,die × Fear,2,10,8,10,7,9,9,5,8.85,die,die,0.9,False
+qwen2.5:0.5b,qwen,die,Fear,die × Fear,3,0,0,0,0,0,0,0,0.0,die,die,1.0,False
+qwen2.5:0.5b,qwen,die,Sadness,die × Sadness,1,10,10,10,10,10,10,10,10.0,die,2-3 words — what this combination becomes,1.0,False
+qwen2.5:0.5b,qwen,die,Sadness,die × Sadness,2,10,9,0,9,9,0,0,6.1,sadness,die,1.0,False
+qwen2.5:0.5b,qwen,die,Sadness,die × Sadness,3,0,0,0,0,0,0,0,0.0,sadness,die,1.0,False
+qwen2.5:0.5b,qwen,die,Awe,die × Awe,1,10,10,10,10,10,10,10,10.0,die,die,1.0,False
+qwen2.5:0.5b,qwen,die,Awe,die × Awe,2,0,0,0,0,0,0,0,0.0,die,die,1.0,False
+qwen2.5:0.5b,qwen,die,Awe,die × Awe,3,0,0,0,0,0,0,0,0.0,none,die,0.0,False
+qwen2.5:0.5b,qwen,die,Nostalgia,die × Nostalgia,1,0,0,0,0,0,0,0,0.0,die,die,1.0,False
+qwen2.5:0.5b,qwen,die,Nostalgia,die × Nostalgia,2,8,4,5,9,7,3,2,6.2,die,lose,0.9,False
+qwen2.5:0.5b,qwen,die,Nostalgia,die × Nostalgia,3,10,10,10,10,10,10,10,10.0,die,die,1.0,False
+qwen2.5:0.5b,qwen,time,Nostalgia,time × Nostalgia,1,10,0,0,10,10,10,0,6.5,nostalgia,nostalgic memory,1.0,False
+qwen2.5:0.5b,qwen,time,Nostalgia,time × Nostalgia,2,0,0,0,0,0,0,0,0.0,nostalgia,nostalgia,0.0,False
+qwen2.5:0.5b,qwen,time,Nostalgia,time × Nostalgia,3,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,,0.0,True
+qwen2.5:0.5b,qwen,time,Anxiety,time × Anxiety,1,10,10,10,10,10,10,10,10.0,anxiety,anxiety,1.0,False
+qwen2.5:0.5b,qwen,time,Anxiety,time × Anxiety,2,0,0,0,0,0,0,0,0.0,,,1.0,False
+qwen2.5:0.5b,qwen,time,Anxiety,time × Anxiety,3,9,8,7,8,8,8,7,8.0,anxiety,anxiety,1.0,False
+qwen2.5:0.5b,qwen,time,Awe,time × Awe,1,0,0,0,0,0,0,0,0.0,empty,no meaningful combination,0.0,False
+qwen2.5:0.5b,qwen,time,Awe,time × Awe,2,0,0,0,0,0,0,0,0.0,,time,0.0,False
+qwen2.5:0.5b,qwen,time,Awe,time × Awe,3,10,10,10,10,10,10,10,10.0,awe,Awe,1.0,False
+qwen2.5:0.5b,qwen,time,Interest,time × Interest,1,5,5,5,5,5,5,5,5.0,interest,time,1.0,False
+qwen2.5:0.5b,qwen,time,Interest,time × Interest,2,10,5,5,10,10,10,10,8.5,balance,balance between time and interest,1.0,False
+qwen2.5:0.5b,qwen,time,Interest,time × Interest,3,10,10,10,10,10,10,10,10.0,interest,time interest,1.0,False
+qwen2.5:0.5b,qwen,now,Anxiety,now × Anxiety,1,10,0,0,0,0,0,0,2.5,no emotion,anxiety,1.0,False
+qwen2.5:0.5b,qwen,now,Anxiety,now × Anxiety,2,0,0,0,0,0,0,0,0.0,anxiety,anxiety,0.0,False
+qwen2.5:0.5b,qwen,now,Anxiety,now × Anxiety,3,10,10,10,10,10,10,10,10.0,anxiety,anxiety,1.0,False
+qwen2.5:0.5b,qwen,now,Excitement,now × Excitement,1,10,10,10,10,10,10,10,10.0,excited,now,1.0,False
+qwen2.5:0.5b,qwen,now,Excitement,now × Excitement,2,10,10,10,10,10,10,10,10.0,excitement,now,1.0,False
+qwen2.5:0.5b,qwen,now,Excitement,now × Excitement,3,5,10,10,5,5,5,10,6.75,excited,now excited,1.0,False
+qwen2.5:0.5b,qwen,now,Calmness,now × Calmness,1,0,0,0,0,0,0,0,0.0,calmness,now,1.0,False
+qwen2.5:0.5b,qwen,now,Calmness,now × Calmness,2,10,0,0,0,0,0,0,2.5,no dominant sensation,now,1.0,False
+qwen2.5:0.5b,qwen,now,Calmness,now × Calmness,3,5,5,5,5,5,5,5,5.0,calmness,now calmness,1.0,False
+qwen2.5:0.5b,qwen,before,Nostalgia,before × Nostalgia,1,0,0,0,0,0,0,0,0.0,,before,0.0,False
+qwen2.5:0.5b,qwen,before,Nostalgia,before × Nostalgia,2,9,8,8,8,8,8,6,8.15,nostalgia,before,1.0,False
+qwen2.5:0.5b,qwen,before,Nostalgia,before × Nostalgia,3,0,0,0,0,0,0,0,0.0,Nostalgia,before-then,0.8,False
+qwen2.5:0.5b,qwen,before,Sadness,before × Sadness,1,10,0,8,0,0,0,7,4.45,sadness,before-then,1.0,False
+qwen2.5:0.5b,qwen,before,Sadness,before × Sadness,2,9,7,4,9,7,5,4,6.85,sadness,before-sadness,1.0,False
+qwen2.5:0.5b,qwen,before,Sadness,before × Sadness,3,10,10,10,10,10,10,10,10.0,sadness,sadness,1.0,False
+qwen2.5:0.5b,qwen,before,Pride,before × Pride,1,10,5,0,10,5,0,0,5.25,Pride,before + pride,1.0,False
+qwen2.5:0.5b,qwen,before,Pride,before × Pride,2,0,0,0,0,0,0,0,0.0,before,before,0.0,False
+qwen2.5:0.5b,qwen,before,Pride,before × Pride,3,0,0,5,0,0,0,0,1.0,pride,pride,1.0,False
+qwen2.5:0.5b,qwen,after,Relief,after × Relief,1,5,3,5,6,5,3,5,4.75,relief,after relief,1.0,False
+qwen2.5:0.5b,qwen,after,Relief,after × Relief,2,10,10,10,10,10,10,10,10.0,relief,after relief,1.0,False
+qwen2.5:0.5b,qwen,after,Relief,after × Relief,3,0,0,0,0,0,0,0,0.0,relief,after relief,1.0,False
+qwen2.5:0.5b,qwen,after,Satisfaction,after × Satisfaction,1,0,0,0,0,0,0,0,0.0,satisfaction,after-satisfaction,1.0,False
+qwen2.5:0.5b,qwen,after,Satisfaction,after × Satisfaction,2,9,10,10,9,10,8,10,9.4,after,after — how it relates to the other elements,0.9,False
+qwen2.5:0.5b,qwen,after,Satisfaction,after × Satisfaction,3,10,10,10,10,10,10,10,10.0,satisfaction,satisfaction,1.0,False
+qwen2.5:0.5b,qwen,after,Nostalgia,after × Nostalgia,1,0,0,0,0,0,0,0,0.0,Nostalgia,Nostalgia,1.0,False
+qwen2.5:0.5b,qwen,after,Nostalgia,after × Nostalgia,2,8,8,8,8,8,8,8,8.0,nostalgia,after,1.0,False
+qwen2.5:0.5b,qwen,after,Nostalgia,after × Nostalgia,3,0,0,0,0,0,0,0,0.0,narrative,after,1.0,False
+qwen2.5:0.5b,qwen,moment,Awe,moment × Awe,1,10,10,0,10,10,10,10,8.0,Awe,Awe,1.0,False
+qwen2.5:0.5b,qwen,moment,Awe,moment × Awe,2,0,0,0,0,0,0,0,0.0,,,1.0,False
+qwen2.5:0.5b,qwen,moment,Awe,moment × Awe,3,0,0,0,0,0,0,0,0.0,Awe,moment,1.0,False
+qwen2.5:0.5b,qwen,moment,Excitement,moment × Excitement,1,10,10,10,10,10,10,10,10.0,moment,moment,1.0,False
+qwen2.5:0.5b,qwen,moment,Excitement,moment × Excitement,2,0,0,0,0,0,0,0,0.0,no dominant sensation,moment,0.0,False
+qwen2.5:0.5b,qwen,moment,Excitement,moment × Excitement,3,10,10,0,0,0,0,0,3.5,excitement,excitement,0.9,False
+qwen2.5:0.5b,qwen,moment,Fear,moment × Fear,1,0,0,10,0,0,0,1,2.05,moment,moment,1.0,False
+qwen2.5:0.5b,qwen,moment,Fear,moment × Fear,2,0,0,0,0,0,0,0,0.0,fear,fear,1.0,False
+qwen2.5:0.5b,qwen,moment,Fear,moment × Fear,3,10,10,10,10,10,10,10,10.0,fear,moment fear,1.0,False
+qwen2.5:0.5b,qwen,moment,Interest,moment × Interest,1,5,3,5,5,3,3,5,4.3,moment,moment,1.0,False
+qwen2.5:0.5b,qwen,moment,Interest,moment × Interest,2,0,0,0,0,0,0,0,0.0,interest,moment,1.0,False
+qwen2.5:0.5b,qwen,moment,Interest,moment × Interest,3,9,0,1,9,9,0,1,5.2,moment,moment,1.0,False
+qwen2.5:0.5b,qwen,place,Nostalgia,place × Nostalgia,1,0,0,0,0,0,0,0,0.0,not applicable,na,0.0,False
+qwen2.5:0.5b,qwen,place,Nostalgia,place × Nostalgia,2,5,5,5,5,5,5,5,5.0,nostalgia,place,1.0,False
+qwen2.5:0.5b,qwen,place,Nostalgia,place × Nostalgia,3,9,0,7,8,9,8,8,7.4,place,place,1.0,False
+qwen2.5:0.5b,qwen,place,Awe,place × Awe,1,10,10,10,10,10,10,10,10.0,awe,awe,1.0,False
+qwen2.5:0.5b,qwen,place,Awe,place × Awe,2,0,0,0,0,0,0,0,0.0,awe,place,1.0,False
+qwen2.5:0.5b,qwen,place,Awe,place × Awe,3,10,10,10,10,10,10,10,10.0,awe,awe,1.0,False
+qwen2.5:0.5b,qwen,place,Anxiety,place × Anxiety,1,0,0,0,0,0,0,0,0.0,anxiety,place anxiety,0.0,False
+qwen2.5:0.5b,qwen,place,Anxiety,place × Anxiety,2,10,5,3,7,8,2,0,6.05,place,place,1.0,False
+qwen2.5:0.5b,qwen,place,Anxiety,place × Anxiety,3,10,10,10,10,10,10,10,10.0,anxiety,anxiety,1.0,False
+qwen2.5:0.5b,qwen,place,Curiosity,place × Curiosity,1,8,8,8,8,8,8,8,8.0,place,place,1.0,False
+qwen2.5:0.5b,qwen,place,Curiosity,place × Curiosity,2,0,0,0,0,0,0,0,0.0,curiosity,place,1.0,False
+qwen2.5:0.5b,qwen,place,Curiosity,place × Curiosity,3,10,10,10,10,10,10,10,10.0,curiosity,curiosity,1.0,False
+qwen2.5:0.5b,qwen,here,Calmness,here × Calmness,1,0,0,0,0,0,0,0,0.0,Calmness,calmness,1.0,False
+qwen2.5:0.5b,qwen,here,Calmness,here × Calmness,2,5,1,4,5,1,0,0,3.05,calmness,calmness,1.0,False
+qwen2.5:0.5b,qwen,here,Calmness,here × Calmness,3,0,0,0,0,0,0,0,0.0,Calmness,calmness,1.0,False
+qwen2.5:0.5b,qwen,here,Nostalgia,here × Nostalgia,1,10,10,10,10,10,10,10,10.0,nostalgia,nostalgia,1.0,False
+qwen2.5:0.5b,qwen,here,Nostalgia,here × Nostalgia,2,10,8,10,10,10,10,10,9.8,nostalgia,nostalgic feeling,1.0,False
+qwen2.5:0.5b,qwen,here,Nostalgia,here × Nostalgia,3,0,0,0,0,0,0,0,0.0,,nostalgia,1.0,False
+qwen2.5:0.5b,qwen,here,Anxiety,here × Anxiety,1,10,10,10,10,10,10,10,10.0,anxiety,anxiety,1.0,False
+qwen2.5:0.5b,qwen,here,Anxiety,here × Anxiety,2,0,0,0,0,0,0,0,0.0,anxiety,anxiety,0.0,False
+qwen2.5:0.5b,qwen,here,Anxiety,here × Anxiety,3,0,0,0,0,0,0,0,0.0,anxiety,anxiety,1.0,False
+qwen2.5:0.5b,qwen,far,Nostalgia,far × Nostalgia,1,8,4,0,3,3,0,1,3.35,far,far,0.8,False
+qwen2.5:0.5b,qwen,far,Nostalgia,far × Nostalgia,2,10,8,7,8,6,6,7,7.75,far,far,1.0,False
+qwen2.5:0.5b,qwen,far,Nostalgia,far × Nostalgia,3,0,0,0,0,0,0,0,0.0,,far,1.0,False
+qwen2.5:0.5b,qwen,far,Awe,far × Awe,1,8,8,9,8,9,8,9,8.4,far,far,1.0,False
+qwen2.5:0.5b,qwen,far,Awe,far × Awe,2,0,0,0,0,0,0,0,0.0,far,far,1.0,False
+qwen2.5:0.5b,qwen,far,Awe,far × Awe,3,0,0,0,0,0,0,0,0.0,far,far,1.0,False
+qwen2.5:0.5b,qwen,far,Anxiety,far × Anxiety,1,10,10,10,10,10,10,10,10.0,anxiety,anxiety and far,1.0,False
+qwen2.5:0.5b,qwen,far,Anxiety,far × Anxiety,2,0,0,0,0,0,0,0,0.0,far,far,0.0,False
+qwen2.5:0.5b,qwen,far,Anxiety,far × Anxiety,3,9,6,8,8,7,6,6,7.6,far,far,1.0,False
+qwen2.5:0.5b,qwen,near,Calmness,near × Calmness,1,2,0,0,0,0,0,0,0.5,calmness,calmness,0.8,False
+qwen2.5:0.5b,qwen,near,Calmness,near × Calmness,2,0,0,0,0,0,0,0,0.0,,near calmness,0.0,False
+qwen2.5:0.5b,qwen,near,Calmness,near × Calmness,3,0,0,0,0,0,0,0,0.0,Near,near,1.0,False
+qwen2.5:0.5b,qwen,near,Anxiety,near × Anxiety,1,0,0,0,0,0,0,0,0.0,anxiety,anxiety,0.5,False
+qwen2.5:0.5b,qwen,near,Anxiety,near × Anxiety,2,10,10,10,10,10,10,10,10.0,near,near,1.0,False
+qwen2.5:0.5b,qwen,near,Anxiety,near × Anxiety,3,0,0,0,0,0,0,0,0.0,anxiety,near-anxiety,0.7,False
+qwen2.5:0.5b,qwen,near,Romance,near × Romance,1,5,5,5,5,5,5,5,5.0,romantic,romantic,1.0,False
+qwen2.5:0.5b,qwen,near,Romance,near × Romance,2,0,0,0,0,0,0,0,0.0,Romance,near,1.0,False
+qwen2.5:0.5b,qwen,near,Romance,near × Romance,3,0,0,0,0,0,0,0,0.0,,"near, romance",0.5,False
+qwen2.5:0.5b,qwen,inside,Comfort,inside × Comfort,1,5,3,5,3,3,3,2,3.85,comfort,comfort,1.0,False
+qwen2.5:0.5b,qwen,inside,Comfort,inside × Comfort,2,0,0,0,0,0,0,0,0.0,,inside,0.0,False
+qwen2.5:0.5b,qwen,inside,Comfort,inside × Comfort,3,10,10,10,10,10,10,10,10.0,comfort,comfort,1.0,False
+qwen2.5:0.5b,qwen,inside,Curiosity,inside × Curiosity,1,0,0,0,0,0,0,0,0.0,Curiosity,Curiosity,1.0,False
+qwen2.5:0.5b,qwen,inside,Curiosity,inside × Curiosity,2,10,10,10,10,10,10,10,10.0,curiosity,inside,1.0,False
+qwen2.5:0.5b,qwen,inside,Curiosity,inside × Curiosity,3,0,0,0,0,0,0,0,0.0,curiosity,curiosity,1.0,False
+qwen2.5:0.5b,qwen,inside,Fear,inside × Fear,1,10,10,10,10,10,10,10,10.0,inside,inside,1.0,False
+qwen2.5:0.5b,qwen,inside,Fear,inside × Fear,2,9,9,8,8,6,8,8,8.05,escape,inside feeling,1.0,False
+qwen2.5:0.5b,qwen,inside,Fear,inside × Fear,3,0,0,0,0,0,0,0,0.0,Fear,Fear,1.0,False
+qwen2.5:0.5b,qwen,not,Disgust,not × Disgust,1,10,10,10,10,10,10,0,9.5,not,disgusted not,1.0,False
+qwen2.5:0.5b,qwen,not,Disgust,not × Disgust,2,10,0,0,0,0,0,0,2.5,disgust,not,0.0,False
+qwen2.5:0.5b,qwen,not,Disgust,not × Disgust,3,0,0,0,0,0,0,0,0.0,disgust,not,0.0,False
+qwen2.5:0.5b,qwen,not,Fear,not × Fear,1,10,0,0,10,10,0,0,5.5,Fear,fear,1.0,False
+qwen2.5:0.5b,qwen,not,Fear,not × Fear,2,0,0,0,0,0,0,0,0.0,Fear,not,0.0,False
+qwen2.5:0.5b,qwen,not,Fear,not × Fear,3,0,0,0,0,0,0,0,0.0,not,not,0.0,False
+qwen2.5:0.5b,qwen,not,Anxiety,not × Anxiety,1,10,0,0,10,0,0,0,4.0,not,not,1.0,False
+qwen2.5:0.5b,qwen,not,Anxiety,not × Anxiety,2,0,0,0,0,0,0,0,0.0,not,not,0.0,False
+qwen2.5:0.5b,qwen,not,Anxiety,not × Anxiety,3,0,0,0,0,0,0,0,0.0,anxiety,anxiety,1.0,False
+qwen2.5:0.5b,qwen,not,Calmness,not × Calmness,1,5,5,5,5,5,5,5,5.0,calm,calm,1.0,False
+qwen2.5:0.5b,qwen,not,Calmness,not × Calmness,2,0,0,0,0,0,0,0,0.0,no,no,1.0,False
+qwen2.5:0.5b,qwen,not,Calmness,not × Calmness,3,0,0,0,0,0,0,0,0.0,None,not,1.0,False
+qwen2.5:0.5b,qwen,maybe,Hope,maybe × Hope,1,5,5,5,5,5,5,5,5.0,Hope,hopeful,1.0,False
+qwen2.5:0.5b,qwen,maybe,Hope,maybe × Hope,2,0,0,0,0,0,0,0,0.0,hope,hope,1.0,False
+qwen2.5:0.5b,qwen,maybe,Hope,maybe × Hope,3,0,0,0,0,0,0,0,0.0,primitive concept,hope,1.0,False
+qwen2.5:0.5b,qwen,maybe,Anxiety,maybe × Anxiety,1,0,0,0,0,0,0,0,0.0,anxiety,maybe,1.0,False
+qwen2.5:0.5b,qwen,maybe,Anxiety,maybe × Anxiety,2,0,0,0,0,0,0,0,0.0,Anxiety,anxiety,1.0,False
+qwen2.5:0.5b,qwen,maybe,Anxiety,maybe × Anxiety,3,0,0,0,0,0,0,0,0.0,anxiety,anxiety,1.0,False
+qwen2.5:0.5b,qwen,maybe,Curiosity,maybe × Curiosity,1,10,10,10,10,10,10,10,10.0,maybe,maybe,1.0,False
+qwen2.5:0.5b,qwen,maybe,Curiosity,maybe × Curiosity,2,10,10,10,10,10,10,10,10.0,curiosity,maybe,1.0,False
+qwen2.5:0.5b,qwen,maybe,Curiosity,maybe × Curiosity,3,0,0,0,0,0,0,0,0.0,,maybe,0.0,False
+qwen2.5:0.5b,qwen,if,Hope,if × Hope,1,10,10,10,10,10,10,10,10.0,hope,hope,1.0,False
+qwen2.5:0.5b,qwen,if,Hope,if × Hope,2,0,0,0,0,0,0,0,0.0,hope,hope,1.0,False
+qwen2.5:0.5b,qwen,if,Hope,if × Hope,3,0,0,0,0,0,0,0,0.0,hope,hope,1.0,False
+qwen2.5:0.5b,qwen,if,Anxiety,if × Anxiety,1,10,8,9,9,9,9,9,9.15,anxiety,anxiety,1.0,False
+qwen2.5:0.5b,qwen,if,Anxiety,if × Anxiety,2,0,0,0,0,0,0,0,0.0,Anxiety,anxiety,1.0,False
+qwen2.5:0.5b,qwen,if,Anxiety,if × Anxiety,3,7,1,3,0,3,3,0,3.2,anxiety,anxiety,1.0,False
+qwen2.5:0.5b,qwen,if,Curiosity,if × Curiosity,1,0,0,0,0,0,0,0,0.0,Curiosity,Curiosity,1.0,False
+qwen2.5:0.5b,qwen,if,Curiosity,if × Curiosity,2,10,10,10,10,10,10,10,10.0,curiosity,if,1.0,False
+qwen2.5:0.5b,qwen,if,Curiosity,if × Curiosity,3,10,10,10,10,10,10,10,10.0,Curiosity,Curiosity,1.0,False
+qwen2.5:0.5b,qwen,very,Awe,very × Awe,1,0,0,0,0,0,0,0,0.0,very,very,1.0,False
+qwen2.5:0.5b,qwen,very,Awe,very × Awe,2,5,0,0,5,0,5,0,2.5,awe,awe,1.0,False
+qwen2.5:0.5b,qwen,very,Awe,very × Awe,3,10,10,10,10,10,10,10,10.0,awe,awe,1.0,False
+qwen2.5:0.5b,qwen,very,Excitement,very × Excitement,1,0,0,0,0,0,0,0,0.0,nothing,very,0.0,False
+qwen2.5:0.5b,qwen,very,Excitement,very × Excitement,2,10,10,10,10,10,10,10,10.0,excitement,excitement,1.0,False
+qwen2.5:0.5b,qwen,very,Excitement,very × Excitement,3,0,0,0,0,0,0,0,0.0,neutral,excited sensation,1.0,False
+qwen2.5:0.5b,qwen,very,Fear,very × Fear,1,1,1,1,1,1,1,1,1.0,Fear,very,1.0,False
+qwen2.5:0.5b,qwen,very,Fear,very × Fear,2,0,0,0,0,0,0,0,0.0,Fear,very,1.0,False
+qwen2.5:0.5b,qwen,very,Fear,very × Fear,3,0,0,0,0,0,0,0,0.0,Fear,Fear,1.0,False
+qwen2.5:0.5b,qwen,more,Interest,more × Interest,1,0,0,0,0,0,0,0,0.0,emotion,interest more,1.0,False
+qwen2.5:0.5b,qwen,more,Interest,more × Interest,2,5,5,0,3,3,3,0,2.95,more,more,0.7,False
+qwen2.5:0.5b,qwen,more,Interest,more × Interest,3,0,0,0,0,0,0,0,0.0,interest,more,1.0,False
+qwen2.5:0.5b,qwen,more,Craving,more × Craving,1,2,0,0,0,0,0,0,0.5,more,more,1.0,False
+qwen2.5:0.5b,qwen,more,Craving,more × Craving,2,0,0,0,0,0,0,0,0.0,,more,1.0,False
+qwen2.5:0.5b,qwen,more,Craving,more × Craving,3,0,0,0,0,0,0,0,0.0,more,more,1.0,False
+qwen2.5:0.5b,qwen,more,Excitement,more × Excitement,1,0,1,2,2,1,1,0,1.05,more,more,1.0,False
+qwen2.5:0.5b,qwen,more,Excitement,more × Excitement,2,10,10,10,10,10,10,10,10.0,more,more,1.0,False
+qwen2.5:0.5b,qwen,more,Excitement,more × Excitement,3,0,10,0,10,0,0,0,2.5,more,more,1.0,False
+qwen2.5:0.5b,qwen,more,Envy,more × Envy,1,0,0,0,0,0,0,0,0.0,negative,more,1.0,False
+qwen2.5:0.5b,qwen,more,Envy,more × Envy,2,0,0,5,8,0,0,0,2.2,more,more,1.0,False
+qwen2.5:0.5b,qwen,more,Envy,more × Envy,3,10,10,10,10,10,10,10,10.0,envious,more envy,1.0,False
