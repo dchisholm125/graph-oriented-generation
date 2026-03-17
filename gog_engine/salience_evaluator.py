@@ -78,7 +78,7 @@ import tempfile
 from dataclasses import dataclass
 from typing import List, Optional
 
-from srm_engine.ts_parser import TypeScriptParser
+from .ts_parser import TypeScriptParser
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Module-level compiled regex for the AST fallback import extractor.

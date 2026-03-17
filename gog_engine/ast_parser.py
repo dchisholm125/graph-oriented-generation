@@ -2,7 +2,7 @@ import os
 import re
 from pathlib import Path
 import networkx as nx
-from srm_engine.ts_parser import TypeScriptParser
+from .ts_parser import TypeScriptParser
 
 parser = TypeScriptParser()
 
