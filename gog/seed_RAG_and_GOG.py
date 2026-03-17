@@ -1,6 +1,7 @@
 import os
 import pickle
 import sys
+from pathlib import Path
 from rich.console import Console
 
 console = Console()
@@ -16,7 +17,14 @@ def seed_everything():
 
     import chromadb
     from chromadb.utils import embedding_functions
-    from srm_engine import ast_parser
+
+    try:
+        from gog_engine import ast_parser
+    except ModuleNotFoundError:
+        repo_root = Path(__file__).resolve().parents[1]
+        if str(repo_root) not in sys.path:
+            sys.path.insert(0, str(repo_root))
+        from gog_engine import ast_parser
 
     # 1. Seed RAG (ChromaDB Vector Store)
     console.print("\n[bold cyan]1. Seeding RAG Environment (Vector DB)[/]")
