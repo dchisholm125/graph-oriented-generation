@@ -145,11 +145,15 @@ and reproduction instructions are in [`/gog`](./gog).
 ├── /gog                          GOG benchmark code
 │   ├── generate_dummy_repo.py
 │   ├── seed_RAG_and_GOG.py
-│   ├── benchmark_cloud_cli.py
-│   └── benchmark_local_llm.py
+│   ├── benchmark_local_llm.py    local LLM via Ollama
+│   ├── benchmark_cloud_cli.py    cloud LLM via opencode CLI
+│   └── benchmark_cloud_api.py    cloud LLM via MiniMax API
+├── /gog_engine                   engine modules
+│   ├── minimax_client.py         MiniMax Cloud API client
+│   └── ...
 ├── /symbol_distillation          SRM experiments 1-18
 │   ├── experiment_1.py
-│   ├── ... 
+│   ├── ...
 │   └── /semantic_primitives
 │       ├── wierzbicka_65_primitives.json
 │       ├── cowen_keltner_27_emotions.json
@@ -197,15 +201,35 @@ and `.csv`. The living summary document
 ---
 
 ## Reproducing the GOG benchmark
+
+### Local LLM (Ollama)
 ```bash
-pip install -r gog/requirements.txt
+pip install -r requirements.txt
 cd gog
 python3 generate_dummy_repo.py
 python3 seed_RAG_and_GOG.py
 python3 benchmark_local_llm.py
 ```
 
-Full instructions including cloud CLI benchmark are in 
+### Cloud API ([MiniMax](https://www.minimaxi.com))
+```bash
+pip install -r requirements.txt
+export MINIMAX_API_KEY="your-key-here"
+cd gog
+python3 generate_dummy_repo.py
+python3 seed_RAG_and_GOG.py
+python3 benchmark_cloud_api.py
+```
+
+Available environment variables for the Cloud API benchmark:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MINIMAX_API_KEY` | *(required)* | Your MiniMax API key |
+| `MINIMAX_MODEL` | `MiniMax-M2.5` | Model to benchmark (`MiniMax-M2.5`, `MiniMax-M2.5-highspeed`) |
+| `MINIMAX_BASE_URL` | `https://api.minimax.io/v1` | API endpoint (OpenAI-compatible) |
+
+Full instructions including cloud CLI benchmark are in
 [`/gog`](./gog).
 
 ---
