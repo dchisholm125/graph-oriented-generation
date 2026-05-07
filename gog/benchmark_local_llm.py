@@ -1,16 +1,21 @@
 import time
 import os
+import sys
 import json
 import urllib.request
 import urllib.error
 from pathlib import Path
+
+# Ensure gog_engine (sibling to gog/) is on the path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
-from srm_engine import ast_parser, graph_search
-from srm_engine.salience_evaluator import SalienceEvaluator
-from srm_engine.token_utils import count_tokens_in_files as get_token_count
+from gog_engine import ast_parser, graph_search
+from gog_engine.salience_evaluator import SalienceEvaluator
+from gog_engine.token_utils import count_tokens_in_files as get_token_count
 console = Console()
 
 # ─────────────────────────────────────────────────────────────────────────────
