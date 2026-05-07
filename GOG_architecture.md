@@ -11,13 +11,13 @@ Graph-Oriented Generation (GOG) is a paradigm shift in AI-assisted coding. Most 
 To solve the "Scoping Challenge" (where small models can't architect and large models hallucinate structure), GOG separates reasoning from rendering.
 
 ### Tier A: The Reasoning Engine (Architect)
-- **Model:** Large LLM (e.g., Claude 3.5, GPT-4o) or deterministic planner.
+- **Model:** Large LLM (e.g., Claude , GPT, Gemini, Kimi, etc.) or deterministic planner.
 - **Role:** Understands user intent and codebase topology.
 - **Output:** A structured `MutationPlan` (JSON). It does **not** write code.
 - **Constraint:** Must only reference nodes and edges existing in the codebase graph or explicitly planned for creation.
 
 ### Tier B: The Language Membrane (Renderer)
-- **Model:** Small SLM (e.g., Qwen 2.5 0.5B, Gemma 2 2B).
+- **Model:** Small SLM (e.g., Qwen 2.5 0.5B, Gemma 4 4B).
 - **Role:** Translates one atomic mutation step at a time into code syntax.
 - **Constraint:** Operates in a "Headless" mode (no conversational text) within a strict graph-isolated context window.
 
