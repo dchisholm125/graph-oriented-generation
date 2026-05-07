@@ -30,7 +30,7 @@ Proven that AST-based graph traversal outperforms Vector RAG in context curation
 
 ### ✅ Phase 2: Symbolic Proof-of-Concept (Complete)
 The **Symbolic Reasoning Membrane (SRM)** experiments proved that "Atoms of Meaning" exist and that structure controls LLM output better than language.
-- [SRM_RESEARCH.md](./SRM_RESEARCH.md)
+- [SRM_PAPER.md](./SRM_PAPER.md)
 - Experiments: `/symbol_distillation`
 
 ### 🔄 Phase 3: The GOG Engine (Active Research)
