@@ -1,0 +1,338 @@
+{
+  "meta": {
+    "timestamp": "2026-05-07T21:19:01.218413+00:00",
+    "model": "qwen2.5:0.5b",
+    "total_repo_tokens": 106513,
+    "repo_path": "/home/dchisholm125/Desktop/repos-local/digital-organism/ui-full",
+    "tiers_evaluated": [
+      "rag",
+      "gog_vanilla",
+      "gog_membrane"
+    ],
+    "tasks_evaluated": [
+      "Easy",
+      "Medium",
+      "Hard"
+    ]
+  },
+  "environment": {
+    "python_version": "3.10.12",
+    "platform": "linux"
+  },
+  "metrics": [
+    {
+      "tier": "rag",
+      "task": "easy",
+      "total_time_s": 5.609656095504761,
+      "local_time_s": 1.3676140308380127,
+      "api_time_s": 4.242042064666748,
+      "tokens_in": 5730,
+      "tokens_out": 150,
+      "response": "```ts\nimport { useSessionStore } from '@/stores/session';\n\nexport const addPromptAt = (promptText: string) => {\n  useSessionStore((state) => ({\n    lastPromptAt: new Date().toISOString(),\n    promptHistory: [...(state.lastPrompt ? state.lastPrompt : [])],\n    hotNodes: state.promptHistory,\n    hotEdges: state.promptHistory,\n    movementTriggerSource: state.motor\n  }));\n};\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold red]FAIL (2/5)[/bold red]",
+      "rubric_passed": 2,
+      "rubric_total": 5,
+      "rubric_failures": [
+        "updates addToHistory",
+        "uses Pinia defineStore",
+        "uses Composition API ref"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_vanilla",
+      "task": "easy",
+      "total_time_s": 7.036697149276733,
+      "local_time_s": 0.3295578956604004,
+      "api_time_s": 6.707139253616333,
+      "tokens_in": 1049,
+      "tokens_out": 150,
+      "response": "```ts\n\nimport { defineStore } from 'pinia';\nimport { ref, computed } from 'vue';\n\n/**\n * Session store — owns the session identity, prompt state, and I/O history.\n *\n * This replaces ~30 scattered refs in the monolith's setup() that all relate\n * to the prompt/response lifecycle.\n */\nexport const useSessionStore = defineStore('session', () => {\n  // ── Identity ───────────────────────────────────────────────────────\n  const sessionId = ref(\n    localStorage.getItem('vox_session_id') ||\n      'sess_' + Math.random().toString(36).substr(2, 9)\n  );\n  localStorage.setItem('vox_session_id', sessionId.value);\n\n  // ── Prompt input ───────────────────────────────────────────────────\n  const inputText = ref('');\n  const stochasticity = ref(0.3);\n  const attachedImage = ref<string | null>(null);\n  const attachedImageBase64 = ref<string | null>(null);\n  const recordedAudio = ref<Blob | null>(null);\n  const recordedAudioBase64 = ref<string | null>(null);\n  const recordedAudioDuration = ref(0);\n  const isDragging = ref(false);\n\n  // ── Prompt state machine ───────────────────────────────────────────\n  const sending = ref(false);\n  const promptState = ref<'ready' | 'warming' | 'sending' | 'awaiting' | 'complete' | 'quiet' | 'error'>('warming');\n  const promptStateText = ref('Initializing backend session...');\n\n  // ── Latest response ────────────────────────────────────────────────\n  const lastResponse = ref('');\n  const lastPrompt = ref('');\n  const lastPromptSource = ref('user');\n  const lastResponseReason = ref('');\n  const lastRequestId = ref('');\n  const pendingRequestId = ref('');\n  const responseTimeMs = ref<number | null>(null);\n  const responseHardware = ref<Record<string, any> | null>(null);\n  const currentTick = ref(25000);\n\n  // ── History ────────────────────────────────────────────────────────\n  interface PromptHistoryEntry {\n    id: string;\n    source: string;\n    phase: string;\n    time: string;\n    prompt: string;\n    response: string;\n    reason?: string;\n  }\n  const promptHistory = ref<PromptHistoryEntry[]>([]);\n\n  // ── Computed ───────────────────────────────────────────────────────\n  const promptStateClass = computed(() => promptState.value);\n  const promptStateLabel = computed(() => {\n    const map: Record<string, string> = {\n      ready: 'READY',\n      warming: 'WARMING',\n      sending: 'SENDING',\n      awaiting: 'AWAITING',\n      complete: 'COMPLETE',\n      quiet: 'QUIET',\n      error: 'ERROR',\n    };\n    return map[promptState.value] || promptState.value.toUpperCase();\n  });\n\n  const sendButtonLabel = computed(() =>\n    sending.value ? 'Thinking...' : attachedImage.value ? 'Send 🖼️' : 'Send'\n  );\n\n  const responseTimeLabel = computed(() => {\n    if (responseTimeMs.value == null) return '';\n    const ms = responseTimeMs.value;\n    if (ms < 1000) return `${ms.toFixed(0)}ms`;\n    return `${(ms / 1000).toFixed(2)}s`;\n  });\n\n  const responseReasonClass = computed(() => {\n    const r = lastResponseReason.value;\n    if (r === 'quiet' || r === 'silence') return 'quiet';\n    if (r === 'error') return 'error';\n    return 'complete';\n  });\n\n  const responseReasonLabel = computed(() =>\n    lastResponseReason.value || 'complete'\n  );\n\n  // ── Actions ────────────────────────────────────────────────────────\n  function clearImage() {\n    attachedImage.value = null;\n    attachedImageBase64.value = null;\n  }\n\n  function clearRecording() {\n    recordedAudio.value = null;\n    recordedAudioBase64.value = null;\n    recordedAudioDuration.value = 0;\n  }\n\n  function addToHistory(entry: PromptHistoryEntry) {\n    promptHistory.value = [entry, ...promptHistory.value.slice(0, 23)];\n  }\n\n  return {\n    sessionId,\n    inputText,\n    stochasticity,\n    attachedImage,\n    attachedImageBase64,\n    recordedAudio,\n    recordedAudioBase64,\n    recordedAudioDuration,\n    isDragging,\n    sending,\n    promptState,\n    promptStateText,\n    lastResponse,\n    lastPrompt,\n    lastPromptSource,\n    lastResponseReason,\n    lastRequestId,\n    pendingRequestId,\n    responseTimeMs,\n    responseHardware,\n    currentTick,\n    promptHistory,\n    promptStateClass,\n    promptStateLabel,\n    sendButtonLabel,\n    responseTimeLabel,\n    responseReasonClass,\n    responseReasonLabel,\n    clearImage,\n    clearRecording,\n    addToHistory,\n  };\n});\n\n// Function to update the `lastPromptAt` timestamp\nexport function updateLastPromptTimestamp() {\n  localStorage.setItem('vox_session_id', sessionId.value);\n}\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold green]PASS (5/5)[/bold green]",
+      "rubric_passed": 5,
+      "rubric_total": 5,
+      "rubric_failures": [],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_membrane",
+      "task": "easy",
+      "total_time_s": 5.82519793510437,
+      "local_time_s": 0.322617769241333,
+      "api_time_s": 5.502580165863037,
+      "tokens_in": 1049,
+      "tokens_out": 150,
+      "response": "```ts\n\nimport { defineStore } from 'pinia';\n\nexport const useSessionStore = defineStore('session', () => {\n  // ── Identity ───────────────────────────────────────────────────────\n  const sessionId = ref(\n    localStorage.getItem('vox_session_id') ||\n    'sess_' + Math.random().toString(36).substr(2, 9)\n  );\n  localStorage.setItem('vox_session_id', sessionId.value);\n\n  // ── Prompt input ───────────────────────────────────────────────────\n  const inputText = ref('');\n  const stochasticity = ref(0.3);\n  const attachedImage = ref<string | null>(null);\n  const attachedImageBase64 = ref<string | null>(null);\n  const recordedAudio = ref<Blob | null>(null);\n  const recordedAudioBase64 = ref<string | null>(null);\n  const recordedAudioDuration = ref(0);\n  const isDragging = ref(false);\n\n  // ── Prompt state machine ───────────────────────────────────────────\n  const sending = ref(false);\n  const promptState = ref<'ready' | 'warming' | 'sending' | 'awaiting' | 'complete' | 'quiet' | 'error'>('warming');\n  const promptStateText = ref('Initializing backend session...');\n\n  // ── Latest response ────────────────────────────────────────────────\n  const lastResponse = ref('');\n  const lastPrompt = ref('');\n  const lastPromptSource = ref('user');\n  const lastResponseReason = ref('');\n  const lastRequestId = ref('');\n  const pendingRequestId = ref('');\n  const responseTimeMs = ref<number | null>(null);\n  const responseHardware = ref<Record<string, any> | null>(null);\n  const currentTick = ref(25000);\n\n  // ── History ────────────────────────────────────────────────────────\n  interface PromptHistoryEntry {\n    id: string;\n    source: string;\n    phase: string;\n    time: string;\n    prompt: string;\n    response: string;\n    reason?: string;\n  }\n  const promptHistory = ref<PromptHistoryEntry[]>([]);\n\n  // ── Computed ───────────────────────────────────────────────────────\n  const promptStateClass = computed(() => promptState.value);\n  const promptStateLabel = computed(() => {\n    const map: Record<string, string> = {\n      ready: 'READY',\n      warming: 'WARMING',\n      sending: 'SENDING',\n      awaiting: 'AWAITING',\n      complete: 'COMPLETE',\n      quiet: 'QUIET',\n      error: 'ERROR',\n    };\n    return map[promptState.value] || promptState.value.toUpperCase();\n  });\n\n  const sendButtonLabel = computed(() =>\n    sending.value ? 'Thinking...' : attachedImage.value ? 'Send 🖼️' : 'Send'\n  );\n\n  const responseTimeLabel = computed(() => {\n    if (responseTimeMs.value == null) return '';\n    const ms = responseTimeMs.value;\n    if (ms < 1000) return `${ms.toFixed(0)}ms`;\n    return `${(ms / 1000).toFixed(2)}s`;\n  });\n\n  const responseReasonClass = computed(() => {\n    const r = lastResponseReason.value;\n    if (r === 'quiet' || r === 'silence') return 'quiet';\n    if (r === 'error') return 'error';\n    return 'complete';\n  });\n\n  const responseReasonLabel = computed(() =>\n    lastResponseReason.value || 'complete'\n  );\n\n  // ── Actions ────────────────────────────────────────────────────────\n  function clearImage() {\n    attachedImage.value = null;\n    attachedImageBase64.value = null;\n  }\n\n  function clearRecording() {\n    recordedAudio.value = null;\n    recordedAudioBase64.value = null;\n    recordedAudioDuration.value = 0;\n  }\n\n  function addToHistory(entry: PromptHistoryEntry) {\n    promptHistory.value.push({ ...entry, time: Date.now(), id: entry.id });\n  }\n\n  return {\n    sessionId,\n    inputText,\n    stochasticity,\n    attachedImage,\n    attachedImageBase64,\n    recordedAudio,\n    recordedAudioBase64,\n    recordedAudioDuration,\n    isDragging,\n    sending,\n    promptState,\n    promptStateText,\n    lastResponse,\n    lastPrompt,\n    lastPromptSource,\n    lastResponseReason,\n    lastRequestId,\n    pendingRequestId,\n    responseTimeMs,\n    responseHardware,\n    currentTick,\n    promptHistory,\n    promptStateClass,\n    promptStateLabel,\n    sendButtonLabel,\n    responseTimeLabel,\n    responseReasonClass,\n    responseReasonLabel,\n    clearImage,\n    clearRecording,\n    addToHistory,\n  };\n});\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold yellow]PARTIAL (4/5)[/bold yellow]",
+      "rubric_passed": 4,
+      "rubric_total": 5,
+      "rubric_failures": [
+        "defines lastPromptAt field"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "rag",
+      "task": "medium",
+      "total_time_s": 3.188361406326294,
+      "local_time_s": 0.02655315399169922,
+      "api_time_s": 3.1618082523345947,
+      "tokens_in": 5177,
+      "tokens_out": 150,
+      "response": "```typescript\nimport { defineComponent } from 'vue';\nimport { useRouter } from 'vue-router';\n\nexport default defineComponent({\n  setup() {\n    const route = useRouter();\n    const router = useRouter();\n\n    return {\n      route,\n      router,\n    };\n  },\n});\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold red]FAIL (1/6)[/bold red]",
+      "rubric_passed": 1,
+      "rubric_total": 6,
+      "rubric_failures": [
+        "includes Reset button",
+        "wires click event",
+        "references useSessionStore",
+        "defines or calls resetSession",
+        "Vue template or script block"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_vanilla",
+      "task": "medium",
+      "total_time_s": 3.5897510051727295,
+      "local_time_s": 0.3299837112426758,
+      "api_time_s": 3.2597672939300537,
+      "tokens_in": 13813,
+      "tokens_out": 150,
+      "response": "```typescript\n// DashboardView.vue\n\nexport default {\n  methods: {\n    resetSession() {\n      // Call a new method 'resetSession' from useSessionStore to clear the prompt input state and history\n      this.$store.dispatch('useSessionStore', { type: 'resetSession' });\n    }\n  },\n}\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold yellow]PARTIAL (4/6)[/bold yellow]",
+      "rubric_passed": 4,
+      "rubric_total": 6,
+      "rubric_failures": [
+        "wires click event",
+        "Vue template or script block"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_membrane",
+      "task": "medium",
+      "total_time_s": 3.625072479248047,
+      "local_time_s": 0.330394983291626,
+      "api_time_s": 3.294677495956421,
+      "tokens_in": 13813,
+      "tokens_out": 150,
+      "response": "```typescript\n// resetSession.ts\nimport { useSessionStore } from '@/hooks/useSessionStore';\n\nexport default function ResetSession() {\n  const sessionStore = useSessionStore();\n\n  return (\n    <div>\n      <button @click={() => sessionStore.resetPromptInputStateAndHistory()}>Reset Session</button>\n    </div>\n  );\n}\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold yellow]PARTIAL (5/6)[/bold yellow]",
+      "rubric_passed": 5,
+      "rubric_total": 6,
+      "rubric_failures": [
+        "Vue template or script block"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "rag",
+      "task": "hard",
+      "total_time_s": 6.001495838165283,
+      "local_time_s": 0.020915985107421875,
+      "api_time_s": 5.980579853057861,
+      "tokens_in": 8968,
+      "tokens_out": 150,
+      "response": "```typescript\n<template>\n  <div id=\"settings-view\">\n    <nav aria-label=\"Settings view\" v-if=\"$route.meta && $route.meta.title\">\n      <ul class=\"navigation\">\n        <li><a href=\"#about\">About</a></li>\n        <li v-for=\"(setting, index) in settingsList\" :key=\"index\" class=\"setting-item\">\n          <span v-if=\"index === 0\">{{ setting.title }}</span>\n          <div class=\"setting-value\" v-if=\"setting.value\">\n            {{ setting.value }}\n          </div>\n          <button v-else @click=\"handleSettingChanged($event, index)\" :class=\"{ active: currentIndex === index }\">-</button>\n          <ul class=\"setting-options\" v-for=\"(option, optionIndex) in setting.options\" :key=\"optionIndex\">\n            <li v-if=\"option.active\" class=\"setting-option\">{{ option.label }}</li>\n            <template v-else class=\"setting-option disabled\"><span>{{ option.label }}</span></template>\n          </ul>\n        </div>\n      </ul>\n    </nav>\n\n    <div v-else>\n      <h1>Welcome to the Settings View</h1>\n      <p>This view displays the camera and microphone enabled status from useAmbientStore.</p>\n    </div>\n  </div>\n</template>\n\n<script>\nexport default {\n  name: 'SettingsView',\n  data() {\n    return {\n      settingsList: [\n        { title: 'Camera', value: true },\n        { title: 'Microphone', value: false },\n        // Add more settings as needed\n      ],\n    };\n  },\n  methods: {\n    handleSettingChanged(event, index) {\n      const currentIndex = this.currentIndex;\n      if (index === 0 || event.target.value === '') return;\n\n      if (currentIndex === 0) {\n        this.$route.meta.title = 'Camera and Microphone Status';\n      } else {\n        this.$route.meta.title = `Camera: ${this.settingsList[index - 1].value ? 'ON' : 'OFF'}`;\n      }\n\n      this.currentIndex = index;\n    },\n  },\n};\n</script>\n\n<style>\n#settings-view {\n  background-color: #f8f9fa;\n}\n\n.navigation {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 10px 20px;\n}\n\n.nav-item {\n  margin-right: 10px;\n}\n\n.setting-value {\n  font-size: 14px;\n  cursor: pointer;\n}\n</style>\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold green]PASS (7/7)[/bold green]",
+      "rubric_passed": 7,
+      "rubric_total": 7,
+      "rubric_failures": [],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_vanilla",
+      "task": "hard",
+      "total_time_s": 4.157912254333496,
+      "local_time_s": 0.3596029281616211,
+      "api_time_s": 3.798309326171875,
+      "tokens_in": 74073,
+      "tokens_out": 150,
+      "response": "```json\n{\n  \"dependencies\": {\n    \"@vitejs/plugin-vue\": \"^2.0.3\",\n    \"react\": \"18.2.0\"\n  },\n  \"devDependencies\": {\n    \"vite\": \"~6.0.0\",\n    \"vite-plugin-vue\": \"^4.0.0\",\n    \"webpack\": \"^5.97.0\"\n  }\n}\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold red]FAIL (1/7)[/bold red]",
+      "rubric_passed": 1,
+      "rubric_total": 7,
+      "rubric_failures": [
+        "creates SettingsView",
+        "adds route entry",
+        "adds nav link in App",
+        "references useAmbientStore",
+        "accesses camera / mic",
+        "Vue template block"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_membrane",
+      "task": "hard",
+      "total_time_s": 4.067444562911987,
+      "local_time_s": 0.3632187843322754,
+      "api_time_s": 3.704225778579712,
+      "tokens_in": 74073,
+      "tokens_out": 150,
+      "response": "```ts\n<template>\n  <nav>\n    <div class=\"nav-link\">\n      <router-link to=\"/settings\" @click=\"$router.push('/settings')\">\n        Settings\n      </router-link>\n    </div>\n  </nav>\n</template>\n\n<script>\nexport default {\n  name: \"SettingsView\",\n};\n</script>\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold yellow]PARTIAL (5/7)[/bold yellow]",
+      "rubric_passed": 5,
+      "rubric_total": 7,
+      "rubric_failures": [
+        "references useAmbientStore",
+        "accesses camera / mic"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    }
+  ],
+  "summary": {
+    "by_tier": {
+      "rag": {
+        "tier_name": "RAG",
+        "observations": 3,
+        "avg_total_time_s": 4.9332,
+        "avg_local_time_s": 0.4717,
+        "avg_api_time_s": 4.4615,
+        "avg_tokens_in": 6625.0,
+        "context_density_pct": 6.22,
+        "pass_at_1_count": 1,
+        "partial_count": 2,
+        "fail_count": 0,
+        "avg_topological_integrity": 1.0,
+        "total_patches_applied": 0
+      },
+      "gog_vanilla": {
+        "tier_name": "GOG Vanilla",
+        "observations": 3,
+        "avg_total_time_s": 4.9281,
+        "avg_local_time_s": 0.3397,
+        "avg_api_time_s": 4.5884,
+        "avg_tokens_in": 29645.0,
+        "context_density_pct": 27.83,
+        "pass_at_1_count": 1,
+        "partial_count": 2,
+        "fail_count": 0,
+        "avg_topological_integrity": 1.0,
+        "total_patches_applied": 0
+      },
+      "gog_membrane": {
+        "tier_name": "GOG Membrane",
+        "observations": 3,
+        "avg_total_time_s": 4.5059,
+        "avg_local_time_s": 0.3387,
+        "avg_api_time_s": 4.1672,
+        "avg_tokens_in": 29645.0,
+        "context_density_pct": 27.83,
+        "pass_at_1_count": 0,
+        "partial_count": 3,
+        "fail_count": 0,
+        "avg_topological_integrity": 1.0,
+        "total_patches_applied": 0
+      }
+    },
+    "by_task": {
+      "easy": {
+        "rag": {
+          "tokens_in": 5730,
+          "total_time_s": 5.6097,
+          "rubric_label": "[bold red]FAIL (2/5)[/bold red]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_vanilla": {
+          "tokens_in": 1049,
+          "total_time_s": 7.0367,
+          "rubric_label": "[bold green]PASS (5/5)[/bold green]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_membrane": {
+          "tokens_in": 1049,
+          "total_time_s": 5.8252,
+          "rubric_label": "[bold yellow]PARTIAL (4/5)[/bold yellow]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        }
+      },
+      "medium": {
+        "rag": {
+          "tokens_in": 5177,
+          "total_time_s": 3.1884,
+          "rubric_label": "[bold red]FAIL (1/6)[/bold red]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_vanilla": {
+          "tokens_in": 13813,
+          "total_time_s": 3.5898,
+          "rubric_label": "[bold yellow]PARTIAL (4/6)[/bold yellow]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_membrane": {
+          "tokens_in": 13813,
+          "total_time_s": 3.6251,
+          "rubric_label": "[bold yellow]PARTIAL (5/6)[/bold yellow]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        }
+      },
+      "hard": {
+        "rag": {
+          "tokens_in": 8968,
+          "total_time_s": 6.0015,
+          "rubric_label": "[bold green]PASS (7/7)[/bold green]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_vanilla": {
+          "tokens_in": 74073,
+          "total_time_s": 4.1579,
+          "rubric_label": "[bold red]FAIL (1/7)[/bold red]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_membrane": {
+          "tokens_in": 74073,
+          "total_time_s": 4.0674,
+          "rubric_label": "[bold yellow]PARTIAL (5/7)[/bold yellow]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        }
+      }
+    },
+    "global": {
+      "baseline_tier": "rag",
+      "comparison_tier": "gog_membrane",
+      "token_reduction_pct": -347.5,
+      "time_change_pct": 8.7,
+      "r_improvement_passes": -1,
+      "r_increase_in_topological_integrity": 0.0
+    }
+  }
+}

@@ -1,0 +1,253 @@
+# GOG System Model
+
+## 1. Purpose
+
+Graph-Oriented Generation (GOG) investigates whether software generation improves when codebases are first transformed into persistent symbolic state, that state is served to a higher-level reasoner, and language models are demoted from architects to renderers.
+
+This document defines GOG as a system model rather than a single benchmark technique.
+
+GOG is not "RAG, but with graphs." It is also not the reasoner itself. It is a repo-resident symbolic substrate and presentation layer for software agents:
+
+1. A repository is onboarded into symbolic state before agentic work begins.
+2. A reasoner receives that state in a more structured form than raw repo text.
+3. The reasoner emits typed plans and constraints.
+4. A language renderer turns those plans into code, prose, or other human-facing artifacts.
+5. Validators check the result against the symbolic state and the local toolchain.
+6. Accepted mutations update the symbolic state so GOG remains synchronized with the evolving repo.
+
+---
+
+## 2. Core Thesis
+
+The central thesis is:
+
+> Software generation should separate architectural reasoning from language rendering.
+
+GOG itself is not that architectural reasoner. GOG's role is to organize and serve repository state so a reasoner can make better decisions with less guessing about the codebase.
+
+In current GOG research, a large language model may temporarily occupy the reasoning slot. That is a proxy, not the end state. The long-range hypothesis is that a true symbolic reasoning model can eventually replace that proxy while preserving the same external contract.
+
+The present research goal is therefore twofold:
+
+1. Prove that a repo-resident symbolic substrate is useful.
+2. Prove that a reasoner/render split is operationally valuable before the final form of the symbolic reasoner is known.
+3. Prove that reasoners behave better when GOG serves repo state to them than when they infer repo structure from loosely assembled text context.
+
+---
+
+## 3. System Components
+
+### 3.1 Graphized Repository
+
+The graphized repository is the persistent symbolic state GOG installs over a codebase.
+
+It should eventually include:
+
+- Files, modules, imports, and exports
+- Symbols, declarations, and references
+- Functions, methods, classes, types, and interfaces
+- Call relationships where they can be extracted
+- Framework surfaces such as routes, stores, schemas, and configuration
+- Test relationships and build metadata
+- Repository conventions and architectural constraints
+- Mutation history and graph deltas over time
+
+The current codebase already implements an early version of this idea through AST-derived dependency graphs. The system model treats that as the foundation, not the endpoint.
+
+### 3.2 Reasoner Slot
+
+The reasoner receives:
+
+- User intent
+- Graphized repository state
+- Constraints and invariants
+- Relevant local evidence
+- Prior accepted mutations when needed
+
+The reasoner emits:
+
+- Structured plans
+- Target nodes and edges
+- Required mutations
+- Render ordering
+- Validation requirements
+- Explicit uncertainty or refusal when the graph does not support a safe plan
+
+Today, this slot may be filled by:
+
+- A deterministic planner for known task families
+- A large language model constrained to structured output
+
+Tomorrow, it may be filled by a dedicated symbolic reasoning model. GOG should be designed so that replacement does not require rewriting the rest of the system.
+
+### 3.3 Renderer
+
+The renderer is responsible for language, not architecture.
+
+It converts typed reasoner outputs into:
+
+- Source code
+- Diffs
+- Explanations
+- Documentation
+- User-facing summaries
+
+The renderer should receive bounded, explicit instructions. In the code-generation case, that often means:
+
+- One target file at a time
+- A declared operation set
+- Relevant local context only
+- Explicit constraints
+
+The renderer can be a small language model if the plan is sufficiently precise.
+
+### 3.4 Validators
+
+Validators keep the system honest.
+
+They may check:
+
+- Graph boundary compliance
+- Forbidden imports or dependency directions
+- Symbol existence
+- Syntax and parse validity
+- Typecheck or build success
+- Test outcomes
+- Patch applicability
+
+Validation exists because a reasoner or renderer can still fail. GOG is not deterministic because every component is perfect. It becomes more deterministic because every stage exposes structure that can be inspected and constrained.
+
+### 3.5 Graph Synchronizer
+
+After accepted edits, the repository changes. GOG must therefore update its symbolic state.
+
+The synchronizer should support:
+
+- Incremental reparse of changed files
+- Node and edge delta updates
+- Invariant refresh
+- Change history attachment
+- Re-indexing auxiliary semantic retrieval structures when needed
+
+Without synchronization, GOG decays into a stale analysis artifact. With synchronization, it becomes a persistent layer over the living codebase.
+
+---
+
+## 4. Session Lifecycle
+
+An ideal GOG-assisted coding session follows this lifecycle:
+
+1. **Onboard**
+   - Build or refresh symbolic repo state.
+2. **Interpret**
+   - Convert user intent into a structured reasoning problem.
+3. **Reason**
+   - Query symbolic state and emit a mutation plan.
+4. **Validate Plan**
+   - Reject unsupported references, impossible edge changes, or violated constraints.
+5. **Render**
+   - Produce code or prose from the plan.
+6. **Validate Output**
+   - Parse, typecheck, test, and confirm boundary compliance.
+7. **Apply**
+   - Accept the mutation only when validation clears the relevant bar.
+8. **Synchronize**
+   - Update symbolic state to reflect the new repository reality.
+
+---
+
+## 5. What GOG Is Investigating
+
+GOG is currently testing four linked hypotheses:
+
+1. **Persistent symbolic state improves repo comprehension.**
+2. **Reasoning over symbolic state yields better mutation plans than raw text inspection alone.**
+3. **Small renderers become more reliable when architectural burden is removed.**
+4. **A repo-resident symbolic layer creates a better substrate for future symbolic reasoners than ad hoc prompt context does.**
+
+These claims should be tested in terms of final engineering quality, not only first-pass thrift. A system that fails cheaply has not outperformed a system that spends more but converges to a validated result.
+
+The existing benchmark work explores parts of these hypotheses. The next research phase should test them more directly on public codebases and executable validation criteria.
+
+---
+
+## 6. Non-Goals
+
+GOG is not currently claiming:
+
+- That GOG itself is the reasoner
+- That today's codebase already contains a general symbolic reasoning model
+- That all retrieval should disappear
+- That dependency graphs alone are sufficient symbolic state
+- That small renderers can solve arbitrary software engineering tasks in isolation
+- That current benchmark wins prove the final architecture at production scale
+
+Those boundaries matter. They keep the research program falsifiable.
+
+---
+
+## 7. Relationship to Existing Work
+
+Traditional coding assistants often work episodically:
+
+- gather text
+- prompt a model
+- generate a response
+
+GOG changes the default sequence:
+
+- install symbolic state
+- present symbolic state to a reasoner
+- render from explicit plans
+- keep symbolic state synchronized
+
+That difference is the system-level contribution.
+
+---
+
+## 8. Cost-to-Quality Research Frame
+
+GOG should not be judged only by "how few tokens were used on the first attempt." The stronger benchmark question is:
+
+> How much total reasoning, rendering, repair, and validation budget is required to reach the best acceptable solution?
+
+That implies measuring:
+
+- `Pass@1`
+- `Pass@k`
+- `TokensToPass`
+- `AttemptsToPass`
+- `WallClockToPass`
+- `BestQualityUnderBudget`
+- `ValidatedSuccessRate`
+
+The near-term hypothesis is:
+
+1. GOG may spend more upfront to present richer repo state.
+2. GOG should reduce downstream waste by improving target selection, plan quality, and repair convergence.
+3. The meaningful efficiency win is lower total cost to validated success, not lower cost to an invalid answer.
+
+---
+
+## 9. Current Repository Mapping
+
+Relevant implementation areas:
+
+- `gog_engine/ast_parser.py`
+- `gog_engine/graph_search.py`
+- `gog_engine/planner/intent_parser.py`
+- `gog_engine/planner/mutation_planner.py`
+- `gog_engine/planner/renderer_prompt.py`
+- `gog_engine/salience_evaluator.py`
+
+Relevant experimental evidence:
+
+- `SRM_PAPER.md`
+- `docs/SRM_PHASE_2_FINAL_RESULTS.md`
+- `docs/SRM_PHASE_2_HONEST_ASSESSMENT.md`
+- `gog/results/`
+
+Relevant next-step architecture docs:
+
+- `docs/REASONER_INTERFACE.md`
+- `docs/REPO_ONBOARDING_PIPELINE.md`

@@ -1,0 +1,334 @@
+{
+  "meta": {
+    "timestamp": "2026-05-07T21:22:54.410938+00:00",
+    "model": "qwen2.5:0.5b",
+    "total_repo_tokens": 106513,
+    "repo_path": "/home/dchisholm125/Desktop/repos-local/digital-organism/ui-full",
+    "tiers_evaluated": [
+      "rag",
+      "gog_vanilla",
+      "gog_membrane"
+    ],
+    "tasks_evaluated": [
+      "Easy",
+      "Medium",
+      "Hard"
+    ]
+  },
+  "environment": {
+    "python_version": "3.10.12",
+    "platform": "linux"
+  },
+  "metrics": [
+    {
+      "tier": "rag",
+      "task": "easy",
+      "total_time_s": 4.059571743011475,
+      "local_time_s": 0.8314142227172852,
+      "api_time_s": 3.2281575202941895,
+      "tokens_in": 5730,
+      "tokens_out": 150,
+      "response": "```typescript\nimport { useSessionStore } from '@/stores/session';\nimport { addToHistory } from '@/api/control';\n\nexport default function updateLastPromptAt() {\n  const lastPromptAt = new Date().getTime(); // Update to get current timestamp\n  addToHistory({ ...useSessionStore(), lastPromptAt });\n}\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold yellow]PARTIAL (3/5)[/bold yellow]",
+      "rubric_passed": 3,
+      "rubric_total": 5,
+      "rubric_failures": [
+        "uses Pinia defineStore",
+        "uses Composition API ref"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_vanilla",
+      "task": "easy",
+      "total_time_s": 7.981628894805908,
+      "local_time_s": 0.32523012161254883,
+      "api_time_s": 7.656398773193359,
+      "tokens_in": 1049,
+      "tokens_out": 150,
+      "response": "```ts\n\nimport { defineStore } from 'pinia';\nimport { ref, computed } from 'vue';\n\n/**\n * Session store — owns the session identity, prompt state, and I/O history.\n *\n * This replaces ~30 scattered refs in the monolith's setup() that all relate\n * to the prompt/response lifecycle.\n */\nexport const useSessionStore = defineStore('session', () => {\n  // ── Identity ───────────────────────────────────────────────────────\n  const sessionId = ref(\n    localStorage.getItem('vox_session_id') ||\n    'sess_' + Math.random().toString(36).substr(2, 9)\n  );\n  localStorage.setItem('vox_session_id', sessionId.value);\n\n  // ── Prompt input ───────────────────────────────────────────────────\n  const inputText = ref('');\n  const stochasticity = ref(0.3);\n  const attachedImage = ref<string | null>(null);\n  const attachedImageBase64 = ref<string | null>(null);\n  const recordedAudio = ref<Blob | null>(null);\n  const recordedAudioBase64 = ref<string | null>(null);\n  const recordedAudioDuration = ref(0);\n  const isDragging = ref(false);\n\n  // ── Prompt state machine ───────────────────────────────────────────\n  const sending = ref(false);\n  const promptState = ref<'ready' | 'warming' | 'sending' | 'awaiting' | 'complete' | 'quiet' | 'error'>('warming');\n  const promptStateText = ref('Initializing backend session...');\n\n  // ── Latest response ────────────────────────────────────────────────\n  const lastResponse = ref('');\n  const lastPrompt = ref('');\n  const lastPromptSource = ref('user');\n  const lastResponseReason = ref('');\n  const lastRequestId = ref('');\n  const pendingRequestId = ref('');\n  const responseTimeMs = ref<number | null>(null);\n  const responseHardware = ref<Record<string, any> | null>(null);\n  const currentTick = ref(25000);\n\n  // ── History ────────────────────────────────────────────────────────\n  interface PromptHistoryEntry {\n    id: string;\n    source: string;\n    phase: string;\n    time: string;\n    prompt: string;\n    response: string;\n    reason?: string;\n  }\n  const promptHistory = ref<PromptHistoryEntry[]>([]);\n\n  // ── Computed ───────────────────────────────────────────────────────\n  const promptStateClass = computed(() => promptState.value);\n  const promptStateLabel = computed(() => {\n    const map: Record<string, string> = {\n      ready: 'READY',\n      warming: 'WARMING',\n      sending: 'SENDING',\n      awaiting: 'AWAITING',\n      complete: 'COMPLETE',\n      quiet: 'QUIET',\n      error: 'ERROR',\n    };\n    return map[promptState.value] || promptStateValue;\n  });\n\n  const sendButtonLabel = computed(() =>\n    sending.value ? 'Thinking...' : attachedImage.value ? 'Send 🖼️' : 'Send'\n  );\n\n  const responseTimeLabel = computed(() => {\n    if (responseTimeMs.value == null) return '';\n    const ms = responseTimeMs.value;\n    if (ms < 1000) return `${ms.toFixed(0)}ms`;\n    return `${(ms / 1000).toFixed(2)}s`;\n  });\n\n  const responseReasonClass = computed(() => {\n    const r = lastResponseReasonValue;\n    if (r === 'quiet' || r === 'silence') return 'quiet';\n    if (r === 'error') return 'error';\n    return 'complete';\n  });\n\n  const responseReasonLabel = computed(() =>\n    lastResponseReason.value || 'complete'\n  );\n\n  // ── Actions ────────────────────────────────────────────────────────\n  function clearImage() {\n    attachedImage.value = null;\n    attachedImageBase64.value = null;\n  }\n\n  function clearRecording() {\n    recordedAudio.value = null;\n    recordedAudioBase64.value = null;\n    recordedAudioDuration.value = 0;\n  }\n\n  function addToHistory(entry: PromptHistoryEntry) {\n    promptHistory.value.push(entry);\n  }\n\n  return {\n    sessionId,\n    inputText,\n    stochasticity,\n    attachedImage,\n    attachedImageBase64,\n    recordedAudio,\n    recordedAudioBase64,\n    recordedAudioDuration,\n    isDragging,\n    sending,\n    promptState,\n    promptStateText,\n    lastResponse,\n    lastPrompt,\n    lastPromptSource,\n    lastResponseReason,\n    lastRequestId,\n    pendingRequestId,\n    responseTimeMs,\n    responseHardware,\n    currentTick,\n    promptHistory,\n    promptStateClass,\n    promptStateLabel,\n    sendButtonLabel,\n    responseTimeLabel,\n    responseReasonClass,\n    responseReasonLabel,\n    clearImage,\n    clearRecording,\n    addToHistory\n  };\n});\n\n// New action: add new entry to history, set 'lastPromptAt' timestamp to current date\nexport const useSessionStoreWithNewAction = defineStore('session', () => {\n  // ── Identity ───────────────────────────────────────────────────────\n  const lastPromptAt = ref<number | null>(null);\n\n  function addPrompt() {\n    if (!lastPrompt) return;\n\n    // Get current date\n    const currentDate = new Date();\n    const timestampMs = currentDate.getTime();\n\n    // Set 'lastPromptAt' to current date time\n    lastPromptAt.value = timestampMs;\n  }\n\n  // New action: update last prompt at with current date and time\n  export function setLastPromptAt(timestamp: number) {\n    localStorage.setItem('vox_session_id', sessionId.value);\n    lastPromptAt.value = timestamp;\n  }\n\n  return {\n    addPrompt,\n    lastPromptAt\n  };\n});\n\n// Update the new action to trigger 'lastPromptAt' to current date and time on every new entry\nuseSessionStoreWithNewAction.setLastPromptAt(lastPromptAt.value);\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold green]PASS (5/5)[/bold green]",
+      "rubric_passed": 5,
+      "rubric_total": 5,
+      "rubric_failures": [],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_membrane",
+      "task": "easy",
+      "total_time_s": 5.975761651992798,
+      "local_time_s": 0.32677173614501953,
+      "api_time_s": 5.648989915847778,
+      "tokens_in": 1049,
+      "tokens_out": 150,
+      "response": "```ts\nimport { defineStore } from 'pinia';\nimport { ref, computed } from 'vue';\n\n/**\n * Session store — owns the session identity, prompt state, and I/O history.\n *\n * This replaces ~30 scattered refs in the monolith's setup() that all relate to the prompt/response lifecycle.\n */\nexport const useSessionStore = defineStore('session', () => {\n  // ── Identity ───────────────────────────────────────────────────────\n  const sessionId = ref(\n    localStorage.getItem('vox_session_id') ||\n    'sess_' + Math.random().toString(36).substr(2, 9)\n  );\n\n  // ── Prompt input ───────────────────────────────────────────────────\n  const inputText = ref('');\n  const stochasticity = ref(0.3);\n  const attachedImage = ref<string | null>(null);\n  const attachedImageBase64 = ref<string | null>(null);\n  const recordedAudio = ref<Blob | null>(null);\n  const recordedAudioBase64 = ref<string | null>(null);\n  const recordedAudioDuration = ref(0);\n  const isDragging = ref(false);\n\n  // ── Prompt state machine ───────────────────────────────────────────\n  const sending = ref(false);\n  const promptState = ref<'ready' | 'warming' | 'sending' | 'awaiting' | 'complete' | 'quiet' | 'error'>('warming');\n  const promptStateText = ref('Initializing backend session...');\n\n  // ── Latest response ────────────────────────────────────────────────\n  const lastResponse = ref('');\n  const lastPrompt = ref('');\n  const lastPromptSource = ref('user');\n  const lastResponseReason = ref('');\n  const lastRequestId = ref('');\n  const pendingRequestId = ref('');\n  const responseTimeMs = ref<number | null>(null);\n  const responseHardware = ref<Record<string, any> | null>(null);\n  const currentTick = ref(25000);\n\n  // ── History ────────────────────────────────────────────────────────\n  interface PromptHistoryEntry {\n    id: string;\n    source: string;\n    phase: string;\n    time: string;\n    prompt: string;\n    response: string;\n    reason?: string;\n  }\n  const promptHistory = ref<PromptHistoryEntry[]>([]);\n\n  // ── Computed ───────────────────────────────────────────────────────\n  const promptStateClass = computed(() => promptState.value);\n  const promptStateLabel = computed(() => {\n    const map: Record<string, string> = {\n      ready: 'READY',\n      warming: 'WARMING',\n      sending: 'SENDING',\n      awaiting: 'AWAITING',\n      complete: 'COMPLETE',\n      quiet: 'QUIET',\n      error: 'ERROR',\n    };\n    return map[promptState.value] || promptState.value.toUpperCase();\n  });\n\n  const sendButtonLabel = computed(() =>\n    sending.value ? 'Thinking...' : attachedImage.value ? 'Send 🖼️' : 'Send'\n  );\n\n  const responseTimeLabel = computed(() => {\n    if (responseTimeMs.value == null) return '';\n    const ms = responseTimeMs.value;\n    if (ms < 1000) return `${ms.toFixed(0)}ms`;\n    return `${(ms / 1000).toFixed(2)}s`;\n  });\n\n  const responseReasonClass = computed(() => {\n    const r = lastResponseReason.value;\n    if (r === 'quiet' || r === 'silence') return 'quiet';\n    if (r === 'error') return 'error';\n    return 'complete';\n  });\n\n  const responseReasonLabel = computed(() =>\n    lastResponseReason.value || 'complete'\n  );\n\n  // ── Actions ────────────────────────────────────────────────────────\n  function clearImage() {\n    attachedImage.value = null;\n    attachedImageBase64.value = null;\n  }\n\n  function clearRecording() {\n    recordedAudio.value = null;\n    recordedAudioBase64.value = null;\n    recordedAudioDuration.value = 0;\n  }\n\n  function addToHistory(entry: PromptHistoryEntry) {\n    promptHistory.value.push(entry);\n  }\n\n  return {\n    sessionId,\n    inputText,\n    stochasticity,\n    attachedImage,\n    attachedImageBase64,\n    recordedAudio,\n    recordedAudioBase64,\n    recordedAudioDuration,\n    isDragging,\n    sending,\n    promptState,\n    promptStateText,\n    lastResponse,\n    lastPrompt,\n    lastPromptSource,\n    lastResponseReason,\n    lastRequestId,\n    pendingRequestId,\n    responseTimeMs,\n    responseHardware,\n    currentTick,\n    promptHistory,\n    promptStateClass,\n    promptStateLabel,\n    sendButtonLabel,\n    responseTimeLabel,\n    responseReasonClass,\n    responseReasonLabel,\n    clearImage,\n    clearRecording,\n    addToHistory,\n  };\n});\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold yellow]PARTIAL (4/5)[/bold yellow]",
+      "rubric_passed": 4,
+      "rubric_total": 5,
+      "rubric_failures": [
+        "defines lastPromptAt field"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "rag",
+      "task": "medium",
+      "total_time_s": 10.661403179168701,
+      "local_time_s": 0.02630615234375,
+      "api_time_s": 10.635097026824951,
+      "tokens_in": 5177,
+      "tokens_out": 150,
+      "response": "```ts\n<template>\n  <div>\n    <button @click=\"resetSession()\">Reset Session</button>\n  </div>\n</template>\n\n<script lang=\"ts\">\nimport { defineComponent } from '@vue/composition-api';\n\nexport default defineComponent({\n  name: 'ResetSessionButton',\n  setup() {\n    return {};\n  },\n});\n</script>\n\n<style scoped>\n.prompt-section {\n  display: grid;\n  grid-template-columns: 1fr auto;\n  gap: 16px;\n}\n.prompt-shell {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 8px;\n}\n\n.input-wrapper { position: relative; }\n.label-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 8px;\n}\n.state-badge {\n  font-family: var(--font-mono);\n  font-size: 10px;\n  font-weight: 700;\n  padding: 3px 8px;\n  border-radius: 4px;\n  border: 1px solid;\n  letter-spacing: 0.5px;\n}\n.state-badge.asleep {\n  color: #ff4d4d;\n  background: rgba(255, 77, 77, 0.1);\n  border-color: #ff4d4d;\n}\n\ntextarea {\n  width: 100%;\n  background: transparent;\n  border: none;\n  color: var(--text-primary);\n  font-size: 18px;\n  font-family: inherit;\n  resize: none;\n  outline: none;\n  padding-bottom: 8px;\n  border-bottom: 2px solid var(--border);\n  transition: border-color 0.2s;\n}\ntextarea:focus { border-color: var(--accent); }\n.controls {\n  display: flex;\n  align-items: center;\n  gap: 16px;\n  margin-top: 12px;\n  flex-wrap: wrap;\n}\n\n.slider-group {\n  display: flex;\n  align-items: center;\n  gap: 16px;\n  margin-top: 8px;\n  flex: 1;\n}\n\n.slider-group span { font-size: 12px; color: var(--text-secondary); }\ninput[type=\"range\"] { flex: 1; accent-color: var(--accent); }\ninput[type=\"file\"] {\n  position: absolute;\n  width: 1px; height: 1px;\n  padding: 0; margin: -1px;\n  overflow: hidden; clip: rect(0,0,0,0); border: 0;\n}\n\n.tick-info {\n  font-family: var(--font-mono);\n  font-size: 12px;\n  color: var(--text-secondary);\n}\n.send-btn {\n  background: var(--surface-accent);\n  border: 1px solid var(--border);\n  color: var(--text-primary);\n  padding: 20px 32px;\n  border-radius: 8px;\n  cursor: pointer;\n  font-weight: 500;\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  transition: all 0.2s;\n  height: fit-content;\n}\n.send-btn:hover { background: var(--border); border-color: var(--text-secondary); }\n.send-btn:disabled { opacity: 0.5; cursor: not-allowed; }\n.send-btn.has-image { background: rgba(255,69,58,0.15); border-color: var(--accent); }\n.send-btn.is-busy { background: rgba(255,69,58,0.18); border-color: rgba(255,69,58,0.4); }\n.image-preview-container { display: flex; align-items: center; gap: 8px; position: relative; }\n.image-attach-btn {\n  background: var(--surface-accent);\n  border: 1px solid var(--border);\n  color: var(--text-secondary);\n  width: 40px; height: 40px;\n  border-radius: 8px;\n  cursor: pointer;\n  display: flex; align-items: center; justify-content: center;\n  transition: all 0.2s;\n  font-size: 18px;\n}\n.image-attach-btn:hover { border-color: var(--accent); color: var(--text-primary); }\n.image-attach-btn.has-image { border-color: var(--accent); background: rgba(255,69,58,0.1); }\n.image-preview { width: 32px; height: 32px; border-radius: 6px; object-fit: cover; border: 2px solid var(--accent); }\n.remove-image { color: var(--text-secondary); cursor: pointer; font-size: 14px; padding: 4px; }\n.remove-image:hover { color: var(--accent); }\n.prompt-runtime-row {\n  display: grid;\n  grid-template-columns: auto 1fr;\n  gap: 12px;\n  align-items: center;\n  padding: 10px 12px;\n  border: 1px solid var(--border);\n  border-radius: 10px;\n  background: rgba(255,255,255,0.02);\n}\n.prompt-state-chip {\n  display: inline-flex;\n  align-items: center;\n  gap: 8px;\n  border: 1px solid var(--border);\n  border-radius: 999px;\n  padding: 6px 10px;\n  font-size: 11px;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: var(--text-secondary);\n  background: rgba(255,255,255,0.03);\n  white-space: nowrap;\n}\n.prompt-state-chip::before {\n  content: '';\n  width: 8px; height: 8px;\n  border-radius: 50%;\n  background: currentColor;\n  opacity: 0.9;\n}\n.prompt-state-chip.ready { color: #30d158; }\n.prompt-state-chip.sending,\n.prompt-state-chip.awaiting { color: #ffd166; }\n.prompt-state-chip.complete { color: #64d2ff; }\n.prompt-state-chip.quiet { color: #c7c7cc; }\n.prompt-state-chip.error { color: #ff6b6b; }\n.prompt-state-text { font-size: 13px; color: var(--text-primary); }\n\n@media (max-width: 980px) {\n  .prompt-section { grid-template-columns: 1fr; }\n}\n</style>\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold yellow]PARTIAL (5/6)[/bold yellow]",
+      "rubric_passed": 5,
+      "rubric_total": 6,
+      "rubric_failures": [
+        "references useSessionStore"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_vanilla",
+      "task": "medium",
+      "total_time_s": 3.593873977661133,
+      "local_time_s": 0.3224167823791504,
+      "api_time_s": 3.2714571952819824,
+      "tokens_in": 13813,
+      "tokens_out": 150,
+      "response": "```typescript\nimport { resetSession } from '@/store/SessionStore';\n\nexport default function ResetTask() {\n  const store = useSessionStore();\n\n  return (\n    <div>\n      <button onClick={() => resetSession()}>\n        <i>&#10094;</i> Reset Session\n      </button>\n    </div>\n  );\n}\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold yellow]PARTIAL (4/6)[/bold yellow]",
+      "rubric_passed": 4,
+      "rubric_total": 6,
+      "rubric_failures": [
+        "wires click event",
+        "Vue template or script block"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_membrane",
+      "task": "medium",
+      "total_time_s": 11.469966888427734,
+      "local_time_s": 0.32609081268310547,
+      "api_time_s": 11.143876075744629,
+      "tokens_in": 13813,
+      "tokens_out": 150,
+      "response": "```html\n<template>\n  <div class=\"dashboard\">\n    <button @click=\"resetSession\">Reset Session</button>\n\n    <!-- HUD -->\n    <VoxMonitor :ws-connected=\"wsConnected\" :ws-warmed=\"wsWarmed\" />\n    <div class=\"teacher-chip\">\n      Teacher: <strong>{{ teacherMode }}</strong>\n      <span v-if=\"teacherPauseReason\">· {{ teacherPauseReason }}</span>\n    </div>\n\n    <div class=\"card prompt-card\">\n      <PromptInput />\n    </div>\n\n    <div class=\"card response-card\">\n      <ResponseCard />\n      <ControlBar />\n    </div>\n\n    <ExternalizationPanel />\n\n    <PersistenceIntegrityCard\n      :payload=\"persistenceIntegrity\"\n      :runtime-graph-nodes=\"runtimeGraphNodes\"\n    />\n\n    <section class=\"section-block\">\n      <div class=\"section-heading\">\n        <p class=\"section-kicker\">Organism Now</p>\n        <h2>Current state at a glance</h2>\n      </div>\n      <div class=\"section-grid now-grid\">\n        <RuntimeVitalsPanel />\n        <MindHero />\n        <AttentionStream />\n        <div class=\"card compact-vitals\">\n          <div class=\"label\">homeostasis</div>\n          <MoodMeter />\n          <FoodSupply />\n          <div v-if=\"conceptSummaryVisible\" class=\"concept-summary\">\n            <div class=\"concept-summary__section\">\n              <div class=\"concept-summary__label\">forming concepts</div>\n              <div class=\"chip-row\">\n                <span\n                  v-for=\"concept in conceptSummary.forming\"\n                  :key=\"`forming-${concept.label}`\"\n                  class=\"chip chip--stable\"\n                >\n                  {{ concept.label }} ({{ concept.visit_count }})\n                </span>\n                <span v-if=\"conceptSummary.forming.length === 0\" class=\"chip chip--muted\">none</span>\n              </div>\n            </div>\n            <div class=\"concept-summary__section\">\n              <div class=\"concept-summary__label\">stable concepts</div>\n              <div class=\"chip-row\">\n                <span\n                  v-for=\"concept in conceptSummary.stable\"\n                  :key=\"`stable-${concept.label}`\"\n                  class=\"chip chip--stable\"\n                >\n                  {{ concept.label }} ({{ concept.visit_count }})\n                </span>\n                <span v-if=\"conceptSummary.stable.length === 0\" class=\"chip chip--muted\">none</span>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </section>\n\n    <section class=\"section-block\">\n      <div class=\"section-heading\">\n        <p class=\"section-kicker\">Embodiment</p>\n        <h2>Where Vox is in her world</h2>\n      </div>\n      <div class=\"section-grid embodiment-grid\">\n        <NurseryRoomMap :log-lines=\"dashboardNurseryLogLines\" />\n        <div class=\"card body-summary-card\">\n          <div class=\"label\">body / sensors</div>\n          <div class=\"summary-row\">\n            <span>body adapter</span>\n            <strong>{{ bodyAdapter }}</strong>\n          </div>\n          <div class=\"summary-row\">\n            <span>motor context</span>\n            <strong>{{ motorContext }}</strong>\n          </div>\n          <div class=\"summary-row\">\n            <span>pose</span>\n            <strong>x{{ bodyPose.x }}, y{{ bodyPose.y }}</strong>\n          </div>\n          <AmbientControls />\n          <div class=\"summary-row\">\n            <span>body tokens</span>\n            <strong>{{ bodyTokens.length ? bodyTokens.join(' · ') : '—' }}</strong>\n          </div>\n        </div>\n      </div>\n    </section>\n  </div>\n</template>\n\n<script setup lang=\"ts\">\nimport { defineAsyncComponent, onMounted } from \"vue\";\nimport { useRouter } from \"vue-router\";\n\nconst useSessionStore = import.meta.env;\nconst dashboardNurseryLogLines = [\n  // Example log lines for the nursery room\n];\nconst router = useRouter();\n\n// Reset session action\nconst resetSession = async () => {\n  await useSessionStore.resetSession();\n};\n\nonMounted(() => {\n  if (dashboardNurseryLogLines) {\n    const bodyAdapter = dashboardNurseryLogLines[0].body_adapter;\n    const motorContext = dashboardNurseryLogLines[0].motor_context;\n\n    conceptSummary.forming.length = 0;\n    conceptSummary.stable.length = 0;\n\n    conceptSummary.forming.push({\n      label: \"Forming Concept\",\n      visit_count: bodyAdapter,\n    });\n    conceptSummary.stable.push({\n      label: \"Stable Concept\",\n      visit_count: motorContext,\n    });\n\n    // Reset controller\n    localStorage.clear();\n    const savedState = JSON.parse(localStorage.getItem(\"session-state\"));\n    if (savedState) {\n      saveSessionState(savedState);\n    }\n  } else {\n    console.warn(\"No nursery room log lines to reset.\");\n  }\n});\n</script>\n\n<style scoped>\n.dashboard {\n  display: grid;\n  gap: 20px;\n}\n\n.save-toast {\n  position: sticky;\n  top: 8px;\n  z-index: 20;\n  border: 1px solid rgba(255, 184, 77, 0.55);\n  background: rgba(51, 35, 15, 0.85);\n  color: #ffd8a8;\n  border-radius: 10px;\n  padding: 10px 12px;\n  font-size: 12px;\n  line-height: 1.4;\n}\n\n.teacher-chip {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  width: fit-content;\n  border-radius: 999px;\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  background: rgba(7, 11, 18, 0.7);\n  color: var(--text-secondary);\n  padding: 8px 12px;\n  font-size: 12px;\n}\n\n.teacher-chip strong {\n  color: var(--text-primary);\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  font-size: 11px;\n  color: var(--accent);\n  font-weight: 700;\n}\n\n.section-block {\n  display: grid;\n  gap: 14px;\n}\n\n.section-heading {\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n}\n\n.section-kicker,\n.label {\n  margin: 0;\n  text-transform: uppercase;\n  letter-spacing: 0.12em;\n  font-size: 11px;\n  color: var(--accent);\n  font-weight: 700;\n}\n\n.section-heading h2 {\n  margin: 0;\n  color: var(--text-primary);\n  font-size: 18px;\n}\n</style>\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold green]PASS (6/6)[/bold green]",
+      "rubric_passed": 6,
+      "rubric_total": 6,
+      "rubric_failures": [],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "rag",
+      "task": "hard",
+      "total_time_s": 3.7903547286987305,
+      "local_time_s": 0.027422666549682617,
+      "api_time_s": 3.762932062149048,
+      "tokens_in": 8968,
+      "tokens_out": 150,
+      "response": "```json\n{\n  \"type\": \"Feature\",\n  \"properties\": {\n    \"id\": \"\",\n    \"name\": \"camera-enabled\",\n    \"value\": true,\n    \"title\": \"Camera Enabled\"\n  },\n  \"featureType\": \"General\",\n  \"features\": [\n    {\n      \"type\": \"Feature\",\n      \"properties\": {\n        \"id\": \"\",\n        \"name\": \"mic-listening-enabled\",\n        \"value\": false,\n        \"title\": \"Mic Listening Enabled\"\n      }\n    },\n    {\n      \"type\": \"Feature\",\n      \"properties\": {\n        \"id\": \"\",\n        \"name\": \"screen-transcribe-enabled\",\n        \"value\": false,\n        \"title\": \"Screen Transcription Enabled\"\n      }\n    }\n  ]\n}\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold red]FAIL (2/7)[/bold red]",
+      "rubric_passed": 2,
+      "rubric_total": 7,
+      "rubric_failures": [
+        "creates SettingsView",
+        "adds route entry",
+        "adds nav link in App",
+        "references useAmbientStore",
+        "Vue template block"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_vanilla",
+      "task": "hard",
+      "total_time_s": 5.896260499954224,
+      "local_time_s": 0.35286951065063477,
+      "api_time_s": 5.543390989303589,
+      "tokens_in": 74073,
+      "tokens_out": 150,
+      "response": "```ts\n// src/views/SettingsView.vue\n\n<template>\n  <div v-if=\"isCameraEnabled\" class=\"camera-enabled\">\n    <p>Camera is enabled.</p>\n  </div>\n\n  <div v-else class=\"camera-disabled\">\n    <p>Camera is disabled.</p>\n  </div>\n</template>\n\n<script setup>\nimport { computed } from 'vue';\n\nconst useAmbientStore = useAmbientStore();\nconst isCameraEnabled = computed(() => useAmbientStore.isCameraEnabled);\n\n// Assuming the ambient store is a state property in src/api/client.ts\nconst AmbientStoreClient = import.meta.globals.client.api.client;\n</script>\n\n<template>\n  <nav>\n    <button v-on:click=\"toggleCamera\" :class=\"{ active: isCameraEnabled }\">\n      {{ isCameraEnabled ? 'Toggle Camera' : 'Hide Camera' }}\n    </button>\n  </nav>\n</template>\n\n<style scoped>\n.camera-enabled {\n  background-color: #69d7e5;\n}\n\n.camera-disabled {\n  background-color: #f1b8c3;\n}\n```\n\n/src/App.vue\n```ts\n\n<template>\n  <div id=\"app\">\n    <nav>\n      <!-- Navigation links -->\n    </nav>\n\n    <router-view />\n  </div>\n</template>\n\n<script setup>\nimport { useAmbientStore } from './src/api/client';\n\nuseAmbientStore = useAmbientStore();\n\n// Assuming the ambient store is a state property in src/api/client.ts\nconst AmbientStoreClient = import.meta.globals.client.api.client;\n</script>\n\n<style scoped>\n#app {\n  font-family: 'Avenir', Helvetica, Arial, sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n</style>\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold yellow]PARTIAL (6/7)[/bold yellow]",
+      "rubric_passed": 6,
+      "rubric_total": 7,
+      "rubric_failures": [
+        "[CONSTRAINT] App.vue directly imports api/client.ts"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_membrane",
+      "task": "hard",
+      "total_time_s": 4.241840600967407,
+      "local_time_s": 0.35077476501464844,
+      "api_time_s": 3.891065835952759,
+      "tokens_in": 74073,
+      "tokens_out": 150,
+      "response": "```typescript\n<template>\n  <div>\n    <button @click=\"toggleAmbientMode\">Toggle Ambient Mode</button>\n    <p>Camera and microphone enabled: {{ isCamMicroEnabled }}</p>\n  </div>\n</template>\n\n<script setup lang=\"ts\">\nimport { ref } from 'vue';\n\nconst isCamMicroEnabled = ref(true);\n\nfunction toggleAmbientMode() {\n  // Simulate an action to switch the mode\n}\n</script>\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold red]FAIL (3/7)[/bold red]",
+      "rubric_passed": 3,
+      "rubric_total": 7,
+      "rubric_failures": [
+        "creates SettingsView",
+        "adds route entry",
+        "adds nav link in App",
+        "references useAmbientStore"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    }
+  ],
+  "summary": {
+    "by_tier": {
+      "rag": {
+        "tier_name": "RAG",
+        "observations": 3,
+        "avg_total_time_s": 6.1704,
+        "avg_local_time_s": 0.295,
+        "avg_api_time_s": 5.8754,
+        "avg_tokens_in": 6625.0,
+        "context_density_pct": 6.22,
+        "pass_at_1_count": 0,
+        "partial_count": 3,
+        "fail_count": 0,
+        "avg_topological_integrity": 1.0,
+        "total_patches_applied": 0
+      },
+      "gog_vanilla": {
+        "tier_name": "GOG Vanilla",
+        "observations": 3,
+        "avg_total_time_s": 5.8239,
+        "avg_local_time_s": 0.3335,
+        "avg_api_time_s": 5.4904,
+        "avg_tokens_in": 29645.0,
+        "context_density_pct": 27.83,
+        "pass_at_1_count": 1,
+        "partial_count": 2,
+        "fail_count": 0,
+        "avg_topological_integrity": 1.0,
+        "total_patches_applied": 0
+      },
+      "gog_membrane": {
+        "tier_name": "GOG Membrane",
+        "observations": 3,
+        "avg_total_time_s": 7.2292,
+        "avg_local_time_s": 0.3345,
+        "avg_api_time_s": 6.8946,
+        "avg_tokens_in": 29645.0,
+        "context_density_pct": 27.83,
+        "pass_at_1_count": 1,
+        "partial_count": 2,
+        "fail_count": 0,
+        "avg_topological_integrity": 1.0,
+        "total_patches_applied": 0
+      }
+    },
+    "by_task": {
+      "easy": {
+        "rag": {
+          "tokens_in": 5730,
+          "total_time_s": 4.0596,
+          "rubric_label": "[bold yellow]PARTIAL (3/5)[/bold yellow]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_vanilla": {
+          "tokens_in": 1049,
+          "total_time_s": 7.9816,
+          "rubric_label": "[bold green]PASS (5/5)[/bold green]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_membrane": {
+          "tokens_in": 1049,
+          "total_time_s": 5.9758,
+          "rubric_label": "[bold yellow]PARTIAL (4/5)[/bold yellow]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        }
+      },
+      "medium": {
+        "rag": {
+          "tokens_in": 5177,
+          "total_time_s": 10.6614,
+          "rubric_label": "[bold yellow]PARTIAL (5/6)[/bold yellow]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_vanilla": {
+          "tokens_in": 13813,
+          "total_time_s": 3.5939,
+          "rubric_label": "[bold yellow]PARTIAL (4/6)[/bold yellow]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_membrane": {
+          "tokens_in": 13813,
+          "total_time_s": 11.47,
+          "rubric_label": "[bold green]PASS (6/6)[/bold green]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        }
+      },
+      "hard": {
+        "rag": {
+          "tokens_in": 8968,
+          "total_time_s": 3.7904,
+          "rubric_label": "[bold red]FAIL (2/7)[/bold red]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_vanilla": {
+          "tokens_in": 74073,
+          "total_time_s": 5.8963,
+          "rubric_label": "[bold yellow]PARTIAL (6/7)[/bold yellow]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_membrane": {
+          "tokens_in": 74073,
+          "total_time_s": 4.2418,
+          "rubric_label": "[bold red]FAIL (3/7)[/bold red]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        }
+      }
+    },
+    "global": {
+      "baseline_tier": "rag",
+      "comparison_tier": "gog_membrane",
+      "token_reduction_pct": -347.5,
+      "time_change_pct": -17.2,
+      "r_improvement_passes": 1,
+      "r_increase_in_topological_integrity": 0.0
+    }
+  }
+}
