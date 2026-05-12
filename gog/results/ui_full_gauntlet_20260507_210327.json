@@ -1,0 +1,337 @@
+{
+  "meta": {
+    "timestamp": "2026-05-07T21:03:27.529757+00:00",
+    "model": "qwen2.5:0.5b",
+    "total_repo_tokens": 227827,
+    "repo_path": "/home/dchisholm125/Desktop/repos-local/digital-organism/ui-full",
+    "tiers_evaluated": [
+      "rag",
+      "gog_vanilla",
+      "gog_membrane"
+    ],
+    "tasks_evaluated": [
+      "Easy",
+      "Medium",
+      "Hard"
+    ]
+  },
+  "environment": {
+    "python_version": "3.10.12",
+    "platform": "linux"
+  },
+  "metrics": [
+    {
+      "tier": "rag",
+      "task": "easy",
+      "total_time_s": 5.367130279541016,
+      "local_time_s": 0.8345670700073242,
+      "api_time_s": 4.532563209533691,
+      "tokens_in": 5730,
+      "tokens_out": 150,
+      "response": "```json\n{\n  \"tasks\": [\n    {\n      \"id\": \"1\",\n      \"name\": \"Update session store with last prompt at timestamp\",\n      \"description\": \"Add a reactive field `lastPromptAt` to `useSessionStore` using Pinia's Composition API pattern. Update the existing `addToHistory` action so it sets `lastPromptAt` to the current Date() on every new entry.\"\n    }\n  ]\n}\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold yellow]PARTIAL (3/5)[/bold yellow]",
+      "rubric_passed": 3,
+      "rubric_total": 5,
+      "rubric_failures": [
+        "uses Pinia defineStore",
+        "uses Composition API ref"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_vanilla",
+      "task": "easy",
+      "total_time_s": 4.823667526245117,
+      "local_time_s": 0.38623690605163574,
+      "api_time_s": 4.4374306201934814,
+      "tokens_in": 111267,
+      "tokens_out": 150,
+      "response": "```ts\n\nimport { defineStore } from 'pinia'\n\nexport const useSessionStore = defineStore('session', {\n  // Add a reactive field to store the last prompt timestamp in Date()\n  state: (): number | undefined => undefined,\n  persist: true, // Save the stored value to localStorage or another storage mechanism\n})\n\n// Update existing `addToHistory` action so it sets the lastPromptAt timestamp to the current Date() on every new entry\nexport const addToHistory = ({ data, isLast }: { data: any; isLast?: boolean }) => {\n  if (isLast) {\n    useSessionStore.set('lastPromptAt', new Date())\n  }\n}\n\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold yellow]PARTIAL (4/5)[/bold yellow]",
+      "rubric_passed": 4,
+      "rubric_total": 5,
+      "rubric_failures": [
+        "uses Composition API ref"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_membrane",
+      "task": "easy",
+      "total_time_s": 4.575222015380859,
+      "local_time_s": 0.3699212074279785,
+      "api_time_s": 4.205300807952881,
+      "tokens_in": 111267,
+      "tokens_out": 150,
+      "response": "```typescript\n\n// Define store in Store.ts\nimport { defineStore } from 'pinia'\n\ninterface SessionState {\n  lastPromptAt: Date | null;\n}\n\nexport const useSessionStore = defineStore('session', {\n  persist: true,\n  state: (): SessionState => ({\n    // Your existing code here, but now with a reactive `lastPromptAt` field\n    lastPromptAt: null,\n  }),\n});\n\n// Update addToHistory action to set lastPromptAt\nexport const addToHistory = (prompt) => {\n  useSessionStore().state.lastPromptAt = new Date(prompt);\n};\n\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold yellow]PARTIAL (4/5)[/bold yellow]",
+      "rubric_passed": 4,
+      "rubric_total": 5,
+      "rubric_failures": [
+        "uses Composition API ref"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "rag",
+      "task": "medium",
+      "total_time_s": 3.022770404815674,
+      "local_time_s": 0.02794027328491211,
+      "api_time_s": 2.9948301315307617,
+      "tokens_in": 5177,
+      "tokens_out": 150,
+      "response": "```typescript\nimport { defineComponent } from 'vue';\n\nexport default defineComponent({\n  name: 'ResetSession',\n  data() {\n    return {};\n  },\n});\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold red]FAIL (3/6)[/bold red]",
+      "rubric_passed": 3,
+      "rubric_total": 6,
+      "rubric_failures": [
+        "wires click event",
+        "references useSessionStore",
+        "Vue template or script block"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_vanilla",
+      "task": "medium",
+      "total_time_s": 3.8632209300994873,
+      "local_time_s": 0.32417917251586914,
+      "api_time_s": 3.539041757583618,
+      "tokens_in": 13813,
+      "tokens_out": 150,
+      "response": "```ts\nimport { useSessionStore } from '@/stores/session';\n\nexport default function ResetTask() {\n  const store = useSessionStore();\n\n  return (\n    <div>\n      <button onClick={() => store.resetPromptInput()}>Reset Prompt Input</button>\n    </div>\n  );\n}\n```\n\nPlease note that this solution is a simplified version of the provided code snippet and does not directly address resetting user sessions or any specific actions related to session states within the `DashboardView.vue` file. If you need more advanced functionality, additional code would be required for handling reset requests or state management between components.",
+      "patches_applied": 0,
+      "rubric_label": "[bold red]FAIL (3/6)[/bold red]",
+      "rubric_passed": 3,
+      "rubric_total": 6,
+      "rubric_failures": [
+        "wires click event",
+        "defines or calls resetSession",
+        "Vue template or script block"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_membrane",
+      "task": "medium",
+      "total_time_s": 4.294464111328125,
+      "local_time_s": 0.32395052909851074,
+      "api_time_s": 3.9705135822296143,
+      "tokens_in": 13813,
+      "tokens_out": 150,
+      "response": "```ts\n<template>\n  <div>\n    <button @click=\"resetSession\">Reset Session</button>\n\n    <!-- HUD -->\n    <VoxMonitor :ws-connected=\"false\" />\n  </div>\n</template>\n\n<script setup lang=\"ts\">\nimport { useSessionStore } from './$components/session.store';\nimport { ref, onMounted } from 'vue';\n\nonMounted(() => {\n  const resetSession = () => {\n    useSessionStore.resetSession();\n  };\n\n  // Reset state for user\n  resetSession();\n\n  // Use this to manage the session store\n  let storedStore = ref(useSessionStore);\n\n  // Listen for changes in the store\n  onMounted(() => {\n    storedStore.value = useSessionStore;\n\n    // Apply styles based on current state\n    const resetStyles = `bg-${storedStore.value.theme.color} text-${storedStore.value.theme.text}`;\n    document.body.style.background = resetStyles;\n  });\n});\n</script>\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold green]PASS (6/6)[/bold green]",
+      "rubric_passed": 6,
+      "rubric_total": 6,
+      "rubric_failures": [],
+      "topological_integrity": 0.0,
+      "closure_patched_count": 0,
+      "closure_violations": [
+        "./$components/session.store"
+      ]
+    },
+    {
+      "tier": "rag",
+      "task": "hard",
+      "total_time_s": 3.0913946628570557,
+      "local_time_s": 0.02767777442932129,
+      "api_time_s": 3.0637168884277344,
+      "tokens_in": 8968,
+      "tokens_out": 150,
+      "response": "```json\n{\n  \"type\": \"directives\",\n  \"values\": [\n    {\n      \"name\": \"client\",\n      \"args\": []\n    }\n  ]\n}\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold red]FAIL (1/7)[/bold red]",
+      "rubric_passed": 1,
+      "rubric_total": 7,
+      "rubric_failures": [
+        "creates SettingsView",
+        "adds route entry",
+        "adds nav link in App",
+        "references useAmbientStore",
+        "accesses camera / mic",
+        "Vue template block"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_vanilla",
+      "task": "hard",
+      "total_time_s": 4.826288938522339,
+      "local_time_s": 0.3479177951812744,
+      "api_time_s": 4.4783711433410645,
+      "tokens_in": 74073,
+      "tokens_out": 150,
+      "response": "```typescript\n// src/views/SettingsView.vue\n\n<template>\n  <div v-if=\"isCameraMicrophoneEnabled\" class=\"settings-view\">\n    <h2>Settings</h2>\n    <p>Camera and microphone are enabled.</p>\n  </div>\n</template>\n\n<script setup lang=\"ts\">\nimport { useAmbientStore } from '@/stores/ambient'\n\nconst isCameraMicrophoneEnabled = computed(() => {\n  return useAmbientStore().isCameraMicrophoneEnabled\n})\n\n// Assuming App.vue has a nav link that links to SettingsView\n\n<template #nav>\n  <router-link :to=\"{ name: 'SettingsView' }\">Settings</router-link>\n</template>\n\n<template #right>\n  <div v-if=\"isCameraMicrophoneEnabled\" class=\"settings-view\">\n    <h2>Settings</h2>\n    <p>Camera and microphone are enabled.</p>\n  </div>\n</template>\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold green]PASS (7/7)[/bold green]",
+      "rubric_passed": 7,
+      "rubric_total": 7,
+      "rubric_failures": [],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_membrane",
+      "task": "hard",
+      "total_time_s": 5.0440850257873535,
+      "local_time_s": 0.34751391410827637,
+      "api_time_s": 4.696571111679077,
+      "tokens_in": 74073,
+      "tokens_out": 150,
+      "response": "```typescript\n// src/views/SettingsView.vue\n<template>\n  <div>\n    <button v-on:click=\"toggleAmbientEnabled\">Toggle Ambient</button>\n    <p>Camera Enabled: {{ ambient.camera_enabled }}</p>\n    <p>Microphone Enabled: {{ ambient.microphone_enabled }}</p>\n  </div>\n</template>\n\n<script setup>\nimport { useAmbientStore } from '@/store/ambient';\n\nconst ambient = useAmbientStore();\n\nfunction toggleAmbientEnabled() {\n  ambient.camera_enabled = !ambient.camera_enabled;\n}\n</script>\n\n<style scoped></style>\n\n<!-- src/App.vue -->\n<template>\n  <nav>\n    <router-link to=\"/\">Home</router-link>\n    <router-link to=\"/settings\">Settings</router-link>\n  </nav>\n  <main>\n    <SettingView />\n  </main>\n</template>\n\n<script setup>\nimport { useRoute } from 'vue-router';\n// [SRM PATCH: hallucinated import removed] import SettingView from './components/SettingsView.vue';\n\nconst route = useRoute();\nconst ambientStore = useAmbientStore();\n\nfunction toggleAmbientEnabled() {\n  ambientCamera.enabled = !ambientCamera.enabled;\n}\n</script>\n```",
+      "patches_applied": 1,
+      "rubric_label": "[bold green]PASS (7/7)[/bold green]",
+      "rubric_passed": 7,
+      "rubric_total": 7,
+      "rubric_failures": [],
+      "topological_integrity": 0.0,
+      "closure_patched_count": 1,
+      "closure_violations": [
+        "./components/SettingsView.vue"
+      ]
+    }
+  ],
+  "summary": {
+    "by_tier": {
+      "rag": {
+        "tier_name": "RAG",
+        "observations": 3,
+        "avg_total_time_s": 3.8271,
+        "avg_local_time_s": 0.2967,
+        "avg_api_time_s": 3.5304,
+        "avg_tokens_in": 6625.0,
+        "context_density_pct": 2.91,
+        "pass_at_1_count": 0,
+        "partial_count": 3,
+        "fail_count": 0,
+        "avg_topological_integrity": 1.0,
+        "total_patches_applied": 0
+      },
+      "gog_vanilla": {
+        "tier_name": "GOG Vanilla",
+        "observations": 3,
+        "avg_total_time_s": 4.5044,
+        "avg_local_time_s": 0.3528,
+        "avg_api_time_s": 4.1516,
+        "avg_tokens_in": 66384.3,
+        "context_density_pct": 29.14,
+        "pass_at_1_count": 1,
+        "partial_count": 2,
+        "fail_count": 0,
+        "avg_topological_integrity": 1.0,
+        "total_patches_applied": 0
+      },
+      "gog_membrane": {
+        "tier_name": "GOG Membrane",
+        "observations": 3,
+        "avg_total_time_s": 4.6379,
+        "avg_local_time_s": 0.3471,
+        "avg_api_time_s": 4.2908,
+        "avg_tokens_in": 66384.3,
+        "context_density_pct": 29.14,
+        "pass_at_1_count": 2,
+        "partial_count": 1,
+        "fail_count": 0,
+        "avg_topological_integrity": 0.3333,
+        "total_patches_applied": 1
+      }
+    },
+    "by_task": {
+      "easy": {
+        "rag": {
+          "tokens_in": 5730,
+          "total_time_s": 5.3671,
+          "rubric_label": "[bold yellow]PARTIAL (3/5)[/bold yellow]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_vanilla": {
+          "tokens_in": 111267,
+          "total_time_s": 4.8237,
+          "rubric_label": "[bold yellow]PARTIAL (4/5)[/bold yellow]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_membrane": {
+          "tokens_in": 111267,
+          "total_time_s": 4.5752,
+          "rubric_label": "[bold yellow]PARTIAL (4/5)[/bold yellow]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        }
+      },
+      "medium": {
+        "rag": {
+          "tokens_in": 5177,
+          "total_time_s": 3.0228,
+          "rubric_label": "[bold red]FAIL (3/6)[/bold red]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_vanilla": {
+          "tokens_in": 13813,
+          "total_time_s": 3.8632,
+          "rubric_label": "[bold red]FAIL (3/6)[/bold red]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_membrane": {
+          "tokens_in": 13813,
+          "total_time_s": 4.2945,
+          "rubric_label": "[bold green]PASS (6/6)[/bold green]",
+          "topological_integrity": 0.0,
+          "patches_applied": 0
+        }
+      },
+      "hard": {
+        "rag": {
+          "tokens_in": 8968,
+          "total_time_s": 3.0914,
+          "rubric_label": "[bold red]FAIL (1/7)[/bold red]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_vanilla": {
+          "tokens_in": 74073,
+          "total_time_s": 4.8263,
+          "rubric_label": "[bold green]PASS (7/7)[/bold green]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_membrane": {
+          "tokens_in": 74073,
+          "total_time_s": 5.0441,
+          "rubric_label": "[bold green]PASS (7/7)[/bold green]",
+          "topological_integrity": 0.0,
+          "patches_applied": 1
+        }
+      }
+    },
+    "global": {
+      "baseline_tier": "rag",
+      "comparison_tier": "gog_membrane",
+      "token_reduction_pct": -902.0,
+      "time_change_pct": -21.2,
+      "r_improvement_passes": 2,
+      "r_increase_in_topological_integrity": -0.6667
+    }
+  }
+}

@@ -151,6 +151,32 @@ def build_node_embeddings(graph: nx.DiGraph) -> dict:
     return dict(zip(nodes, embeddings))
 
 
+def _extract_filename_mentions(prompt: str, graph: nx.DiGraph) -> list:
+    """
+    Extract full file paths mentioned in the prompt and match them against
+    graph nodes (case-insensitive suffix match).
+
+    Uses ONLY full relative paths (e.g. `src/router/index.ts`).
+    Never falls back to bare basenames like `index.ts` to avoid collision
+    between `router/index.ts` and `types/index.ts`.
+    """
+    m1 = re.findall(r'src/[A-Za-z0-9_/.-]+\.(?:ts|vue|js)', prompt)
+    mentions = list(dict.fromkeys(m1))  # preserve order, de-duplicate
+
+    matched = []
+    seen = set()
+    for candidate in mentions:
+        candidate_lower = candidate.lower().replace("/", os.sep)
+        for node in graph.nodes():
+            node_lower = node.lower().replace("/", os.sep)
+            if node_lower.endswith(candidate_lower):
+                if node not in seen:
+                    seen.add(node)
+                    matched.append(node)
+                break
+    return matched
+
+
 def isolate_context(
     graph: nx.DiGraph,
     prompt: str,
@@ -158,14 +184,14 @@ def isolate_context(
 ) -> list:
     """
     Returns the minimal set of files required to answer the given prompt,
-    determined by semantic seeding followed by deterministic graph traversal.
+    determined by deterministic graph traversal.
 
     Traversal strategy:
-        - Single seed:   Return seed + all transitive descendants.
-        - Multiple seeds: Find shortest paths between all seed pairs (both
-                          directions), collect path nodes + descendants of
-                          terminal nodes. Falls back to per-seed descendant
-                          expansion if no inter-seed paths exist.
+        - Explicit filenames (e.g. `src/router/index.ts`) take absolute priority
+          over semantic seeding because they are user-supplied ground truth.
+        - Semantic seeding (sentence-transformer similarity) is a fallback.
+        - Once seeds are chosen, descendants are bounded to max_depth=2 to
+          avoid explosion from highly-connected entry-point nodes.
 
     Args:
         graph:           Dependency graph from ast_parser.build_graph().
@@ -175,16 +201,26 @@ def isolate_context(
     Returns:
         Sorted list of absolute file paths forming the isolated context.
     """
-    seeds = seed_graph_from_prompt(graph, prompt, node_embeddings=node_embeddings)
+    # ── Priority 1: explicit file-name mentions in prompt ────────────────────
+    keyword_seeds = _extract_filename_mentions(prompt, graph)
+    if keyword_seeds:
+        seeds = keyword_seeds[:5]
+    else:
+        # ── Priority 2: semantic seeding ───────────────────────────────────
+        seeds = seed_graph_from_prompt(graph, prompt, node_embeddings=node_embeddings)
 
     if not seeds:
-        return sorted(list(graph.nodes()))
+        # Last resort: return only the highest-degree nodes (most connected / central)
+        # rather than every file in the repo.
+        degrees = {n: graph.degree(n) for n in graph.nodes()}
+        top = sorted(degrees.items(), key=lambda x: x[1], reverse=True)[:8]
+        return sorted([n for n, _ in top])
 
     subgraph_nodes = set()
 
     if len(seeds) == 1:
         subgraph_nodes.add(seeds[0])
-        subgraph_nodes.update(nx.descendants(graph, seeds[0]))
+        subgraph_nodes.update(_descendants_bounded(graph, seeds[0]))
     else:
         for i in range(len(seeds)):
             for j in range(i + 1, len(seeds)):
@@ -193,23 +229,50 @@ def isolate_context(
                 try:
                     path = nx.shortest_path(graph, source=source, target=target)
                     subgraph_nodes.update(path)
-                    subgraph_nodes.update(nx.descendants(graph, target))
+                    subgraph_nodes.update(_descendants_bounded(graph, target))
                 except nx.NetworkXNoPath:
                     pass
 
                 try:
                     path = nx.shortest_path(graph, source=target, target=source)
                     subgraph_nodes.update(path)
-                    subgraph_nodes.update(nx.descendants(graph, source))
+                    subgraph_nodes.update(_descendants_bounded(graph, source))
                 except nx.NetworkXNoPath:
                     pass
 
         if not subgraph_nodes:
             for seed in seeds:
                 subgraph_nodes.add(seed)
-                subgraph_nodes.update(nx.descendants(graph, seed))
+                subgraph_nodes.update(_descendants_bounded(graph, seed))
 
     return sorted(list(subgraph_nodes))
+
+
+def _descendants_bounded(graph, source, max_depth=2):
+    """
+    Return descendants of *source* within *max_depth* hops.
+
+    This replaces `nx.descendants()` which can explode when a seed node
+    (e.g. a dashboard view) imports a large surface of the codebase.
+    A depth of 2 is usually sufficient: the node itself, its direct
+    imports, and their direct imports.
+    """
+    if max_depth <= 0:
+        return set()
+    visited = set()
+    current = {source}
+    for _ in range(max_depth):
+        next_level = set()
+        for node in current:
+            for succ in graph.successors(node):
+                if succ not in visited:
+                    visited.add(succ)
+                    next_level.add(succ)
+        current = next_level
+        if not current:
+            break
+    visited.discard(source)
+    return visited
 
 
 if __name__ == "__main__":

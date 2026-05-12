@@ -1,0 +1,338 @@
+{
+  "meta": {
+    "timestamp": "2026-05-07T20:29:48.151447+00:00",
+    "model": "qwen2.5:0.5b",
+    "total_repo_tokens": 2083720,
+    "repo_path": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/target_repo",
+    "tiers_evaluated": [
+      "rag",
+      "gog_vanilla",
+      "gog_membrane"
+    ],
+    "tasks_evaluated": [
+      "Easy",
+      "Medium",
+      "Hard"
+    ]
+  },
+  "environment": {
+    "python_version": "3.10.12",
+    "platform": "linux"
+  },
+  "metrics": [
+    {
+      "tier": "rag",
+      "task": "easy",
+      "total_time_s": 6.644291639328003,
+      "local_time_s": 1.8054964542388916,
+      "api_time_s": 4.838795185089111,
+      "tokens_in": 53125,
+      "tokens_out": 150,
+      "response": "```typescript\nimport { updateDefaultState } from '@/stores/authStore';\n\n// Add the 'lastLogin' string timestamp to the default state\nupdateDefaultState({ login: DUMMY_ASSETS.login, lastLogin: '2026-03-08' });\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold red]FAIL (4/5)[/bold red]",
+      "rubric_passed": 4,
+      "rubric_total": 5,
+      "rubric_failures": [
+        "[red]STRUCTURAL: missing defineStore() call, missing state definition, state not properly initialized as object, missing actions object[/red]",
+        "uses defineStore (Pinia pattern)"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_vanilla",
+      "task": "easy",
+      "total_time_s": 3.702044725418091,
+      "local_time_s": 0.5083169937133789,
+      "api_time_s": 3.193727731704712,
+      "tokens_in": 6336,
+      "tokens_out": 150,
+      "response": "```typescript\n\nimport { authStore } from './src/stores/authStore';\n\nauthStore.lastLogin = new Date().toISOString();\n\nexport default authStore;\n\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold red]FAIL (3/5)[/bold red]",
+      "rubric_passed": 3,
+      "rubric_total": 5,
+      "rubric_failures": [
+        "[red]STRUCTURAL: missing defineStore() call, missing state definition, state not properly initialized as object, missing actions object[/red]",
+        "sets value to 2026-03-08",
+        "uses defineStore (Pinia pattern)"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_membrane",
+      "task": "easy",
+      "total_time_s": 3.713963508605957,
+      "local_time_s": 0.5001387596130371,
+      "api_time_s": 3.21382474899292,
+      "tokens_in": 6336,
+      "tokens_out": 150,
+      "response": "```typescript\n// Add lastLogin string timestamp to default state\nconst assetStore = DUMMY_ASSETS;\nassetStore.login.lastLogin = '2026-03-08';\n\nconsole.log(JSON.stringify(assetStore));\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold red]FAIL (4/5)[/bold red]",
+      "rubric_passed": 4,
+      "rubric_total": 5,
+      "rubric_failures": [
+        "[red]STRUCTURAL: missing defineStore() call, missing state definition, state not properly initialized as object, missing actions object[/red]",
+        "uses defineStore (Pinia pattern)"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "rag",
+      "task": "medium",
+      "total_time_s": 3.907371997833252,
+      "local_time_s": 0.040535926818847656,
+      "api_time_s": 3.8668360710144043,
+      "tokens_in": 53026,
+      "tokens_out": 150,
+      "response": "```typescript\nimport { useAuthStore } from '@/store/auth'; // Assuming you have a store imported\n\nexport default function HeaderWidget() {\n  const logout = () => useAuthStore().logout(); // Log out action\n\n  return (\n    <div class=\"container\">\n      <button class=\"logout-button\" onClick={logout}>\n        Logout\n      </button>\n      {/* User roles are available in the \"asset_9\" asset. You can expand this block to display them here */}\n      {DUMMY_ASSETS.asset_9}\n    </div>\n  );\n}\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold red]FAIL (4/5)[/bold red]",
+      "rubric_passed": 4,
+      "rubric_total": 5,
+      "rubric_failures": [
+        "[red]STRUCTURAL: missing <script> block, missing <template> block, missing </script> closing tag, missing </template> closing tag[/red]",
+        "Vue template or script block"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_vanilla",
+      "task": "medium",
+      "total_time_s": 4.148178577423096,
+      "local_time_s": 0.5124289989471436,
+      "api_time_s": 3.635749578475952,
+      "tokens_in": 40501,
+      "tokens_out": 150,
+      "response": "```ts\nimport { useAuthStore } from \"@/stores/auth\";\n\nexport default function HeaderWidget() {\n  const isUserLoggedIn = useAuthStore(state => state.auth.isUserLogged);\n  const logout = useAuthStore(state => state.auth.logout);\n\n  return (\n    <header>\n      <div id=\"user-role\">\n        User role: {isUserLoggedIn ? \"logged in\" : \"not logged in\"}\n      </div>\n      <button onClick={logout}>Logout</button>\n    </header>\n  );\n}\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold red]FAIL (4/5)[/bold red]",
+      "rubric_passed": 4,
+      "rubric_total": 5,
+      "rubric_failures": [
+        "[red]STRUCTURAL: missing <script> block, missing <template> block, missing </script> closing tag, missing </template> closing tag[/red]",
+        "Vue template or script block"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_membrane",
+      "task": "medium",
+      "total_time_s": 3.83880877494812,
+      "local_time_s": 0.5147826671600342,
+      "api_time_s": 3.324026107788086,
+      "tokens_in": 40501,
+      "tokens_out": 150,
+      "response": "```typescript\nimport { useAuthStore } from '@/stores/authStore';\n\nexport default function HeaderWidget() {\n  const logout = useAuthStore((state) => state.logout);\n\n  return (\n    <div>\n      {/* Your existing component code */}\n    </div>\n  );\n}\n```",
+      "patches_applied": 1,
+      "rubric_label": "[bold red]FAIL (3/5)[/bold red]",
+      "rubric_passed": 3,
+      "rubric_total": 5,
+      "rubric_failures": [
+        "[red]STRUCTURAL: missing <script> block, missing <template> block, missing </script> closing tag, missing </template> closing tag[/red]",
+        "wires click event",
+        "Vue template or script block"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 1,
+      "closure_violations": []
+    },
+    {
+      "tier": "rag",
+      "task": "hard",
+      "total_time_s": 3.864565134048462,
+      "local_time_s": 0.04493904113769531,
+      "api_time_s": 3.8196260929107666,
+      "tokens_in": 85915,
+      "tokens_out": 150,
+      "response": "```typescript\nimport { API } from '@/config';\nimport Vue from 'vue';\n\nVue.prototype.$axios = new API();\n\nexport default {\n  data() {\n    return {\n      isAuth: false,\n    };\n  },\n  \n  methods: {\n    async deleteAccount() {\n      const response = await axios.delete('/delete');\n      console.log('Account deleted successfully:', response.data);\n    },\n\n    updateUserSettings() {\n      this.isAuth = true;\n      this.$store.dispatch('authStore', { type: 'DELETE' });\n    },\n  },\n};\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold green]PASS (3/3)[/bold green]",
+      "rubric_passed": 3,
+      "rubric_total": 3,
+      "rubric_failures": [
+        "[dim](scored against single-file context: api_client.ts only)[/dim]"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_vanilla",
+      "task": "hard",
+      "total_time_s": 5.019180774688721,
+      "local_time_s": 0.490480899810791,
+      "api_time_s": 4.52869987487793,
+      "tokens_in": 6228,
+      "tokens_out": 150,
+      "response": "```typescript\n// src/services/api_client.ts\n\nexport const deleteAccount = (userId) => {\n  // Create an object with the DELETE API endpoint and the required parameters (userId)\n  const options = {\n    method: 'DELETE',\n    headers: {\n      'Content-Type': 'application/json'\n    }\n  };\n\n  // Make a request to the server\n  fetch('/delete', options)\n    .then(response => response.json())\n    .catch(error => console.error('Error:', error));\n};\n\n// authStore.ts\n\nexport const loginUser = (username, password) => {\n  return new Promise((resolve, reject) => {\n    axios({\n      method: 'POST',\n      url: '/login',\n      headers: {\n        'Content-Type': 'application/json'\n      },\n      data: JSON.stringify({ username, password })\n    }).then(response => resolve(response.data))\n      .catch(error => reject(error));\n  });\n};\n\nexport const deleteUser = (userId) => {\n  // Create an object with the DELETE API endpoint and the required parameters (userId)\n  const options = {\n    method: 'DELETE',\n    headers: {\n      'Content-Type': 'application/json'\n    }\n  };\n\n  // Make a request to the server\n  fetch('/delete', options)\n    .then(response => response.json())\n    .catch(error => console.error('Error:', error));\n};\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold green]PASS (3/3)[/bold green]",
+      "rubric_passed": 3,
+      "rubric_total": 3,
+      "rubric_failures": [
+        "[dim](scored against single-file context: api_client.ts only)[/dim]"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    },
+    {
+      "tier": "gog_membrane",
+      "task": "hard",
+      "total_time_s": 3.7269585132598877,
+      "local_time_s": 0.5184385776519775,
+      "api_time_s": 3.20851993560791,
+      "tokens_in": 6228,
+      "tokens_out": 150,
+      "response": "```typescript\nimport { defineComponent } from 'vue';\n\nexport default defineComponent({\n  data() {\n    return {};\n  },\n  methods: {\n    deleteUser() {\n      this.$apiClient.deleteAccount();\n    },\n  },\n});\n```",
+      "patches_applied": 0,
+      "rubric_label": "[bold yellow]PARTIAL (2/3)[/bold yellow]",
+      "rubric_passed": 2,
+      "rubric_total": 3,
+      "rubric_failures": [
+        "[dim](scored against single-file context: api_client.ts only)[/dim]",
+        "posts to /delete endpoint"
+      ],
+      "topological_integrity": 1.0,
+      "closure_patched_count": 0,
+      "closure_violations": []
+    }
+  ],
+  "summary": {
+    "by_tier": {
+      "rag": {
+        "tier_name": "RAG",
+        "observations": 3,
+        "avg_total_time_s": 4.8054,
+        "avg_local_time_s": 0.6303,
+        "avg_api_time_s": 4.1751,
+        "avg_tokens_in": 64022.0,
+        "context_density_pct": 3.07,
+        "pass_at_1_count": 1,
+        "partial_count": 2,
+        "fail_count": 0,
+        "avg_topological_integrity": 1.0,
+        "total_patches_applied": 0
+      },
+      "gog_vanilla": {
+        "tier_name": "GOG Vanilla",
+        "observations": 3,
+        "avg_total_time_s": 4.2898,
+        "avg_local_time_s": 0.5037,
+        "avg_api_time_s": 3.7861,
+        "avg_tokens_in": 17688.3,
+        "context_density_pct": 0.85,
+        "pass_at_1_count": 1,
+        "partial_count": 2,
+        "fail_count": 0,
+        "avg_topological_integrity": 1.0,
+        "total_patches_applied": 0
+      },
+      "gog_membrane": {
+        "tier_name": "GOG Membrane",
+        "observations": 3,
+        "avg_total_time_s": 3.7599,
+        "avg_local_time_s": 0.5111,
+        "avg_api_time_s": 3.2488,
+        "avg_tokens_in": 17688.3,
+        "context_density_pct": 0.85,
+        "pass_at_1_count": 0,
+        "partial_count": 3,
+        "fail_count": 0,
+        "avg_topological_integrity": 1.0,
+        "total_patches_applied": 1
+      }
+    },
+    "by_task": {
+      "easy": {
+        "rag": {
+          "tokens_in": 53125,
+          "total_time_s": 6.6443,
+          "rubric_label": "[bold red]FAIL (4/5)[/bold red]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_vanilla": {
+          "tokens_in": 6336,
+          "total_time_s": 3.702,
+          "rubric_label": "[bold red]FAIL (3/5)[/bold red]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_membrane": {
+          "tokens_in": 6336,
+          "total_time_s": 3.714,
+          "rubric_label": "[bold red]FAIL (4/5)[/bold red]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        }
+      },
+      "medium": {
+        "rag": {
+          "tokens_in": 53026,
+          "total_time_s": 3.9074,
+          "rubric_label": "[bold red]FAIL (4/5)[/bold red]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_vanilla": {
+          "tokens_in": 40501,
+          "total_time_s": 4.1482,
+          "rubric_label": "[bold red]FAIL (4/5)[/bold red]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_membrane": {
+          "tokens_in": 40501,
+          "total_time_s": 3.8388,
+          "rubric_label": "[bold red]FAIL (3/5)[/bold red]",
+          "topological_integrity": 1.0,
+          "patches_applied": 1
+        }
+      },
+      "hard": {
+        "rag": {
+          "tokens_in": 85915,
+          "total_time_s": 3.8646,
+          "rubric_label": "[bold green]PASS (3/3)[/bold green]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_vanilla": {
+          "tokens_in": 6228,
+          "total_time_s": 5.0192,
+          "rubric_label": "[bold green]PASS (3/3)[/bold green]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        },
+        "gog_membrane": {
+          "tokens_in": 6228,
+          "total_time_s": 3.727,
+          "rubric_label": "[bold yellow]PARTIAL (2/3)[/bold yellow]",
+          "topological_integrity": 1.0,
+          "patches_applied": 0
+        }
+      }
+    },
+    "global": {
+      "baseline_tier": "rag",
+      "comparison_tier": "gog_membrane",
+      "token_reduction_pct": 72.4,
+      "time_change_pct": 21.8,
+      "r_improvement_passes": -1,
+      "r_increase_in_topological_integrity": 0.0
+    }
+  }
+}

@@ -1,62 +1,90 @@
 # Graph-Oriented Generation (GOG)
-### The Neuro-Symbolic Engine for Deterministic Code Generation
+### Persistent Symbolic State for Software Generation
 
-> **Status: Moving beyond RAG.** We have validated that structure is a more reliable control variable than content. We are now building the full GOG engine to replace stochastic "side-car" assistants with deterministic, graph-native generation.
-
----
-
-## 🚀 The Core Thesis
-Current AI coding tools (Vector RAG) treat codebases as collections of text strings and hope the LLM can "guess" the architecture. **They fail at scale because they ignore the topology of the code.**
-
-**GOG treats a codebase as a finite, deterministic graph.** By offloading architectural reasoning to a symbolic graph layer and using a small language model (SLM) only for syntax rendering, we achieve higher correctness with 60-80% fewer tokens.
+> **Status:** GOG is evolving from a benchmark prototype into a repo-resident system model for graph-native software agents.
 
 ---
 
-## 🏗️ The GOG Architecture
-We separate **Reasoning** from **Rendering** using a three-layer Neuro-Symbolic stack:
+## The Core Thesis
 
-1.  **Symbolic Reasoning Layer (The Architect):** A deterministic planner (or a large LLM constrained to structured output) that analyzes the codebase graph and outputs a `MutationPlan` JSON. It never writes raw code.
-2.  **The Language Membrane (The Renderer):** A small model (e.g., Qwen 2.5 0.5B) that receives atomic mutation steps and renders them into syntax. It is "headless" and has no architectural agency.
-3.  **SalienceEvaluator (The Validator):** A deterministic gate that validates every line of generated code against the graph boundary, auto-patching illegal imports in real-time.
+GOG investigates whether software generation improves when codebases are first transformed into persistent symbolic state, that state is served to a higher-level reasoner, and language models are demoted from architects to renderers.
+
+GOG is **not** the reasoner itself. It is the symbolic repository substrate and presentation layer that should make a codebase easier for a reasoner to comprehend, manipulate, and validate.
+
+The project is now organized around three ideas:
+
+1. **Graphize the repository first.** A GOG-aware assistant should onboard a repo into durable symbolic state before acting like a coding agent.
+2. **Serve the reasoner better.** Today that reasoner may be a deterministic planner or a large language model constrained to structured output. The long-range hypothesis is a true symbolic reasoning model, but GOG's near-term role is to present repo state more clearly than ad hoc text retrieval.
+3. **Use language models for rendering, not architectural invention.** Renderers turn typed plans into code or prose; validators check the result against repo state and local tooling.
 
 ---
 
-## 🧬 Repository Roadmap
+## Architecture
 
-### ✅ Phase 1: Context Isolation (Complete)
-Proven that AST-based graph traversal outperforms Vector RAG in context curation.
+GOG separates the software-generation loop into persistent system layers:
+
+1. **Repository Onboarding**
+   - Parse the repo, build symbolic state, record conventions, and persist artifacts for later sessions.
+2. **Reasoner Slot**
+   - Consume user intent plus GOG-served symbolic repo state and emit a typed plan such as a `MutationPlan`.
+3. **Renderer**
+   - Convert bounded plan steps into code, prose, or other user-facing outputs.
+4. **Validators**
+   - Check graph boundaries, syntax, constraints, and eventually build/test outcomes.
+5. **Graph Synchronizer**
+   - Refresh symbolic state after accepted changes so GOG stays aligned with the living repo.
+
+See:
+
+- [GOG system model](./docs/GOG_SYSTEM_MODEL.md)
+- [Reasoner interface](./docs/REASONER_INTERFACE.md)
+- [Repository onboarding pipeline](./docs/REPO_ONBOARDING_PIPELINE.md)
+
+---
+
+## Repository Roadmap
+
+### Phase 1: Context Isolation
+Completed early experiments on AST-derived context selection and benchmark instrumentation.
 - [GOG_PAPER.pdf](./GOG_PAPER.pdf)
 - Benchmark: `python3 gog/benchmark_local_llm.py`
 
-### ✅ Phase 2: Symbolic Proof-of-Concept (Complete)
-The **Symbolic Reasoning Membrane (SRM)** experiments proved that "Atoms of Meaning" exist and that structure controls LLM output better than language.
+### Phase 2: Symbolic Rendering Proof-of-Concept
+The **Symbolic Reasoning Membrane (SRM)** experiments explore whether structure can control language-model output more reliably than raw prompting alone.
 - [SRM_PAPER.md](./SRM_PAPER.md)
 - Experiments: `/symbol_distillation`
 
-### 🔄 Phase 3: The GOG Engine (Active Research)
-Transitioning from benchmark experiments to a production-ready generation engine.
-- [GOG_ARCHITECTURE.md](./GOG_architecture.md)
-- **Investigation:** Multi-language AST support, graph mutation algebra, and the `MutationPlan` schema.
+### Phase 3: Repo-Resident GOG Engine
+Active work now centers on persistent symbolic state, a formal reasoner contract, onboarding, graph refresh, reasoner-quality experiments, and public-repo benchmarks.
+- [Architecture overview](./GOG_architecture.md)
+- [System model](./docs/GOG_SYSTEM_MODEL.md)
+- [Onboarding pipeline](./docs/REPO_ONBOARDING_PIPELINE.md)
 
 ---
 
-## 🛠️ Quick Start
+## Quick Start
 
-### 1. Build the Graph
+### 1. Build the Current Research Artifacts
 ```bash
 pip install -r requirements.txt
 python3 gog/generate_dummy_repo.py
 python3 gog/seed_RAG_and_GOG.py
 ```
 
-### 2. Run the 3-Tier Benchmark
-Compare Vector RAG (probabilistic) vs. GOG (deterministic) vs. GOG+Membrane (patched).
+### 2. Run the Current Benchmark Harness
+The current benchmark harness remains useful for experiments on retrieval, planning, rendering, and validation behavior. The next benchmark generation should emphasize **cost to validated success**, not only first-attempt token totals.
 ```bash
 python3 gog/benchmark_local_llm.py
 ```
 
-### 3. Explore the Architecture
-Read [GOG_architecture.md](./GOG_architecture.md) for the deep dive into why we are separating reasoning from language rendering.
+### 3. Read the System Docs
+
+Start with:
+
+1. [GOG architecture](./GOG_architecture.md)
+2. [GOG system model](./docs/GOG_SYSTEM_MODEL.md)
+3. [Reasoner interface](./docs/REASONER_INTERFACE.md)
+4. [Repository onboarding pipeline](./docs/REPO_ONBOARDING_PIPELINE.md)
 
 ---
 
@@ -64,7 +92,7 @@ Read [GOG_architecture.md](./GOG_architecture.md) for the deep dive into why we 
 ```bibtex
 @misc{chisholm2026gog,
   author = {Chisholm, D. R.},
-  title  = {Graph-Oriented Generation (GOG): Offloading AI Reasoning to Deterministic Symbolic Graphs},
+  title  = {Graph-Oriented Generation (GOG): Persistent Symbolic State for Software Generation},
   year   = {2026},
   url    = {https://github.com/dchisholm125/graph-oriented-generation}
 }
@@ -72,4 +100,4 @@ Read [GOG_architecture.md](./GOG_architecture.md) for the deep dive into why we 
 
 ---
 
-*The atoms of meaning are structural. We stop guessing. We start calculating.*
+*The codebase becomes symbolic state. Reasoning becomes explicit. Rendering becomes bounded.*
