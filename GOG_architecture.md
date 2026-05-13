@@ -24,6 +24,8 @@ GOG separates repository understanding, reasoning, rendering, validation, and sy
 - **Output:** A structured `MutationPlan`, graph queries, explicit constraints, and validation requirements.
 - **Constraint:** It does **not** emit raw source code.
 
+At prompt time, GOG should serve the reasoner a bounded symbolic context bundle derived from onboarded repo state, not the full repository graph.
+
 ### Layer C: Renderer
 - **Model:** Potentially a small language model.
 - **Role:** Translate one bounded plan step at a time into code syntax or human-facing language.
@@ -32,10 +34,12 @@ GOG separates repository understanding, reasoning, rendering, validation, and sy
 ### Layer D: Validators
 - **Role:** Verify graph boundaries, syntax, dependency constraints, and eventually toolchain correctness.
 - **Output:** Accepted, rejected, or patched artifacts with explicit reasons.
+- **Current checkpoint:** The SalienceEvaluator remains the final anti-hallucination guard while the manipulator reasoner is LLM-backed.
 
 ### Layer E: Graph Synchronizer
 - **Role:** Update the symbolic repository state after accepted edits.
-- **Constraint:** GOG must stay synchronized with the living repo or declare itself stale.
+- **Constraint:** GOG must stay synchronized with the living repo or declare itself stale. The loop closes only when `.gog/` reflects the accepted change.
+- **Current CLI surface:** `gog refresh` performs a full artifact rebuild after accepted changes. Incremental refresh comes later.
 
 ---
 

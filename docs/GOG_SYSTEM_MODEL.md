@@ -140,9 +140,9 @@ An ideal GOG-assisted coding session follows this lifecycle:
 1. **Onboard**
    - Build or refresh symbolic repo state.
 2. **Interpret**
-   - Convert user intent into a structured reasoning problem.
+   - Preprocess user intent into explicit anchors, likely targets, and unresolved ambiguity.
 3. **Reason**
-   - Query symbolic state and emit a mutation plan.
+   - Serve a bounded symbolic context bundle to the reasoner and receive a mutation plan.
 4. **Validate Plan**
    - Reject unsupported references, impossible edge changes, or violated constraints.
 5. **Render**
@@ -152,7 +152,7 @@ An ideal GOG-assisted coding session follows this lifecycle:
 7. **Apply**
    - Accept the mutation only when validation clears the relevant bar.
 8. **Synchronize**
-   - Update symbolic state to reflect the new repository reality.
+   - Update `.gog/` symbolic state to reflect the new repository reality. This closes the loop.
 
 ---
 
@@ -181,12 +181,35 @@ GOG is not currently claiming:
 - That dependency graphs alone are sufficient symbolic state
 - That small renderers can solve arbitrary software engineering tasks in isolation
 - That current benchmark wins prove the final architecture at production scale
+- That benchmark-specific heuristics are acceptable substitutes for general language and framework support
 
 Those boundaries matter. They keep the research program falsifiable.
 
 ---
 
-## 7. Relationship to Existing Work
+## 7. Anti-Overfitting Discipline
+
+GOG should improve by learning language, framework, and tooling conventions, not by memorizing benchmark repositories.
+
+Acceptable improvements include:
+
+- resolving aliases from project configuration
+- recognizing source roots, tests, generated files, and end-to-end test directories
+- parsing framework surfaces such as Vue components, routes, stores, composables, and service layers
+- recording unsupported conventions as partial coverage
+
+Unacceptable improvements include:
+
+- hard-coding expected benchmark answers
+- adding rules for a specific repository's business domain
+- tuning membranes until one repository's fixture passes while making the rule harder to justify elsewhere
+- hiding benchmark failures by changing expected files after seeing results without documenting why
+
+Benchmark repos should be split into development and holdout sets. Development repos may drive new general heuristics. Holdout repos should be run before tuning, with failures recorded as evidence about GOG's current limits.
+
+---
+
+## 8. Relationship to Existing Work
 
 Traditional coding assistants often work episodically:
 
@@ -205,7 +228,7 @@ That difference is the system-level contribution.
 
 ---
 
-## 8. Cost-to-Quality Research Frame
+## 9. Cost-to-Quality Research Frame
 
 GOG should not be judged only by "how few tokens were used on the first attempt." The stronger benchmark question is:
 
@@ -229,7 +252,50 @@ The near-term hypothesis is:
 
 ---
 
-## 9. Current Repository Mapping
+## 10. Prompt-Scoped Context Serving
+
+GOG should not pass the entire repository graph into every reasoner cycle.
+
+The repo-wide symbolic layer lives in `.gog/`. At task time, GOG should:
+
+1. Preprocess the prompt for explicit anchors such as filenames, symbols, and operation hints.
+2. Query the onboarded symbolic state.
+3. Select the smallest structurally sufficient context slice.
+4. Serve that bounded bundle to the reasoner.
+
+Example prompt:
+
+> `refactor the addUser() function`
+
+The reasoner should receive a context bundle closer to:
+
+- matched files or symbols
+- graph-local dependencies
+- relevant validation commands
+- allowed context boundary
+- ambiguity flags
+
+not a whole-repo context flood.
+
+The current CLI begins this path with:
+
+- `gog refresh`
+- `gog summarize`
+- `gog context --prompt "..."`
+
+---
+
+## 11. SalienceEvaluator Checkpoint
+
+While the manipulator reasoner is still LLM-backed, GOG must assume it can hallucinate unsupported implementations.
+
+The SalienceEvaluator therefore remains a final checkpoint between generated code and accepted repo mutation. Its job is to reject or repair output that violates the served symbolic boundary.
+
+If a future symbolic reasoning model proves non-hallucinatory, this checkpoint may evolve. It should not be removed prematurely.
+
+---
+
+## 12. Current Repository Mapping
 
 Relevant implementation areas:
 

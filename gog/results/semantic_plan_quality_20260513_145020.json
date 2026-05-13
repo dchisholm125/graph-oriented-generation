@@ -1,0 +1,837 @@
+{
+  "generated_at": "2026-05-13T14:50:20.211342+00:00",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation",
+  "fixture_path": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog_cli/fixtures/semantic_plan_quality_known_problem.json",
+  "schema_path": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog_cli/schemas/mutation_plan.schema.json",
+  "results": [
+    {
+      "fixture_id": "serving_context_omits_source_content",
+      "fixture": {
+        "id": "serving_context_omits_source_content",
+        "title": "Prompt-scoped context bundles expose structure but not source content",
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "problem_statement": "The current context bundle served by gog_cli/serving.py includes selected file paths, import relations, validation commands, and allowed nodes, but it does not include source excerpts, symbol summaries, function names, or line-level evidence. A reasoner can identify the likely target file, but it cannot safely plan concrete code mutations from the served bundle alone.",
+        "expected_targets": [
+          "gog_cli/serving.py"
+        ],
+        "expected_semantic_behavior": [
+          "Target gog_cli/serving.py as the primary node.",
+          "Recognize that the served context is insufficient for concrete implementation details.",
+          "Use INSPECT_NODE before any MUTATE_NODE step, or avoid MUTATE_NODE entirely.",
+          "Mention the missing source content, source excerpts, symbol summaries, or implementation details in uncertainty.",
+          "Use the served validation command for Python syntax validation."
+        ],
+        "failure_modes": [
+          "Plans a concrete implementation without inspecting gog_cli/serving.py first.",
+          "Claims knowledge of specific functions or code structures not present in the served context.",
+          "Targets files outside context.allowed_nodes.",
+          "Omits uncertainty even though source content is absent from the served context."
+        ],
+        "validation_hint": "python3 -m py_compile gog_cli/serving.py"
+      },
+      "strategy": "flat_json",
+      "strategy_description": "Baseline flat GOG context plus MutationPlan schema.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1345,
+      "response_tokens_estimate": 541,
+      "latency_s": 56.5042,
+      "returncode": 0,
+      "stderr": "\u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2827 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2838 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u280b \u2839 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2819 \u2839 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u2838",
+      "raw_response": "{\"plan_id\":\"plan-improve-context-serving-rationale-001\",\"intent\":\"Improve prompt-scoped context serving in gog_cli/serving.py to attach and expose per-file selection rationale, enabling downstream reasoners to inspect why each file was selected.\",\"evidence\":[\"Task requires improving gog_cli/serving.py specifically.\",\"Context bundle includes selection metadata (strategy, explicit matches, identifier matches) that is not currently propagated to individual files in the served context.\",\"Downstream reasoners require transparency on file inclusion for better reasoning and debugging.\",\"gog_cli/serving.py imports gog_engine/graph_search.py and gog_engine/token_utils.py, indicating it performs graph-based context assembly.\"],\"targets\":[\"gog_cli/serving.py\"],\"steps\":[{\"id\":\"inspect-serving\",\"op\":\"INSPECT_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Determine how the context bundle is constructed and where file records are assembled before serving, since concrete line-level mutation details require source visibility.\",\"depends_on\":[],\"parameters\":{\"focus\":\"context assembly and file record serialization\"}},{\"id\":\"mutate-add-rationale\",\"op\":\"MUTATE_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Augment the context serving logic to attach a selection_reason field to each file entry, populated from the selection strategy metadata (e.g., explicit mention, graph relation, identifier match).\",\"depends_on\":[\"inspect-serving\"],\"parameters\":{\"change_type\":\"augment_file_records\",\"description\":\"Add 'selection_reason' or 'inclusion_rationale' to each file dict/object in the served context, mapping from selection.strategy and relation provenance.\"}},{\"id\":\"validate-compile\",\"op\":\"VALIDATE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Ensure the mutated module compiles successfully and introduces no syntax errors.\",\"depends_on\":[\"mutate-add-rationale\"],\"parameters\":{\"command\":\"python3 -m py_compile gog_cli/serving.py\"}}],\"constraints\":[\"Do not modify files outside context.allowed_nodes.\",\"Preserve existing API contracts where possible; only additive changes to context structure.\",\"Selection rationale must be derived from existing selection metadata already present in the bundle.\"],\"validation\":[\"python3 -m py_compile gog_cli/serving.py\",\"Verify that served context JSON includes a non-empty selection_reason for each file when selection metadata is available.\"],\"uncertainty\":[\"Exact class/function names and internal data structures in gog_cli/serving.py are unknown without source inspection.\",\"It is unclear whether the selection metadata is currently accessible at the point of file record finalization in serving.py.\",\"The specific serialization format (dataclass vs dict) for file entries is not visible in the served context.\"]}",
+      "parsed_plan": {
+        "plan_id": "plan-improve-context-serving-rationale-001",
+        "intent": "Improve prompt-scoped context serving in gog_cli/serving.py to attach and expose per-file selection rationale, enabling downstream reasoners to inspect why each file was selected.",
+        "evidence": [
+          "Task requires improving gog_cli/serving.py specifically.",
+          "Context bundle includes selection metadata (strategy, explicit matches, identifier matches) that is not currently propagated to individual files in the served context.",
+          "Downstream reasoners require transparency on file inclusion for better reasoning and debugging.",
+          "gog_cli/serving.py imports gog_engine/graph_search.py and gog_engine/token_utils.py, indicating it performs graph-based context assembly."
+        ],
+        "targets": [
+          "gog_cli/serving.py"
+        ],
+        "steps": [
+          {
+            "id": "inspect-serving",
+            "op": "INSPECT_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Determine how the context bundle is constructed and where file records are assembled before serving, since concrete line-level mutation details require source visibility.",
+            "depends_on": [],
+            "parameters": {
+              "focus": "context assembly and file record serialization"
+            }
+          },
+          {
+            "id": "mutate-add-rationale",
+            "op": "MUTATE_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Augment the context serving logic to attach a selection_reason field to each file entry, populated from the selection strategy metadata (e.g., explicit mention, graph relation, identifier match).",
+            "depends_on": [
+              "inspect-serving"
+            ],
+            "parameters": {
+              "change_type": "augment_file_records",
+              "description": "Add 'selection_reason' or 'inclusion_rationale' to each file dict/object in the served context, mapping from selection.strategy and relation provenance."
+            }
+          },
+          {
+            "id": "validate-compile",
+            "op": "VALIDATE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Ensure the mutated module compiles successfully and introduces no syntax errors.",
+            "depends_on": [
+              "mutate-add-rationale"
+            ],
+            "parameters": {
+              "command": "python3 -m py_compile gog_cli/serving.py"
+            }
+          }
+        ],
+        "constraints": [
+          "Do not modify files outside context.allowed_nodes.",
+          "Preserve existing API contracts where possible; only additive changes to context structure.",
+          "Selection rationale must be derived from existing selection metadata already present in the bundle."
+        ],
+        "validation": [
+          "python3 -m py_compile gog_cli/serving.py",
+          "Verify that served context JSON includes a non-empty selection_reason for each file when selection metadata is available."
+        ],
+        "uncertainty": [
+          "Exact class/function names and internal data structures in gog_cli/serving.py are unknown without source inspection.",
+          "It is unclear whether the selection metadata is currently accessible at the point of file record finalization in serving.py.",
+          "The specific serialization format (dataclass vs dict) for file entries is not visible in the served context."
+        ]
+      },
+      "structural_score": {
+        "json_valid": true,
+        "schema_valid": true,
+        "schema_errors": [],
+        "allowed_node_compliance": true,
+        "unsupported_targets": [],
+        "no_extra_prose": true,
+        "evidence_count": 4,
+        "step_count": 3,
+        "composite_score": 4
+      },
+      "semantic_score": {
+        "target_focus": true,
+        "inspect_before_mutate": true,
+        "missing_source_uncertainty": true,
+        "validation_alignment": true,
+        "no_unsupported_targets": true,
+        "semantic_score": 5,
+        "semantic_errors": []
+      }
+    },
+    {
+      "fixture_id": "serving_context_omits_source_content",
+      "fixture": {
+        "id": "serving_context_omits_source_content",
+        "title": "Prompt-scoped context bundles expose structure but not source content",
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "problem_statement": "The current context bundle served by gog_cli/serving.py includes selected file paths, import relations, validation commands, and allowed nodes, but it does not include source excerpts, symbol summaries, function names, or line-level evidence. A reasoner can identify the likely target file, but it cannot safely plan concrete code mutations from the served bundle alone.",
+        "expected_targets": [
+          "gog_cli/serving.py"
+        ],
+        "expected_semantic_behavior": [
+          "Target gog_cli/serving.py as the primary node.",
+          "Recognize that the served context is insufficient for concrete implementation details.",
+          "Use INSPECT_NODE before any MUTATE_NODE step, or avoid MUTATE_NODE entirely.",
+          "Mention the missing source content, source excerpts, symbol summaries, or implementation details in uncertainty.",
+          "Use the served validation command for Python syntax validation."
+        ],
+        "failure_modes": [
+          "Plans a concrete implementation without inspecting gog_cli/serving.py first.",
+          "Claims knowledge of specific functions or code structures not present in the served context.",
+          "Targets files outside context.allowed_nodes.",
+          "Omits uncertainty even though source content is absent from the served context."
+        ],
+        "validation_hint": "python3 -m py_compile gog_cli/serving.py"
+      },
+      "strategy": "problem_framed",
+      "strategy_description": "Flat GOG context plus explicit known-problem statement.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1657,
+      "response_tokens_estimate": 521,
+      "latency_s": 37.4673,
+      "returncode": 0,
+      "stderr": "\u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2838 \u2838 \u2834 \u2826 \u2827 \u2827 \u2807 \u280b \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2827 \u2807 \u2807 \u280b \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2839 \u2838 \u2834 \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280b \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2827 \u280f \u280b \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2827 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2834 \u2826 \u2827 \u280f \u280b \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u2838",
+      "raw_response": "{\n  \"plan_id\": \"serving_context_inspect_then_plan\",\n  \"intent\": \"Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected, while acknowledging that the current bundle lacks source-level detail.\",\n  \"evidence\": [\n    \"The served context bundle for gog_cli/serving.py includes file paths, import relations, validation commands, and allowed nodes, but omits source excerpts, symbol summaries, function names, and line-level evidence.\",\n    \"The prompt explicitly targets gog_cli/serving.py as the node responsible for prompt-scoped context serving.\",\n    \"Concrete implementation details required for safe mutation are unavailable without inspecting the actual source content first.\"\n  ],\n  \"targets\": [\n    \"gog_cli/serving.py\"\n  ],\n  \"steps\": [\n    {\n      \"id\": \"inspect_serving_py\",\n      \"op\": \"INSPECT_NODE\",\n      \"target\": \"gog_cli/serving.py\",\n      \"rationale\": \"Gather source content, function signatures, class definitions, and existing bundling logic so that any subsequent mutation can be concrete and safe.\",\n      \"depends_on\": [],\n      \"parameters\": {}\n    },\n    {\n      \"id\": \"validate_serving_py_syntax\",\n      \"op\": \"VALIDATE\",\n      \"target\": \"gog_cli/serving.py\",\n      \"rationale\": \"Run the provided Python syntax validation command against the current file to establish a baseline before any future modifications.\",\n      \"depends_on\": [\n        \"inspect_serving_py\"\n      ],\n      \"parameters\": {\n        \"command\": \"python3 -m py_compile gog_cli/serving.py\"\n      }\n    }\n  ],\n  \"constraints\": [\n    \"Only mutate files listed in context.allowed_nodes.\",\n    \"Do not emit concrete code changes until gog_cli/serving.py has been inspected and source content is available.\",\n    \"Do not introduce dependencies on files outside the bounded repository slice.\"\n  ],\n  \"validation\": [\n    \"python3 -m py_compile gog_cli/serving.py\"\n  ],\n  \"uncertainty\": [\n    \"Source excerpts, symbol summaries, and exact function or class names inside gog_cli/serving.py are missing from the served context.\",\n    \"The precise lines and mechanisms used to build the prompt-scoped context bundle are unknown without inspecting the node.\",\n    \"Concrete mutation details\u2014such as specific variables to add or exact schema changes\u2014cannot be determined until after INSPECT_NODE.\"\n  ]\n}",
+      "parsed_plan": {
+        "plan_id": "serving_context_inspect_then_plan",
+        "intent": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected, while acknowledging that the current bundle lacks source-level detail.",
+        "evidence": [
+          "The served context bundle for gog_cli/serving.py includes file paths, import relations, validation commands, and allowed nodes, but omits source excerpts, symbol summaries, function names, and line-level evidence.",
+          "The prompt explicitly targets gog_cli/serving.py as the node responsible for prompt-scoped context serving.",
+          "Concrete implementation details required for safe mutation are unavailable without inspecting the actual source content first."
+        ],
+        "targets": [
+          "gog_cli/serving.py"
+        ],
+        "steps": [
+          {
+            "id": "inspect_serving_py",
+            "op": "INSPECT_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Gather source content, function signatures, class definitions, and existing bundling logic so that any subsequent mutation can be concrete and safe.",
+            "depends_on": [],
+            "parameters": {}
+          },
+          {
+            "id": "validate_serving_py_syntax",
+            "op": "VALIDATE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Run the provided Python syntax validation command against the current file to establish a baseline before any future modifications.",
+            "depends_on": [
+              "inspect_serving_py"
+            ],
+            "parameters": {
+              "command": "python3 -m py_compile gog_cli/serving.py"
+            }
+          }
+        ],
+        "constraints": [
+          "Only mutate files listed in context.allowed_nodes.",
+          "Do not emit concrete code changes until gog_cli/serving.py has been inspected and source content is available.",
+          "Do not introduce dependencies on files outside the bounded repository slice."
+        ],
+        "validation": [
+          "python3 -m py_compile gog_cli/serving.py"
+        ],
+        "uncertainty": [
+          "Source excerpts, symbol summaries, and exact function or class names inside gog_cli/serving.py are missing from the served context.",
+          "The precise lines and mechanisms used to build the prompt-scoped context bundle are unknown without inspecting the node.",
+          "Concrete mutation details\u2014such as specific variables to add or exact schema changes\u2014cannot be determined until after INSPECT_NODE."
+        ]
+      },
+      "structural_score": {
+        "json_valid": true,
+        "schema_valid": true,
+        "schema_errors": [],
+        "allowed_node_compliance": true,
+        "unsupported_targets": [],
+        "no_extra_prose": true,
+        "evidence_count": 3,
+        "step_count": 2,
+        "composite_score": 4
+      },
+      "semantic_score": {
+        "target_focus": true,
+        "inspect_before_mutate": true,
+        "missing_source_uncertainty": true,
+        "validation_alignment": true,
+        "no_unsupported_targets": true,
+        "semantic_score": 5,
+        "semantic_errors": []
+      }
+    },
+    {
+      "fixture_id": "serving_context_omits_source_content",
+      "fixture": {
+        "id": "serving_context_omits_source_content",
+        "title": "Prompt-scoped context bundles expose structure but not source content",
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "problem_statement": "The current context bundle served by gog_cli/serving.py includes selected file paths, import relations, validation commands, and allowed nodes, but it does not include source excerpts, symbol summaries, function names, or line-level evidence. A reasoner can identify the likely target file, but it cannot safely plan concrete code mutations from the served bundle alone.",
+        "expected_targets": [
+          "gog_cli/serving.py"
+        ],
+        "expected_semantic_behavior": [
+          "Target gog_cli/serving.py as the primary node.",
+          "Recognize that the served context is insufficient for concrete implementation details.",
+          "Use INSPECT_NODE before any MUTATE_NODE step, or avoid MUTATE_NODE entirely.",
+          "Mention the missing source content, source excerpts, symbol summaries, or implementation details in uncertainty.",
+          "Use the served validation command for Python syntax validation."
+        ],
+        "failure_modes": [
+          "Plans a concrete implementation without inspecting gog_cli/serving.py first.",
+          "Claims knowledge of specific functions or code structures not present in the served context.",
+          "Targets files outside context.allowed_nodes.",
+          "Omits uncertainty even though source content is absent from the served context."
+        ],
+        "validation_hint": "python3 -m py_compile gog_cli/serving.py"
+      },
+      "strategy": "rubric_first",
+      "strategy_description": "Semantic scoring rubric before context and schema.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1841,
+      "response_tokens_estimate": 450,
+      "latency_s": 36.4136,
+      "returncode": 0,
+      "stderr": "\u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2839 \u2839 \u283c \u2834 \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2827 \u2807",
+      "raw_response": "{\"plan_id\":\"plan-improve-context-serving-001\",\"intent\":\"Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.\",\"evidence\":[\"The prompt explicitly names gog_cli/serving.py as the target for improvement.\",\"The context bundle lists gog_cli/serving.py under explicit_file_matches and identifier_matches.\",\"The known problem states that the served context bundle omits source content, making concrete implementation planning impossible without inspection.\"],\"targets\":[\"gog_cli/serving.py\"],\"steps\":[{\"id\":\"inspect-serving\",\"op\":\"INSPECT_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"The served context bundle explicitly omits source excerpts, symbol summaries, and line-level details for this file. Concrete mutation details are unsafe without first reading the actual implementation.\",\"depends_on\":[],\"parameters\":{}},{\"id\":\"mutate-serving\",\"op\":\"MUTATE_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"After inspection, update the serving logic to enrich prompt-scoped context bundles with per-file source excerpts, symbol summaries, function names, and line-level evidence so downstream reasoners can inspect why each file was selected.\",\"depends_on\":[\"inspect-serving\"],\"parameters\":{\"scope\":\"gog_cli/serving.py\",\"goal\":\"Add source excerpts, symbol summaries, and selection rationale to the context bundle output\"}},{\"id\":\"validate-serving\",\"op\":\"VALIDATE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Confirm that the mutated file still compiles successfully before finalizing the plan.\",\"depends_on\":[\"mutate-serving\"],\"parameters\":{\"command\":\"python3 -m py_compile gog_cli/serving.py\"}}],\"constraints\":[\"All targets must remain within context.allowed_nodes.\",\"Do not reference or assume files outside the served context.\",\"Do not claim knowledge of specific code structures absent from the served bundle.\"],\"validation\":[\"python3 -m py_compile gog_cli/serving.py\"],\"uncertainty\":[\"The current context bundle does not include source excerpts, symbol summaries, function names, or line-level details for gog_cli/serving.py, so the exact implementation structure is unknown.\",\"Specific functions and insertion points will only be determined after the INSPECT_NODE step completes.\"]}",
+      "parsed_plan": {
+        "plan_id": "plan-improve-context-serving-001",
+        "intent": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "evidence": [
+          "The prompt explicitly names gog_cli/serving.py as the target for improvement.",
+          "The context bundle lists gog_cli/serving.py under explicit_file_matches and identifier_matches.",
+          "The known problem states that the served context bundle omits source content, making concrete implementation planning impossible without inspection."
+        ],
+        "targets": [
+          "gog_cli/serving.py"
+        ],
+        "steps": [
+          {
+            "id": "inspect-serving",
+            "op": "INSPECT_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "The served context bundle explicitly omits source excerpts, symbol summaries, and line-level details for this file. Concrete mutation details are unsafe without first reading the actual implementation.",
+            "depends_on": [],
+            "parameters": {}
+          },
+          {
+            "id": "mutate-serving",
+            "op": "MUTATE_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "After inspection, update the serving logic to enrich prompt-scoped context bundles with per-file source excerpts, symbol summaries, function names, and line-level evidence so downstream reasoners can inspect why each file was selected.",
+            "depends_on": [
+              "inspect-serving"
+            ],
+            "parameters": {
+              "scope": "gog_cli/serving.py",
+              "goal": "Add source excerpts, symbol summaries, and selection rationale to the context bundle output"
+            }
+          },
+          {
+            "id": "validate-serving",
+            "op": "VALIDATE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Confirm that the mutated file still compiles successfully before finalizing the plan.",
+            "depends_on": [
+              "mutate-serving"
+            ],
+            "parameters": {
+              "command": "python3 -m py_compile gog_cli/serving.py"
+            }
+          }
+        ],
+        "constraints": [
+          "All targets must remain within context.allowed_nodes.",
+          "Do not reference or assume files outside the served context.",
+          "Do not claim knowledge of specific code structures absent from the served bundle."
+        ],
+        "validation": [
+          "python3 -m py_compile gog_cli/serving.py"
+        ],
+        "uncertainty": [
+          "The current context bundle does not include source excerpts, symbol summaries, function names, or line-level details for gog_cli/serving.py, so the exact implementation structure is unknown.",
+          "Specific functions and insertion points will only be determined after the INSPECT_NODE step completes."
+        ]
+      },
+      "structural_score": {
+        "json_valid": true,
+        "schema_valid": true,
+        "schema_errors": [],
+        "allowed_node_compliance": true,
+        "unsupported_targets": [],
+        "no_extra_prose": true,
+        "evidence_count": 3,
+        "step_count": 3,
+        "composite_score": 4
+      },
+      "semantic_score": {
+        "target_focus": true,
+        "inspect_before_mutate": true,
+        "missing_source_uncertainty": true,
+        "validation_alignment": true,
+        "no_unsupported_targets": true,
+        "semantic_score": 5,
+        "semantic_errors": []
+      }
+    },
+    {
+      "fixture_id": "serving_context_omits_source_content",
+      "fixture": {
+        "id": "serving_context_omits_source_content",
+        "title": "Prompt-scoped context bundles expose structure but not source content",
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "problem_statement": "The current context bundle served by gog_cli/serving.py includes selected file paths, import relations, validation commands, and allowed nodes, but it does not include source excerpts, symbol summaries, function names, or line-level evidence. A reasoner can identify the likely target file, but it cannot safely plan concrete code mutations from the served bundle alone.",
+        "expected_targets": [
+          "gog_cli/serving.py"
+        ],
+        "expected_semantic_behavior": [
+          "Target gog_cli/serving.py as the primary node.",
+          "Recognize that the served context is insufficient for concrete implementation details.",
+          "Use INSPECT_NODE before any MUTATE_NODE step, or avoid MUTATE_NODE entirely.",
+          "Mention the missing source content, source excerpts, symbol summaries, or implementation details in uncertainty.",
+          "Use the served validation command for Python syntax validation."
+        ],
+        "failure_modes": [
+          "Plans a concrete implementation without inspecting gog_cli/serving.py first.",
+          "Claims knowledge of specific functions or code structures not present in the served context.",
+          "Targets files outside context.allowed_nodes.",
+          "Omits uncertainty even though source content is absent from the served context."
+        ],
+        "validation_hint": "python3 -m py_compile gog_cli/serving.py"
+      },
+      "strategy": "minimal_platter",
+      "strategy_description": "Small handoff surface with only task, problem, files, relations, and rubric.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1430,
+      "response_tokens_estimate": 415,
+      "latency_s": 44.4076,
+      "returncode": 0,
+      "stderr": "\u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2839 \u2838 \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u280f \u280f \u2819 \u2819 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2838 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280b \u280b \u2819 \u2839 \u283c \u2834 \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u280f",
+      "raw_response": "{\"plan_id\":\"gog-serving-context-enrichment-001\",\"intent\":\"Improve prompt-scoped context serving in gog_cli/serving.py so downstream reasoners receive source excerpts, symbol summaries, function names, and line-level selection rationale.\",\"evidence\":[\"The served context bundle identifies gog_cli/serving.py as the primary node but omits source excerpts and symbol summaries\",\"Relations indicate serving.py imports gog_engine/graph_search.py and gog_engine/token_utils.py, which may supply selection logic or excerpt utilities\",\"The known problem states a reasoner cannot safely plan concrete mutations without line-level evidence from the actual source\"],\"targets\":[\"gog_cli/serving.py\"],\"steps\":[{\"id\":\"inspect-serving\",\"op\":\"INSPECT_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Read the full source of the serving module to discover existing functions, classes, and the current context assembly logic before proposing concrete mutations\",\"depends_on\":[],\"parameters\":{}},{\"id\":\"inspect-graph-search\",\"op\":\"INSPECT_NODE\",\"target\":\"gog_engine/graph_search.py\",\"rationale\":\"Understand how graph search results are produced so the serving layer can annotate why each file was selected\",\"depends_on\":[\"inspect-serving\"],\"parameters\":{}},{\"id\":\"inspect-token-utils\",\"op\":\"INSPECT_NODE\",\"target\":\"gog_engine/token_utils.py\",\"rationale\":\"Determine whether token utilities provide excerpt-generation helpers that serving.py should leverage\",\"depends_on\":[\"inspect-serving\"],\"parameters\":{}}],\"constraints\":[\"Only reference files within context.allowed_nodes\",\"Do not emit MUTATE_NODE until concrete source details have been obtained via INSPECT_NODE\",\"Preserve existing import relations when modifying serving.py\"],\"validation\":[\"python3 -m py_compile gog_cli/serving.py\"],\"uncertainty\":[\"Source excerpts for gog_cli/serving.py are not present in the served context\",\"Symbol summaries, function names, and line-level implementation details are missing\",\"Concrete insertion points and exact code changes cannot be determined without prior inspection\",\"The current plan defers all mutations until after INSPECT_NODE results are returned\"]}",
+      "parsed_plan": {
+        "plan_id": "gog-serving-context-enrichment-001",
+        "intent": "Improve prompt-scoped context serving in gog_cli/serving.py so downstream reasoners receive source excerpts, symbol summaries, function names, and line-level selection rationale.",
+        "evidence": [
+          "The served context bundle identifies gog_cli/serving.py as the primary node but omits source excerpts and symbol summaries",
+          "Relations indicate serving.py imports gog_engine/graph_search.py and gog_engine/token_utils.py, which may supply selection logic or excerpt utilities",
+          "The known problem states a reasoner cannot safely plan concrete mutations without line-level evidence from the actual source"
+        ],
+        "targets": [
+          "gog_cli/serving.py"
+        ],
+        "steps": [
+          {
+            "id": "inspect-serving",
+            "op": "INSPECT_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Read the full source of the serving module to discover existing functions, classes, and the current context assembly logic before proposing concrete mutations",
+            "depends_on": [],
+            "parameters": {}
+          },
+          {
+            "id": "inspect-graph-search",
+            "op": "INSPECT_NODE",
+            "target": "gog_engine/graph_search.py",
+            "rationale": "Understand how graph search results are produced so the serving layer can annotate why each file was selected",
+            "depends_on": [
+              "inspect-serving"
+            ],
+            "parameters": {}
+          },
+          {
+            "id": "inspect-token-utils",
+            "op": "INSPECT_NODE",
+            "target": "gog_engine/token_utils.py",
+            "rationale": "Determine whether token utilities provide excerpt-generation helpers that serving.py should leverage",
+            "depends_on": [
+              "inspect-serving"
+            ],
+            "parameters": {}
+          }
+        ],
+        "constraints": [
+          "Only reference files within context.allowed_nodes",
+          "Do not emit MUTATE_NODE until concrete source details have been obtained via INSPECT_NODE",
+          "Preserve existing import relations when modifying serving.py"
+        ],
+        "validation": [
+          "python3 -m py_compile gog_cli/serving.py"
+        ],
+        "uncertainty": [
+          "Source excerpts for gog_cli/serving.py are not present in the served context",
+          "Symbol summaries, function names, and line-level implementation details are missing",
+          "Concrete insertion points and exact code changes cannot be determined without prior inspection",
+          "The current plan defers all mutations until after INSPECT_NODE results are returned"
+        ]
+      },
+      "structural_score": {
+        "json_valid": true,
+        "schema_valid": true,
+        "schema_errors": [],
+        "allowed_node_compliance": true,
+        "unsupported_targets": [],
+        "no_extra_prose": true,
+        "evidence_count": 3,
+        "step_count": 3,
+        "composite_score": 4
+      },
+      "semantic_score": {
+        "target_focus": true,
+        "inspect_before_mutate": true,
+        "missing_source_uncertainty": true,
+        "validation_alignment": true,
+        "no_unsupported_targets": true,
+        "semantic_score": 5,
+        "semantic_errors": []
+      }
+    }
+  ],
+  "summary": {
+    "flat_json": {
+      "observations": 1,
+      "json_valid_count": 1,
+      "schema_valid_count": 1,
+      "strict_json_only_count": 1,
+      "avg_structural_score": 4.0,
+      "avg_semantic_score": 5.0,
+      "avg_prompt_tokens_estimate": 1345.0,
+      "avg_response_tokens_estimate": 541.0
+    },
+    "problem_framed": {
+      "observations": 1,
+      "json_valid_count": 1,
+      "schema_valid_count": 1,
+      "strict_json_only_count": 1,
+      "avg_structural_score": 4.0,
+      "avg_semantic_score": 5.0,
+      "avg_prompt_tokens_estimate": 1657.0,
+      "avg_response_tokens_estimate": 521.0
+    },
+    "rubric_first": {
+      "observations": 1,
+      "json_valid_count": 1,
+      "schema_valid_count": 1,
+      "strict_json_only_count": 1,
+      "avg_structural_score": 4.0,
+      "avg_semantic_score": 5.0,
+      "avg_prompt_tokens_estimate": 1841.0,
+      "avg_response_tokens_estimate": 450.0
+    },
+    "minimal_platter": {
+      "observations": 1,
+      "json_valid_count": 1,
+      "schema_valid_count": 1,
+      "strict_json_only_count": 1,
+      "avg_structural_score": 4.0,
+      "avg_semantic_score": 5.0,
+      "avg_prompt_tokens_estimate": 1430.0,
+      "avg_response_tokens_estimate": 415.0
+    }
+  }
+}

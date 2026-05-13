@@ -1,0 +1,515 @@
+{
+  "generated_at": "2026-05-13T15:09:17.578154+00:00",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation",
+  "fixture_path": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog_cli/fixtures/semantic_plan_quality_known_problem.json",
+  "schema_path": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog_cli/schemas/mutation_plan.schema.json",
+  "results": [
+    {
+      "fixture_id": "serving_context_omits_source_content",
+      "fixture": {
+        "id": "serving_context_omits_source_content",
+        "title": "Prompt-scoped context bundles expose structure but not source content",
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "problem_statement": "The current context bundle served by gog_cli/serving.py includes selected file paths, import relations, validation commands, and allowed nodes, but it does not include source excerpts, symbol summaries, function names, or line-level evidence. A reasoner can identify the likely target file, but it cannot safely plan concrete code mutations from the served bundle alone.",
+        "expected_targets": [
+          "gog_cli/serving.py"
+        ],
+        "expected_semantic_behavior": [
+          "Target gog_cli/serving.py as the primary node.",
+          "Recognize that the served context is insufficient for concrete implementation details.",
+          "Use INSPECT_NODE before any MUTATE_NODE step, or avoid MUTATE_NODE entirely.",
+          "Mention the missing source content, source excerpts, symbol summaries, or implementation details in uncertainty.",
+          "Use the served validation command for Python syntax validation."
+        ],
+        "failure_modes": [
+          "Plans a concrete implementation without inspecting gog_cli/serving.py first.",
+          "Claims knowledge of specific functions or code structures not present in the served context.",
+          "Targets files outside context.allowed_nodes.",
+          "Omits uncertainty even though source content is absent from the served context."
+        ],
+        "validation_hint": "python3 -m py_compile gog_cli/serving.py"
+      },
+      "strategy": "minimal_platter",
+      "strategy_description": "Small handoff surface with only task, problem, files, relations, and rubric.",
+      "model": "kimi-k2.6:cloud",
+      "retrieval_mode": "gog",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "rag_bundle": null,
+      "prompt_tokens_estimate": 1430,
+      "response_tokens_estimate": 505,
+      "latency_s": 86.9642,
+      "returncode": 0,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 1,
+          "stderr": "\u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 Error: 503 Service Unavailable: model 'kimi-k2.6' is temporarily overloaded, please retry shortly or try a different model (ref: 22efd3f6-1c96-4a83-9d37-acf229a33fb3)"
+        },
+        {
+          "attempt": 2,
+          "returncode": 0,
+          "stderr": "\u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280b \u2819 \u2839 \u2839 \u283c \u283c \u2826 \u2826 \u2807 \u2807 \u280b \u2819 \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u283c \u283c \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2839 \u2839 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u2819 \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280b \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u2838 \u283c \u2826 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u283c \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2827 \u2807 \u2807 \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280b \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280f \u2819 \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2827 \u2807 \u280f \u280b \u2819"
+        }
+      ],
+      "stderr": "\u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280b \u2819 \u2839 \u2839 \u283c \u283c \u2826 \u2826 \u2807 \u2807 \u280b \u2819 \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u283c \u283c \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2839 \u2839 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u2819 \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280b \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u2838 \u283c \u2826 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u283c \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2827 \u2807 \u2807 \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280b \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280f \u2819 \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2827 \u2807 \u280f \u280b \u2819",
+      "raw_response": "{\"plan_id\":\"plan-improve-context-serving-001\",\"intent\":\"Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected, by augmenting the context bundle with source excerpts, symbol summaries, and selection rationale.\",\"evidence\":[\"The current context bundle served by gog_cli/serving.py includes selected file paths, import relations, validation commands, and allowed nodes, but lacks source excerpts, symbol summaries, function names, or line-level evidence.\",\"A reasoner can identify the likely target file but cannot safely plan concrete code mutations from the served bundle alone.\"],\"targets\":[\"gog_cli/serving.py\"],\"steps\":[{\"id\":\"inspect-serving-py\",\"op\":\"INSPECT_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Acquire source excerpts, symbol summaries, and function names required to safely plan concrete mutations in the context builder logic.\",\"depends_on\":[],\"parameters\":{}},{\"id\":\"inspect-graph-search\",\"op\":\"INSPECT_NODE\",\"target\":\"gog_engine/graph_search.py\",\"rationale\":\"Understand graph search outputs and structures that may need to be propagated into the served context bundle.\",\"depends_on\":[],\"parameters\":{}},{\"id\":\"mutate-serving-context\",\"op\":\"MUTATE_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Once source is available, update the context bundle construction to include source excerpts, symbol summaries, and per-file selection rationale.\",\"depends_on\":[\"inspect-serving-py\"],\"parameters\":{\"goal\":\"Augment served context with source excerpts and symbol summaries\",\"pending_source_details\":true}},{\"id\":\"validate-python-syntax\",\"op\":\"VALIDATE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Ensure any changes to gog_cli/serving.py remain syntactically valid Python.\",\"depends_on\":[\"mutate-serving-context\"],\"parameters\":{\"command\":\"python3 -m py_compile\"}}],\"constraints\":[\"Only reference and mutate files listed in context.allowed_nodes.\",\"Do not assume dependencies or files outside the served repository slice.\",\"Avoid specifying concrete line numbers or function names until after INSPECT_NODE.\"],\"validation\":[\"python3 -m py_compile gog_cli/serving.py\"],\"uncertainty\":[\"The served context does not include source content, source excerpts, or symbol summaries for gog_cli/serving.py.\",\"Concrete edit locations, function names, and line-level implementation details are unknown until inspection is completed.\",\"The exact schema of the context bundle object inside serving.py is not present in the provided context.\"]}",
+      "parsed_plan": {
+        "plan_id": "plan-improve-context-serving-001",
+        "intent": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected, by augmenting the context bundle with source excerpts, symbol summaries, and selection rationale.",
+        "evidence": [
+          "The current context bundle served by gog_cli/serving.py includes selected file paths, import relations, validation commands, and allowed nodes, but lacks source excerpts, symbol summaries, function names, or line-level evidence.",
+          "A reasoner can identify the likely target file but cannot safely plan concrete code mutations from the served bundle alone."
+        ],
+        "targets": [
+          "gog_cli/serving.py"
+        ],
+        "steps": [
+          {
+            "id": "inspect-serving-py",
+            "op": "INSPECT_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Acquire source excerpts, symbol summaries, and function names required to safely plan concrete mutations in the context builder logic.",
+            "depends_on": [],
+            "parameters": {}
+          },
+          {
+            "id": "inspect-graph-search",
+            "op": "INSPECT_NODE",
+            "target": "gog_engine/graph_search.py",
+            "rationale": "Understand graph search outputs and structures that may need to be propagated into the served context bundle.",
+            "depends_on": [],
+            "parameters": {}
+          },
+          {
+            "id": "mutate-serving-context",
+            "op": "MUTATE_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Once source is available, update the context bundle construction to include source excerpts, symbol summaries, and per-file selection rationale.",
+            "depends_on": [
+              "inspect-serving-py"
+            ],
+            "parameters": {
+              "goal": "Augment served context with source excerpts and symbol summaries",
+              "pending_source_details": true
+            }
+          },
+          {
+            "id": "validate-python-syntax",
+            "op": "VALIDATE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Ensure any changes to gog_cli/serving.py remain syntactically valid Python.",
+            "depends_on": [
+              "mutate-serving-context"
+            ],
+            "parameters": {
+              "command": "python3 -m py_compile"
+            }
+          }
+        ],
+        "constraints": [
+          "Only reference and mutate files listed in context.allowed_nodes.",
+          "Do not assume dependencies or files outside the served repository slice.",
+          "Avoid specifying concrete line numbers or function names until after INSPECT_NODE."
+        ],
+        "validation": [
+          "python3 -m py_compile gog_cli/serving.py"
+        ],
+        "uncertainty": [
+          "The served context does not include source content, source excerpts, or symbol summaries for gog_cli/serving.py.",
+          "Concrete edit locations, function names, and line-level implementation details are unknown until inspection is completed.",
+          "The exact schema of the context bundle object inside serving.py is not present in the provided context."
+        ]
+      },
+      "structural_score": {
+        "json_valid": true,
+        "schema_valid": true,
+        "schema_errors": [],
+        "allowed_node_compliance": true,
+        "unsupported_targets": [],
+        "no_extra_prose": true,
+        "evidence_count": 2,
+        "step_count": 4,
+        "composite_score": 4
+      },
+      "semantic_score": {
+        "target_focus": true,
+        "inspect_before_mutate": true,
+        "source_awareness": true,
+        "validation_alignment": true,
+        "no_unsupported_targets": true,
+        "semantic_score": 5,
+        "semantic_errors": []
+      }
+    },
+    {
+      "fixture_id": "serving_context_omits_source_content",
+      "fixture": {
+        "id": "serving_context_omits_source_content",
+        "title": "Prompt-scoped context bundles expose structure but not source content",
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "problem_statement": "The current context bundle served by gog_cli/serving.py includes selected file paths, import relations, validation commands, and allowed nodes, but it does not include source excerpts, symbol summaries, function names, or line-level evidence. A reasoner can identify the likely target file, but it cannot safely plan concrete code mutations from the served bundle alone.",
+        "expected_targets": [
+          "gog_cli/serving.py"
+        ],
+        "expected_semantic_behavior": [
+          "Target gog_cli/serving.py as the primary node.",
+          "Recognize that the served context is insufficient for concrete implementation details.",
+          "Use INSPECT_NODE before any MUTATE_NODE step, or avoid MUTATE_NODE entirely.",
+          "Mention the missing source content, source excerpts, symbol summaries, or implementation details in uncertainty.",
+          "Use the served validation command for Python syntax validation."
+        ],
+        "failure_modes": [
+          "Plans a concrete implementation without inspecting gog_cli/serving.py first.",
+          "Claims knowledge of specific functions or code structures not present in the served context.",
+          "Targets files outside context.allowed_nodes.",
+          "Omits uncertainty even though source content is absent from the served context."
+        ],
+        "validation_hint": "python3 -m py_compile gog_cli/serving.py"
+      },
+      "strategy": "traditional_rag",
+      "strategy_description": "Keyword-retrieved unstructured source chunks without graph relations.",
+      "model": "kimi-k2.6:cloud",
+      "retrieval_mode": "traditional_rag",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "rag_bundle": {
+        "retrieved_files": [
+          "gog_cli/serving.py",
+          "gog/benchmark_local_llm.py",
+          "sel/experiments/exp_24a.py",
+          "gog/benchmark_srm.py"
+        ],
+        "chunks": [
+          {
+            "file": "gog_cli/serving.py",
+            "score": 10090,
+            "text": "\"\"\"Repository summaries and prompt-scoped context bundles.\"\"\"\n\nfrom __future__ import annotations\n\nimport json\nimport os\nimport pickle\nimport re\nfrom pathlib import Path\nfrom typing import Any\n\nfrom gog_engine import graph_search\nfrom gog_engine.token_utils import count_tokens_in_files\n\nfrom .onboarding import inspect_onboarding\n\n\nIDENTIFIER_RE = re.compile(r\"`?([A-Za-z_][A-Za-z0-9_]*)`?\")\nFILE_MENTION_RE = re.compile(r\"(?:src|gog_engine|gog_cli|gog)/[A-Za-z0-9_/.-]+\\.(?:py|ts|vue|js)\")\n\n\ndef summarize_repository(\n    repo_path: Path,\n    artifact_dir: Path | None = None,\n) -> dict[str, Any]:\n    \"\"\"Build a repo-level orientation digest from onboarding artifacts.\"\"\"\n    inspection = inspect_onboarding(repo_path=repo_path, artifact_dir=artifact_dir)\n    manifest = inspection[\"manifest\"]\n    profile_path = Path(manifest[\"artifacts\"][\"repo_profile\"])\n    graph_path = Path(manifest[\"artifacts\"][\"structural_graph_json\"])\n\n    profile = json.loads(profile_path.read_text(encoding=\"utf-8\"))\n    graph_payload = json.loads(graph_path.read_text(encoding=\"utf-8\"))\n    degree_summary = _degree_summary(graph_payload)\n\n    return {\n        \"status\": inspection[\"status\"],\n        \"issues\": inspection[\"issues\"],\n        \"repo\": {\n            \"root\": manifest[\"repo\"][\"root\"],\n            \"fingerprint\": manifest[\"repo\"][\"fingerprint\"],\n        },\n        \"coverage\": {\n            \"total_files\": profile[\"files\"][\"total_files\"],\n            \"supported_graph_files\": profile[\"parser_coverage\"][\"supported_graph_file_count\"],\n            \"supported_extensions\": profile[\"parser_coverage\"][\"structural_graph_extensions\"],\n        },\n        \"manifests\": profile[\"manifests\"],\n        \"validation\": manifest[\"validation\"],\n        \"graph\": {\n            \"node_count\": graph_payload[\"node_count\"],\n            \"edge_count\": graph_payload[\"edge_count\"],\n            \"high_out_degree_nodes\": degree_summary[\"high_out_degree_nodes\"],\n            \"high_in_degree_nodes\": degree_summary[\"high_in_degree_nodes\"],\n        },\n        \"artifact_root\": manifest[\"artifacts\"][\"root\"],\n    }\n\n\ndef build_context_bundle(\n    repo_path: Path,\n    prompt: str,\n    artifact_dir: Path | None = None,\n) -> dict[str, Any]:\n    \"\"\"Build a prompt-scoped repo bundle for a downstream reasoner.\"\"\"\n    repo_root = repo_path.expanduser().resolve()\n    inspection = inspect_onboarding(repo_path=repo_root, artifact_dir=artifact_dir)\n    manifest = inspection[\"manifest\"]\n    graph = _load_graph(Path(manifest[\"artifacts\"][\"structural_graph_pickle\"]))\n\n    explicit_mentions = FILE_MENTION_RE.findall(prompt)\n    explicit_files = _explicit_file_mentions(explicit_mentions, graph)\n    explicit_identifiers = _explicit_identifier_mentions(prompt, repo_root, graph)\n    unsupported_mentions = _unsupported_file_mentions(explicit_mentions, graph)\n\n    if explicit_files:\n        selected_nodes = _expand_from_seed_nodes(graph, explicit_files)\n        selection_strategy = \"explicit_file_mentions\"\n    elif unsupported_mentions:\n        selected_nodes = []\n        selection_strategy = \"unsupported_explicit_file_mentions\"\n    elif explicit_identifiers:\n        selected_nodes = _expand_from_seed_nodes(graph, explicit_identifiers)\n        selection_strategy = \"identifier_filename_match\"\n    else:\n        selected_nodes = graph_search.isolate_context(graph, prompt)\n        selection_strategy = \"graph_search_fallback\"\n\n    rel_files = [_rel(repo_root, Path(path)) for path in selected_nodes]\n    relations = _selected_relations(repo_root, graph, selected_nodes)\n    token_estimate = count_tokens_in_files(selected_nodes)\n\n    return {\n        \"status\": inspection[\"status\"],\n        \"issues\": inspection[\"issues\"],\n        \"prompt\": prompt,\n        \"selection\": {\n            \"strategy\": selection_strategy,\n            \"explicit_file_matches\": [_rel(repo_root, Path(path)) for path in explicit_files],\n            \"unsupported_explicit_file_mentions\": unsupported_mentions,\n            \"identifier_matches\": [_rel(repo_root, Path(path)) for path in explicit_identifiers],\n            \"selected_file_count\": len(rel_files),\n            \"estimated_input_tokens\": token_estimate,\n        },\n        \"context\": {\n            \"files\": rel_files,\n            \"relations\": relations,\n            \"validation_commands\": manifest[\"validation\"][\"commands\"],\n            \"allowed_nodes\": rel_files,\n        },\n        \"handoff\": {\n            \"recommended_reasoner_input\": (\n                \"Use this bounded repository slice as the operat"
+          },
+          {
+            "file": "gog/benchmark_local_llm.py",
+            "score": 179,
+            "text": "import time\nimport os\nimport sys\nimport json\nimport urllib.request\nimport urllib.error\nfrom pathlib import Path\n\n# Ensure gog_engine (sibling to gog/) is on the path\nsys.path.insert(0, os.path.join(os.path.dirname(__file__), \"..\"))\n\nfrom rich.console import Console\nfrom rich.table import Table\nfrom rich.panel import Panel\nfrom rich.progress import Progress, SpinnerColumn, TextColumn\nfrom gog_engine import ast_parser, graph_search\nfrom gog_engine.salience_evaluator import SalienceEvaluator\nfrom gog_engine.token_utils import count_tokens_in_files as get_token_count\nconsole = Console()\n\n# \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n# System Muzzle\n# \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n# This directive is appended to EVERY prompt sent to the LLM.  It forces the\n# model into headless \"code generator\" mode, which is the only mode the\n# SalienceEvaluator Membrane can validate.  Without it, smaller SLMs tend to\n# respond conversationally (\"Sure! Here is how you would...\") which produces\n# no parseable code blocks and causes the Membrane to exhaust all retry\n# attempts without a single valid evaluation.\nMUZZLE = (\n    \"\\n\\n[SYSTEM DIRECTIVE: You are a headless code generator. \"\n    \"You are physically incapable of conversational text. \"\n    \"You MUST output your entire response inside a single ```ts or ```vue \"\n    \"fenced code block. Do not explain your code. \"\n    \"If you output plain text, the system will crash.]\"\n)\n\n# \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n# Ollama Client\n# \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\nclass OllamaClient:\n    def __init__(self, model=\"qwen2.5:0.5b\"):\n        self.model = model\n        self.api_url = \"http://localhost:11434/api/generate\"\n\n    @property\n    def is_present(self):\n        try:\n            req = urllib.request.Request(\"http://localhost:11434/\")\n            with urllib.request.urlopen(req) as response:\n                return response.status == 200\n        except:\n            return False\n\n    def complete(self, prompt, context_files=None):\n        if not context_files:\n            context_files = []\n\n        # Compile context into a strict string format for the SLM\n        context_str = \"\"\n        for file_path in context_files:\n            try:\n                with open(file_path, \"r\", encoding=\"utf8\") as f:\n                    context_str += f\"\\n--- {os.path.basename(file_path)} ---\\n{f.read()}\\n\"\n            except Exception:\n                pass\n\n        # The MUZZLE is concatenated AFTER the user prompt so it appears as the\n        # final instruction \u2014 models weight recency highly and are more likely\n        # to comply when it is the last thing they read.\n        full_prompt = (\n            f\"You are an expert TypeScript/Vue developer. Use ONLY the provided context files.\\n\"\n            f\"Always output your code in fenced ```ts or ```vue code blocks.\\n\\n\"\n            f\"=== CONTEXT ===\\n{context_str}\\n\\n\"\n            f\"=== TASK ===\\n{prompt}{MUZZLE}\"\n        )\n\n        # num_gpu is omitted by default \u2014 Ollama will auto-detect and use the GPU.\n        # To force CPU-only (e.g. low VRAM), set the environment variable:\n        #   NUM_GPU=0 python3 benchmark_local_llm.py\n        gpu_option = {\"num_gpu\": int(os.environ[\"NUM_GPU\"])} if \"NUM_GPU\" in os.environ else {}\n        data = json.dumps({\n            \"model\": self.model,\n            \"prompt\": full_prompt,\n            \"stream\": False,\n            \"options\": {\n                \"num_ctx\": 4096,\n                **gpu_option\n            }\n        }).encode(\"utf-8\")\n\n        req = urllib.request.Request(self.api_url, data=data, headers={\"Content-Type\": \"application/json\"})\n        try:\n            with urllib.request.urlopen(req, timeout=600) as response:\n                result = json.loads(response.read().decode(\"utf-8\"))\n                response_text = result.get(\"response\", \"\").strip()\n                if not response_text:\n                    return \"[Error: Model returned an empty string. Context likely exceeded maximum context window (Context Collapse).]\"\n                return response_text\n        except urllib.error.HTTPError as e:\n            error_body = e.read().decode(\"utf-8\")\n            try:\n                error_json = json.loads(error_body)\n                error_msg = error_json.get(\"error\", error_body)\n            except:\n                error_msg = error_body\n     "
+          },
+          {
+            "file": "sel/experiments/exp_24a.py",
+            "score": 139,
+            "text": "#!/usr/bin/env python3\n\"\"\"\nSEL Experiment 24a \u2014 Rhetorical Primitive Discovery\nLOCATION: sel/experiments/exp_24a_rhetorical_primitives.py\n\nGOAL:\n  Discover and validate the complete set of rhetorical primitives \u2014\n  the irreducible ways humans encode emotional subtext in language.\n\n  This is NOT a test of the SEL pipeline.\n  This is basic science: what ARE the primitives?\n\nHYPOTHESIS:\n  Human emotional language has a finite set of rhetorical modes\n  (how something is said, independent of what is being said).\n  These modes are discoverable, labelable, and stable across raters.\n\nDESIGN:\n  80 prompts \u00d7 2 raters (human + LLM) = 160 classifications\n  \n  Prompts selected for rhetorical variety, NOT semantic variety.\n  Multiple prompts may share the same underlying emotion but\n  differ in HOW that emotion is expressed.\n\n  Categories (provisional \u2014 UNKNOWN is always valid):\n    DIRECT        \u2014 stated plainly, no rhetorical transform\n    HINTING       \u2014 approaching the real thing indirectly\n    SHY_AWAY      \u2014 starts toward the real thing then retreats\n    IRONIC        \u2014 stated opposite, both meanings active\n    SARCASTIC     \u2014 emotional intensification through deflation\n    REVERSE       \u2014 stated opposite, only one meaning intended\n    MATTER_OF_FACT\u2014 flat affect, emotional content higher than register\n    DRY           \u2014 intellectual/philosophical framing of emotion\n    COLLOQUIAL    \u2014 idiomatic encoding, requires translation\n    METAPHORICAL  \u2014 concrete/physical language for abstract emotion\n    UNDERSTATED   \u2014 less expressed than felt\n    OVERSTATED    \u2014 hyperbole as signal (may deflate meaning)\n    UNKNOWN       \u2014 doesn't fit any category, needs new name\n\nWHAT WE'RE LOOKING FOR:\n  1. Which categories are stable (high inter-rater agreement)?\n  2. Which categories collapse into each other (not truly distinct)?\n  3. What lands in UNKNOWN (new primitives we haven't named)?\n  4. Are there prompts where BOTH raters disagree AND\n     neither UNKNOWN applies? (category boundary problems)\n\"\"\"\n\nimport json\nimport time\nimport sys\nimport subprocess\nfrom pathlib import Path\nfrom dataclasses import dataclass, asdict\nfrom datetime import datetime\n\n# \u2500\u2500 rhetorical primitive definitions \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\nRHETORICAL_PRIMITIVES = {\n    \"DIRECT\": {\n        \"description\": \"Stated plainly. No rhetorical transform. \"\n                       \"What is said = what is meant.\",\n        \"signal\": \"First-person statement, emotional word present, \"\n                  \"no irony markers, no idiom\",\n        \"examples\": [\n            \"I miss my hometown\",\n            \"I'm scared about tomorrow\",\n            \"I feel proud of what I've done\",\n        ]\n    },\n    \"HINTING\": {\n        \"description\": \"Approaching the real feeling indirectly. \"\n                       \"The real content is implied, not stated. \"\n                       \"Speaker expects listener to infer.\",\n        \"signal\": \"Vague language, hedging, 'something about', \"\n                  \"'I don't know why', trailing off\",\n        \"examples\": [\n            \"Something about seeing them just... I don't know\",\n            \"There's this feeling I keep having that I can't quite place\",\n            \"I've been thinking about them a lot lately\",\n        ]\n    },\n    \"SHY_AWAY\": {\n        \"description\": \"Starts toward the real feeling then retreats. \"\n                       \"The retreat IS the signal \u2014 what they won't \"\n                       \"say is what they mean.\",\n        \"signal\": \"Starts strong, qualifies heavily, ends with \"\n                  \"dismissal ('probably nothing', 'never mind')\",\n        \"examples\": [\n            \"Sometimes I wonder if... it's probably nothing\",\n            \"I was going to say something but forget it\",\n            \"Part of me feels \u2014 actually it doesn't matter\",\n        ]\n    },\n    \"IRONIC\": {\n        \"description\": \"Stated opposite of what is meant. \"\n                       \"BOTH meanings are active simultaneously. \"\n                       \"Speaker knows listener knows the inversion.\",\n        \"signal\": \"Positive words for negative experience, \"\n                  \"or negative words for positive, with shared \"\n                  \"awareness of the gap\",\n        \"examples\": [\n            \"Oh sure, I definitely don't think about home every day\",\n            \"Yeah I'm totally fine with how things turned out\",\n            \"I love how easy it is to let people go\",\n        ]\n    },\n    \"SARCASTIC\": {\n        \"description\": \"Emotional intensification through a"
+          },
+          {
+            "file": "gog/benchmark_srm.py",
+            "score": 129,
+            "text": "\"\"\"\nbenchmark_srm.py - SRM Pipeline Benchmark (Phase 2)\n\nCompares three tiers:\n  \u2022 Tier 1 (RAG Control) \u2014 raw prompt, ChromaDB retrieval\n  \u2022 Tier 2 (GOG Vanilla) \u2014 raw prompt, GOG deterministic isolation\n  \u2022 Tier 3-SRM (SRM Pipeline) \u2014 symbolic spec only, LLM renders syntax\n\nThe key claim: by removing reasoning from the LLM and placing it in the\ndeterministic planner, smaller models (\u22641B) produce better code.\n\nTier 3-SRM sends ONLY the renderer prompt to the LLM \u2014 NOT the original natural language.\nThis makes the result falsifiable: either the symbolic constraint works, or it doesn't.\n\"\"\"\n\nimport os\nimport time\nimport pickle\nfrom pathlib import Path\nfrom rich.console import Console\nfrom rich.table import Table\nfrom rich.panel import Panel\nfrom rich.progress import Progress, SpinnerColumn, TextColumn\n\nfrom srm_engine import ast_parser, graph_search\nfrom srm_engine.salience_evaluator import SalienceEvaluator\nfrom srm_engine.token_utils import count_tokens_in_files as get_token_count\n\nfrom srm_engine.planner.intent_parser import parse_intent, IntentParseError\nfrom srm_engine.planner.mutation_planner import plan_mutations, PlannerError\nfrom srm_engine.planner.renderer_prompt import build_renderer_prompt, build_single_file_renderer_prompt\n\nfrom benchmark_local_llm import (\n    OllamaClient,\n    run_control_pipeline,\n    run_srm_pipeline_vanilla,\n    score_response,\n    PROMPTS,\n    MUZZLE,\n)\n\nconsole = Console()\nclient = OllamaClient(model=\"qwen2.5:0.5b\")\n\n\n# \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n# Tier 3-SRM: The SRM Pipeline\n# \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\ndef _get_topological_render_order(graph, target_files_abs: list) -> list:\n    \"\"\"\n    Determine render order for multiple target files using topological sort from DAG.\n\n    The planner (not the LLM) determines the dependency order. Each file is rendered\n    in isolation, in the order determined by the import/dependency graph, so that\n    dependent files see the operations applied to their dependencies first.\n\n    Args:\n        graph: NetworkX DiGraph (GOG graph with import relationships).\n        target_files_abs: List of absolute file paths to render.\n\n    Returns:\n        List of absolute file paths in topological order (dependencies first).\n    \"\"\"\n    import networkx as nx\n\n    # Get the subgraph containing only the target files\n    subgraph_nodes = [n for n in graph.nodes() if n in target_files_abs]\n\n    # Topological sort to determine render order for dependencies.\n    # Graph edges: importing_file \u2192 imported_file (A imports B).\n    # Reverse the graph so topological_sort puts dependencies (no incoming edges) first.\n    # If the graph has no relevant edges or topological sort fails, use input order.\n    try:\n        # Check if there are any edges between target files\n        subgraph = graph.subgraph(subgraph_nodes)\n        if len(subgraph.edges()) == 0:\n            # No dependencies between target files; input order is fine\n            return target_files_abs\n\n        # Reverse graph so dependencies appear first in topological sort\n        reversed_graph = graph.reverse()\n        reversed_subgraph = reversed_graph.subgraph(subgraph_nodes)\n        topo_order = list(nx.topological_sort(reversed_subgraph))\n        # Filter to only include target files\n        return [f for f in topo_order if f in target_files_abs]\n    except:\n        # Fall back to input order if topological sort fails\n        return target_files_abs\n\n\ndef run_srm_pipeline(prompt_text: str, target_repo: str, graph) -> dict:\n    \"\"\"\n    Tier 3-SRM: Intent Parser \u2192 Mutation Planner \u2192 Renderer Prompts \u2192 LLM Renderers\n\n    Multi-file handling: For tasks with multiple files, renders each file separately\n    in topological order (dependencies first). The planner determines order; the LLM\n    renders atomically per file (renderer, not planner).\n\n    Args:\n        prompt_text: Natural language instruction from user (used by parser only).\n        target_repo: Path to target repository (for graph resolution).\n        graph: NetworkX DiGraph from ast_parser.build_graph().\n\n    Returns:\n        Dict with timing, token counts, response, and metadata.\n    \"\"\"\n    start_time = time.time()\n\n    # \u2500\u2500 Step 1: Parse Intent (deterministic) \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n    try:\n        ops = parse_intent(prompt_text)\n    except IntentParseError as e:\n        return {\n            \"time\": 0,\n            \"local_time\": 0,\n       "
+          }
+        ]
+      },
+      "prompt_tokens_estimate": 6988,
+      "response_tokens_estimate": 683,
+      "latency_s": 54.3529,
+      "returncode": 0,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "stderr": "\u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280b \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u2807 \u280f \u2819 \u2839 \u2839 \u2838 \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2839 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2819 \u2838 \u283c \u283c \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2807 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u280f \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280b"
+        }
+      ],
+      "stderr": "\u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280b \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u2807 \u280f \u2819 \u2839 \u2839 \u2838 \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2839 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2819 \u2838 \u283c \u283c \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2807 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u280f \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280b",
+      "raw_response": "{\"plan_id\":\"plan_serving_context_rationale_001\",\"intent\":\"Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.\",\"evidence\":[\"From gog_cli/serving.py: selection_strategy is set to one of explicit_file_mentions, unsupported_explicit_file_mentions, identifier_filename_match, or graph_search_fallback, but only aggregate lists (explicit_file_matches, identifier_matches) are returned.\",\"From gog_cli/serving.py: The returned bundle includes context.files as a flat list of relative paths and lacks any per-file rationale linking individual files to the selection path that included them.\",\"From gog_cli/serving.py: selected_nodes = _expand_from_seed_nodes(graph, explicit_files) loses traceability of why individual nodes were reached after graph expansion.\"],\"targets\":[\"gog_cli/serving.py\"],\"steps\":[{\"id\":\"s1_inspect\",\"op\":\"INSPECT_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Locate build_context_bundle and trace the four selection branches to identify where per-file traceability is lost.\",\"depends_on\":[],\"parameters\":{\"function\":\"build_context_bundle\"}},{\"id\":\"s2_add_helper\",\"op\":\"MUTATE_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Introduce a helper that maps each selected node to a rationale string derived from the active selection_strategy and the explicit/identifier seed lists so each file can explain its inclusion.\",\"depends_on\":[\"s1_inspect\"],\"parameters\":{\"function\":\"_build_file_rationales\",\"placement\":\"near existing private helpers in gog_cli/serving.py\"}},{\"id\":\"s3_augment_return\",\"op\":\"MUTATE_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Add a file_selection_reasons mapping inside the selection dictionary so downstream reasoners can inspect why each file in context.files was included.\",\"depends_on\":[\"s2_add_helper\"],\"parameters\":{\"function\":\"build_context_bundle\",\"change\":\"add key selection.file_selection_reasons mapping relative file path to rationale string\"}},{\"id\":\"s4_validate\",\"op\":\"VALIDATE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Run py_compile to ensure the mutated module remains syntactically valid after changes.\",\"depends_on\":[\"s3_augment_return\"],\"parameters\":{\"command\":\"python3 -m py_compile gog_cli/serving.py\"}}],\"constraints\":[\"Changes must be scoped to gog_cli/serving.py only.\",\"Existing return structure keys must remain unchanged; only additive changes are allowed.\",\"Rationales must be grounded in the four selection_strategy values visible in the retrieved chunk.\",\"Do not reference symbols or files outside RAG_CONTEXT_JSON.retrieved_files.\"],\"validation\":[\"python3 -m py_compile gog_cli/serving.py\",\"Assert the bundle return value contains a file_selection_reasons dict with an entry for every file in context.files.\"],\"uncertainty\":[\"The implementation details of _expand_from_seed_nodes and _selected_relations are not present in the retrieved chunks, so the helper must infer rationale from the strategy branch and seed lists rather than internal expansion metadata.\",\"The truncated handoff string at the end of the gog_cli/serving.py chunk may hide downstream consumers that could be affected by new keys.\",\"The schema key name file_selection_reasons is provisional because actual downstream consumer contracts are not visible in the retrieved chunks.\"]}",
+      "parsed_plan": {
+        "plan_id": "plan_serving_context_rationale_001",
+        "intent": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "evidence": [
+          "From gog_cli/serving.py: selection_strategy is set to one of explicit_file_mentions, unsupported_explicit_file_mentions, identifier_filename_match, or graph_search_fallback, but only aggregate lists (explicit_file_matches, identifier_matches) are returned.",
+          "From gog_cli/serving.py: The returned bundle includes context.files as a flat list of relative paths and lacks any per-file rationale linking individual files to the selection path that included them.",
+          "From gog_cli/serving.py: selected_nodes = _expand_from_seed_nodes(graph, explicit_files) loses traceability of why individual nodes were reached after graph expansion."
+        ],
+        "targets": [
+          "gog_cli/serving.py"
+        ],
+        "steps": [
+          {
+            "id": "s1_inspect",
+            "op": "INSPECT_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Locate build_context_bundle and trace the four selection branches to identify where per-file traceability is lost.",
+            "depends_on": [],
+            "parameters": {
+              "function": "build_context_bundle"
+            }
+          },
+          {
+            "id": "s2_add_helper",
+            "op": "MUTATE_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Introduce a helper that maps each selected node to a rationale string derived from the active selection_strategy and the explicit/identifier seed lists so each file can explain its inclusion.",
+            "depends_on": [
+              "s1_inspect"
+            ],
+            "parameters": {
+              "function": "_build_file_rationales",
+              "placement": "near existing private helpers in gog_cli/serving.py"
+            }
+          },
+          {
+            "id": "s3_augment_return",
+            "op": "MUTATE_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Add a file_selection_reasons mapping inside the selection dictionary so downstream reasoners can inspect why each file in context.files was included.",
+            "depends_on": [
+              "s2_add_helper"
+            ],
+            "parameters": {
+              "function": "build_context_bundle",
+              "change": "add key selection.file_selection_reasons mapping relative file path to rationale string"
+            }
+          },
+          {
+            "id": "s4_validate",
+            "op": "VALIDATE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Run py_compile to ensure the mutated module remains syntactically valid after changes.",
+            "depends_on": [
+              "s3_augment_return"
+            ],
+            "parameters": {
+              "command": "python3 -m py_compile gog_cli/serving.py"
+            }
+          }
+        ],
+        "constraints": [
+          "Changes must be scoped to gog_cli/serving.py only.",
+          "Existing return structure keys must remain unchanged; only additive changes are allowed.",
+          "Rationales must be grounded in the four selection_strategy values visible in the retrieved chunk.",
+          "Do not reference symbols or files outside RAG_CONTEXT_JSON.retrieved_files."
+        ],
+        "validation": [
+          "python3 -m py_compile gog_cli/serving.py",
+          "Assert the bundle return value contains a file_selection_reasons dict with an entry for every file in context.files."
+        ],
+        "uncertainty": [
+          "The implementation details of _expand_from_seed_nodes and _selected_relations are not present in the retrieved chunks, so the helper must infer rationale from the strategy branch and seed lists rather than internal expansion metadata.",
+          "The truncated handoff string at the end of the gog_cli/serving.py chunk may hide downstream consumers that could be affected by new keys.",
+          "The schema key name file_selection_reasons is provisional because actual downstream consumer contracts are not visible in the retrieved chunks."
+        ]
+      },
+      "structural_score": {
+        "json_valid": true,
+        "schema_valid": true,
+        "schema_errors": [],
+        "allowed_node_compliance": true,
+        "unsupported_targets": [],
+        "no_extra_prose": true,
+        "evidence_count": 3,
+        "step_count": 4,
+        "composite_score": 4
+      },
+      "semantic_score": {
+        "target_focus": true,
+        "inspect_before_mutate": true,
+        "source_awareness": true,
+        "validation_alignment": true,
+        "no_unsupported_targets": true,
+        "semantic_score": 5,
+        "semantic_errors": []
+      }
+    }
+  ],
+  "summary": {
+    "minimal_platter": {
+      "observations": 1,
+      "execution_success_count": 1,
+      "execution_failure_count": 0,
+      "json_valid_count": 1,
+      "schema_valid_count": 1,
+      "strict_json_only_count": 1,
+      "avg_structural_score": 4.0,
+      "avg_semantic_score": 5.0,
+      "avg_success_semantic_score": 5.0,
+      "avg_success_total_tokens_estimate": 1935.0,
+      "avg_prompt_tokens_estimate": 1430.0,
+      "avg_response_tokens_estimate": 505.0
+    },
+    "traditional_rag": {
+      "observations": 1,
+      "execution_success_count": 1,
+      "execution_failure_count": 0,
+      "json_valid_count": 1,
+      "schema_valid_count": 1,
+      "strict_json_only_count": 1,
+      "avg_structural_score": 4.0,
+      "avg_semantic_score": 5.0,
+      "avg_success_semantic_score": 5.0,
+      "avg_success_total_tokens_estimate": 7671.0,
+      "avg_prompt_tokens_estimate": 6988.0,
+      "avg_response_tokens_estimate": 683.0
+    }
+  }
+}

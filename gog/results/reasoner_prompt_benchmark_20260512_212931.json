@@ -1,0 +1,710 @@
+{
+  "generated_at": "2026-05-12T21:29:31.034728+00:00",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation",
+  "schema_path": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog_cli/schemas/mutation_plan.schema.json",
+  "results": [
+    {
+      "task_id": "python_context_serving",
+      "task_prompt": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.",
+      "strategy": "flat_json",
+      "strategy_description": "Raw JSON bundle followed by a strict JSON response contract.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1349,
+      "response_tokens_estimate": 296,
+      "latency_s": 110.1973,
+      "returncode": 0,
+      "stderr": "\u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u2807 \u280b \u2819 \u2819 \u2839 \u283c \u283c \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2839 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u280f \u280b \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u280b \u2819 \u2839 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280b \u280b \u2839 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2827 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280b \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u283c \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u283c \u2834 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u283c \u283c \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2839 \u2838 \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u283c \u2834 \u2834 \u2827 \u2807 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280b \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280b \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280b \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2838 \u2838 \u2834 \u2834 \u2827 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280f \u280b \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u280b \u2819 \u2838 \u283c \u283c \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827",
+      "raw_response": "{\"plan_id\":\"plan-improve-serving-handoff-001\",\"intent\":\"Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.\",\"evidence\":[\"The task explicitly targets gog_cli/serving.py for improving context serving.\",\"gog_cli/serving.py is listed in context.allowed_nodes and imports gog_engine/graph_search and gog_cli/onboarding.py, indicating it assembles context bundles.\",\"The context bundle does not include file source contents, preventing safe identification of exact insertion points or data structures.\"],\"targets\":[\"gog_cli/serving.py\"],\"steps\":[{\"id\":\"inspect-serving\",\"op\":\"INSPECT_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Examine the current implementation of prompt-scoped context assembly and reasoner handoff formatting before proposing safe mutations.\",\"depends_on\":[],\"parameters\":{}}],\"constraints\":[\"Only mutate files within context.allowed_nodes.\",\"Do not assume availability of files outside the served context.\",\"Preserve existing import graph integrity.\"],\"validation\":[\"python3 -m py_compile gog_cli/serving.py\"],\"uncertainty\":[\"File source contents for gog_cli/serving.py are not provided in the context bundle, so exact line numbers, function names, and data structures are unknown.\",\"Consequently, specific mutation details cannot be safely planned without first inspecting the node.\",\"The intended improvements may interact with internal dependencies; their source contents are also unavailable for deep impact analysis.\"]}",
+      "parsed_plan": {
+        "plan_id": "plan-improve-serving-handoff-001",
+        "intent": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.",
+        "evidence": [
+          "The task explicitly targets gog_cli/serving.py for improving context serving.",
+          "gog_cli/serving.py is listed in context.allowed_nodes and imports gog_engine/graph_search and gog_cli/onboarding.py, indicating it assembles context bundles.",
+          "The context bundle does not include file source contents, preventing safe identification of exact insertion points or data structures."
+        ],
+        "targets": [
+          "gog_cli/serving.py"
+        ],
+        "steps": [
+          {
+            "id": "inspect-serving",
+            "op": "INSPECT_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Examine the current implementation of prompt-scoped context assembly and reasoner handoff formatting before proposing safe mutations.",
+            "depends_on": [],
+            "parameters": {}
+          }
+        ],
+        "constraints": [
+          "Only mutate files within context.allowed_nodes.",
+          "Do not assume availability of files outside the served context.",
+          "Preserve existing import graph integrity."
+        ],
+        "validation": [
+          "python3 -m py_compile gog_cli/serving.py"
+        ],
+        "uncertainty": [
+          "File source contents for gog_cli/serving.py are not provided in the context bundle, so exact line numbers, function names, and data structures are unknown.",
+          "Consequently, specific mutation details cannot be safely planned without first inspecting the node.",
+          "The intended improvements may interact with internal dependencies; their source contents are also unavailable for deep impact analysis."
+        ]
+      },
+      "score": {
+        "json_valid": true,
+        "schema_valid": true,
+        "schema_errors": [],
+        "allowed_node_compliance": true,
+        "unsupported_targets": [],
+        "no_extra_prose": true,
+        "evidence_count": 3,
+        "step_count": 1,
+        "composite_score": 4
+      }
+    },
+    {
+      "task_id": "python_context_serving",
+      "task_prompt": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.",
+      "strategy": "sectioned_brief",
+      "strategy_description": "Labeled textual sections with schema requirements at the end.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1182,
+      "response_tokens_estimate": 584,
+      "latency_s": 74.3273,
+      "returncode": 0,
+      "stderr": "\u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2819 \u2838 \u283c \u283c \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280b \u280b \u2839 \u2838 \u2838 \u283c \u2826 \u2826 \u2807 \u280f \u280b \u280b \u2839 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2839 \u2838 \u2834 \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280f",
+      "raw_response": "{\"plan_id\":\"serving-inspect-handoff-001\",\"intent\":\"Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect by adding structured metadata tracing that captures served nodes, salience summaries, and token utilization.\",\"evidence\":[\"gog_cli/serving.py is the central module responsible for context serving and imports graph_search, token_utils, and onboarding, indicating it assembles scoped context for downstream reasoning\",\"HANDOFF_RULES specify salience_evaluator_required and post_apply_refresh_required, which implies the reasoner handoff boundary must expose salience and scope metadata for verification\",\"Current context lacks explicit inspectability hooks, making it difficult to audit what prompt-scoped context is actually transmitted to the reasoner\"],\"targets\":[\"gog_cli/serving.py\"],\"steps\":[{\"id\":\"inspect_serving\",\"op\":\"INSPECT_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Identify the existing context assembly and handoff functions to determine safe insertion points for inspectability enhancements without breaking current consumers.\",\"depends_on\":[],\"parameters\":{\"focus\":[\"context_serving\",\"handoff\",\"reasoner_boundary\"]}},{\"id\":\"mutate_serving\",\"op\":\"MUTATE_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Enhance context serving output with an optional handoff_manifest containing served node identifiers, salience metadata, token counts, and timestamps so the reasoner handoff is fully inspectable.\",\"depends_on\":[\"inspect_serving\"],\"parameters\":{\"change_type\":\"enhance\",\"description\":\"Introduce an optional include_manifest flag to serving functions. When enabled, return a tuple (context_string, handoff_manifest) where handoff_manifest is a typed dict with fields: nodes_served, salience_scores, token_count, freshness_timestamp. Default behavior remains unchanged for backward compatibility.\",\"backward_compatible\":true}},{\"id\":\"validate_compile\",\"op\":\"VALIDATE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Verify that the modified gog_cli/serving.py compiles successfully after the inspectability enhancements are applied.\",\"depends_on\":[\"mutate_serving\"],\"parameters\":{\"command\":\"python3 -m py_compile gog_cli/serving.py\"}}],\"constraints\":[\"Only allowed_nodes may be referenced or modified\",\"Mutations must remain backward compatible; existing serving function signatures should default to current behavior\",\"Do not introduce external dependencies beyond the existing import graph\",\"All inspectability additions must be deterministic and serializable\"],\"validation\":[\"python3 -m py_compile gog_cli/serving.py\"],\"uncertainty\":[\"The exact function names and return types in gog_cli/serving.py are not visible in the provided context slice; the precise manifest schema must be adapted after inspection\",\"It is unclear whether consumers of gog_cli/serving.py expect a single string return or already unpack tuples; the optional flag approach mitigates this but needs confirmation during inspection\"]}",
+      "parsed_plan": {
+        "plan_id": "serving-inspect-handoff-001",
+        "intent": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect by adding structured metadata tracing that captures served nodes, salience summaries, and token utilization.",
+        "evidence": [
+          "gog_cli/serving.py is the central module responsible for context serving and imports graph_search, token_utils, and onboarding, indicating it assembles scoped context for downstream reasoning",
+          "HANDOFF_RULES specify salience_evaluator_required and post_apply_refresh_required, which implies the reasoner handoff boundary must expose salience and scope metadata for verification",
+          "Current context lacks explicit inspectability hooks, making it difficult to audit what prompt-scoped context is actually transmitted to the reasoner"
+        ],
+        "targets": [
+          "gog_cli/serving.py"
+        ],
+        "steps": [
+          {
+            "id": "inspect_serving",
+            "op": "INSPECT_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Identify the existing context assembly and handoff functions to determine safe insertion points for inspectability enhancements without breaking current consumers.",
+            "depends_on": [],
+            "parameters": {
+              "focus": [
+                "context_serving",
+                "handoff",
+                "reasoner_boundary"
+              ]
+            }
+          },
+          {
+            "id": "mutate_serving",
+            "op": "MUTATE_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Enhance context serving output with an optional handoff_manifest containing served node identifiers, salience metadata, token counts, and timestamps so the reasoner handoff is fully inspectable.",
+            "depends_on": [
+              "inspect_serving"
+            ],
+            "parameters": {
+              "change_type": "enhance",
+              "description": "Introduce an optional include_manifest flag to serving functions. When enabled, return a tuple (context_string, handoff_manifest) where handoff_manifest is a typed dict with fields: nodes_served, salience_scores, token_count, freshness_timestamp. Default behavior remains unchanged for backward compatibility.",
+              "backward_compatible": true
+            }
+          },
+          {
+            "id": "validate_compile",
+            "op": "VALIDATE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Verify that the modified gog_cli/serving.py compiles successfully after the inspectability enhancements are applied.",
+            "depends_on": [
+              "mutate_serving"
+            ],
+            "parameters": {
+              "command": "python3 -m py_compile gog_cli/serving.py"
+            }
+          }
+        ],
+        "constraints": [
+          "Only allowed_nodes may be referenced or modified",
+          "Mutations must remain backward compatible; existing serving function signatures should default to current behavior",
+          "Do not introduce external dependencies beyond the existing import graph",
+          "All inspectability additions must be deterministic and serializable"
+        ],
+        "validation": [
+          "python3 -m py_compile gog_cli/serving.py"
+        ],
+        "uncertainty": [
+          "The exact function names and return types in gog_cli/serving.py are not visible in the provided context slice; the precise manifest schema must be adapted after inspection",
+          "It is unclear whether consumers of gog_cli/serving.py expect a single string return or already unpack tuples; the optional flag approach mitigates this but needs confirmation during inspection"
+        ]
+      },
+      "score": {
+        "json_valid": true,
+        "schema_valid": true,
+        "schema_errors": [],
+        "allowed_node_compliance": true,
+        "unsupported_targets": [],
+        "no_extra_prose": true,
+        "evidence_count": 3,
+        "step_count": 3,
+        "composite_score": 4
+      }
+    },
+    {
+      "task_id": "python_context_serving",
+      "task_prompt": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.",
+      "strategy": "evidence_first",
+      "strategy_description": "Emphasize citing served evidence before selecting mutations.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1383,
+      "response_tokens_estimate": 543,
+      "latency_s": 153.6732,
+      "returncode": 0,
+      "stderr": "\u2819 \u2839 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2839 \u283c \u283c \u2826 \u2826 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u280f \u280b \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280b \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2827 \u280f \u280f \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u2838 \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280f \u280b \u2839 \u2838 \u2838 \u2834 \u2834 \u2827 \u2807 \u2807 \u280b \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2839 \u2838 \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2819 \u2838 \u2838 \u2834 \u2826 \u2826 \u2807 \u2807 \u280b \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280f \u2819 \u2819 \u2838 \u283c \u283c \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2807 \u280f \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u283c \u2834 \u2834 \u2826 \u2827 \u280f \u280b \u280b \u2819 \u2838 \u2838 \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u2819 \u2819 \u2838 \u2838 \u283c \u2826 \u2826 \u2807 \u280f \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2819 \u2838 \u283c \u283c \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u280b \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280b \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u280f \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2819 \u2839 \u283c \u283c \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819",
+      "raw_response": "{\"plan_id\":\"improve-serving-inspectability-001\",\"intent\":\"Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect by augmenting the serving path with handoff metadata visibility and tracing its upstream imports.\",\"evidence\":[\"gog_cli/serving.py\",\"gog_cli/serving.py imports gog_engine/graph_search.py\",\"gog_cli/serving.py imports gog_cli/onboarding.py\",\"gog_cli/serving.py imports gog_engine/token_utils.py\",\"gog_cli/serving.py imports gog_engine/__init__.py\",\"handoff.salience_evaluator_required\",\"handoff.post_apply_refresh_required\",\"python3 -m py_compile\"],\"targets\":[\"gog_cli/serving.py\"],\"steps\":[{\"id\":\"inspect-serving-impl\",\"op\":\"INSPECT_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Ground the plan by reading gog_cli/serving.py to locate the context-serving functions and understand how the imported subsystems (graph_search, onboarding, token_utils) are composed into the served bundle.\",\"depends_on\":[],\"parameters\":{}},{\"id\":\"add-handoff-inspection\",\"op\":\"MUTATE_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Modify the context serving flow in gog_cli/serving.py to expose reasoner-handoff signals (salience_evaluator_required, post_apply_refresh_required) and trace the contribution of each imported subsystem (graph_search.py, onboarding.py, token_utils.py, __init__.py) so the handoff is easier to inspect.\",\"depends_on\":[\"inspect-serving-impl\"],\"parameters\":{}},{\"id\":\"compile-check\",\"op\":\"VALIDATE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Verify that the mutated gog_cli/serving.py still compiles cleanly using the validation command provided in the context bundle.\",\"depends_on\":[\"add-handoff-inspection\"],\"parameters\":{\"command\":\"python3 -m py_compile\"}}],\"constraints\":[\"Mutations must remain within context.allowed_nodes.\",\"Must preserve existing imports: gog_engine/graph_search.py, gog_cli/onboarding.py, gog_engine/token_utils.py, gog_engine/__init__.py.\",\"Do not remove or alter CLI entrypoints in gog_cli/serving.py.\"],\"validation\":[\"python3 -m py_compile gog_cli/serving.py\"],\"uncertainty\":[\"The served context bundle does not include the source code text of gog_cli/serving.py, so exact line numbers, function names, and insertion points are unknown.\",\"The internal data structures used to assemble the prompt-scoped context inside gog_cli/serving.py are not visible in the provided context.\"]}",
+      "parsed_plan": {
+        "plan_id": "improve-serving-inspectability-001",
+        "intent": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect by augmenting the serving path with handoff metadata visibility and tracing its upstream imports.",
+        "evidence": [
+          "gog_cli/serving.py",
+          "gog_cli/serving.py imports gog_engine/graph_search.py",
+          "gog_cli/serving.py imports gog_cli/onboarding.py",
+          "gog_cli/serving.py imports gog_engine/token_utils.py",
+          "gog_cli/serving.py imports gog_engine/__init__.py",
+          "handoff.salience_evaluator_required",
+          "handoff.post_apply_refresh_required",
+          "python3 -m py_compile"
+        ],
+        "targets": [
+          "gog_cli/serving.py"
+        ],
+        "steps": [
+          {
+            "id": "inspect-serving-impl",
+            "op": "INSPECT_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Ground the plan by reading gog_cli/serving.py to locate the context-serving functions and understand how the imported subsystems (graph_search, onboarding, token_utils) are composed into the served bundle.",
+            "depends_on": [],
+            "parameters": {}
+          },
+          {
+            "id": "add-handoff-inspection",
+            "op": "MUTATE_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Modify the context serving flow in gog_cli/serving.py to expose reasoner-handoff signals (salience_evaluator_required, post_apply_refresh_required) and trace the contribution of each imported subsystem (graph_search.py, onboarding.py, token_utils.py, __init__.py) so the handoff is easier to inspect.",
+            "depends_on": [
+              "inspect-serving-impl"
+            ],
+            "parameters": {}
+          },
+          {
+            "id": "compile-check",
+            "op": "VALIDATE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Verify that the mutated gog_cli/serving.py still compiles cleanly using the validation command provided in the context bundle.",
+            "depends_on": [
+              "add-handoff-inspection"
+            ],
+            "parameters": {
+              "command": "python3 -m py_compile"
+            }
+          }
+        ],
+        "constraints": [
+          "Mutations must remain within context.allowed_nodes.",
+          "Must preserve existing imports: gog_engine/graph_search.py, gog_cli/onboarding.py, gog_engine/token_utils.py, gog_engine/__init__.py.",
+          "Do not remove or alter CLI entrypoints in gog_cli/serving.py."
+        ],
+        "validation": [
+          "python3 -m py_compile gog_cli/serving.py"
+        ],
+        "uncertainty": [
+          "The served context bundle does not include the source code text of gog_cli/serving.py, so exact line numbers, function names, and insertion points are unknown.",
+          "The internal data structures used to assemble the prompt-scoped context inside gog_cli/serving.py are not visible in the provided context."
+        ]
+      },
+      "score": {
+        "json_valid": true,
+        "schema_valid": true,
+        "schema_errors": [],
+        "allowed_node_compliance": true,
+        "unsupported_targets": [],
+        "no_extra_prose": true,
+        "evidence_count": 8,
+        "step_count": 3,
+        "composite_score": 4
+      }
+    },
+    {
+      "task_id": "python_context_serving",
+      "task_prompt": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.",
+      "strategy": "schema_first",
+      "strategy_description": "Lead with the MutationPlan schema and then provide repo context.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1349,
+      "response_tokens_estimate": 695,
+      "latency_s": 76.9077,
+      "returncode": 0,
+      "stderr": "\u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2819 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280b \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2819 \u2839 \u283c \u283c \u2826 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2827 \u2807 \u280b \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834",
+      "raw_response": "{\n  \"plan_id\": \"plan-improve-serving-inspectability-001\",\n  \"intent\": \"Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect by enriching the context bundle with structured metadata and validation logging.\",\n  \"evidence\": [\n    \"Task explicitly targets gog_cli/serving.py to improve reasoner handoff inspectability.\",\n    \"GOG_CONTEXT_BUNDLE_JSON shows serving.py imports onboarding, graph_search, token_utils, and gog_engine, indicating it assembles the context payload.\",\n    \"The context bundle schema already includes status, selection, context, and handoff fields that can be augmented without breaking existing consumers.\"\n  ],\n  \"targets\": [\n    \"gog_cli/serving.py\"\n  ],\n  \"steps\": [\n    {\n      \"id\": \"inspect-serving\",\n      \"op\": \"INSPECT_NODE\",\n      \"target\": \"gog_cli/serving.py\",\n      \"rationale\": \"Determine the current context assembly, serialization logic, and handoff field construction before introducing inspectability changes.\",\n      \"depends_on\": [],\n      \"parameters\": {}\n    },\n    {\n      \"id\": \"mutate-add-inspection-fields\",\n      \"op\": \"MUTATE_NODE\",\n      \"target\": \"gog_cli/serving.py\",\n      \"rationale\": \"Augment the returned context dictionary with inspectable handoff metadata such as a served timestamp, per-file token counts, relation summaries, and a debug envelope so reasoner handoffs are easier to trace and validate.\",\n      \"depends_on\": [\n        \"inspect-serving\"\n      ],\n      \"parameters\": {\n        \"change_description\": \"Add structured fields to the context bundle output: 'served_at' (ISO timestamp), 'debug' (token counts per file and relation totals), and 'handoff_metadata' (plan_id hint and allowed_nodes count).\"\n      }\n    },\n    {\n      \"id\": \"validate-compile\",\n      \"op\": \"VALIDATE\",\n      \"target\": \"gog_cli/serving.py\",\n      \"rationale\": \"Ensure the mutated serving module compiles successfully and remains syntactically valid.\",\n      \"depends_on\": [\n        \"mutate-add-inspection-fields\"\n      ],\n      \"parameters\": {\n        \"command\": \"python3 -m py_compile gog_cli/serving.py\"\n      }\n    }\n  ],\n  \"constraints\": [\n    \"Only modify files within context.allowed_nodes.\",\n    \"Preserve the existing shape of the context bundle so downstream consumers do not break.\",\n    \"Do not introduce new external dependencies.\"\n  ],\n  \"validation\": [\n    \"python3 -m py_compile gog_cli/serving.py completes without error.\",\n    \"The context bundle produced by serving.py includes the new inspectable fields.\",\n    \"No references to files outside allowed_nodes are introduced.\"\n  ],\n  \"uncertainty\": [\n    \"File contents for gog_cli/serving.py were not provided in the served context; step details are inferred from the context bundle schema and import relations.\",\n    \"Exact function and variable names inside serving.py are unknown, so the precise injection points for the new metadata fields cannot be specified.\",\n    \"The serialization mechanism (e.g., returning a plain dict vs. a pydantic model) is assumed based on the GOG_CONTEXT_BUNDLE_JSON structure.\"\n  ]\n}",
+      "parsed_plan": {
+        "plan_id": "plan-improve-serving-inspectability-001",
+        "intent": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect by enriching the context bundle with structured metadata and validation logging.",
+        "evidence": [
+          "Task explicitly targets gog_cli/serving.py to improve reasoner handoff inspectability.",
+          "GOG_CONTEXT_BUNDLE_JSON shows serving.py imports onboarding, graph_search, token_utils, and gog_engine, indicating it assembles the context payload.",
+          "The context bundle schema already includes status, selection, context, and handoff fields that can be augmented without breaking existing consumers."
+        ],
+        "targets": [
+          "gog_cli/serving.py"
+        ],
+        "steps": [
+          {
+            "id": "inspect-serving",
+            "op": "INSPECT_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Determine the current context assembly, serialization logic, and handoff field construction before introducing inspectability changes.",
+            "depends_on": [],
+            "parameters": {}
+          },
+          {
+            "id": "mutate-add-inspection-fields",
+            "op": "MUTATE_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Augment the returned context dictionary with inspectable handoff metadata such as a served timestamp, per-file token counts, relation summaries, and a debug envelope so reasoner handoffs are easier to trace and validate.",
+            "depends_on": [
+              "inspect-serving"
+            ],
+            "parameters": {
+              "change_description": "Add structured fields to the context bundle output: 'served_at' (ISO timestamp), 'debug' (token counts per file and relation totals), and 'handoff_metadata' (plan_id hint and allowed_nodes count)."
+            }
+          },
+          {
+            "id": "validate-compile",
+            "op": "VALIDATE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Ensure the mutated serving module compiles successfully and remains syntactically valid.",
+            "depends_on": [
+              "mutate-add-inspection-fields"
+            ],
+            "parameters": {
+              "command": "python3 -m py_compile gog_cli/serving.py"
+            }
+          }
+        ],
+        "constraints": [
+          "Only modify files within context.allowed_nodes.",
+          "Preserve the existing shape of the context bundle so downstream consumers do not break.",
+          "Do not introduce new external dependencies."
+        ],
+        "validation": [
+          "python3 -m py_compile gog_cli/serving.py completes without error.",
+          "The context bundle produced by serving.py includes the new inspectable fields.",
+          "No references to files outside allowed_nodes are introduced."
+        ],
+        "uncertainty": [
+          "File contents for gog_cli/serving.py were not provided in the served context; step details are inferred from the context bundle schema and import relations.",
+          "Exact function and variable names inside serving.py are unknown, so the precise injection points for the new metadata fields cannot be specified.",
+          "The serialization mechanism (e.g., returning a plain dict vs. a pydantic model) is assumed based on the GOG_CONTEXT_BUNDLE_JSON structure."
+        ]
+      },
+      "score": {
+        "json_valid": true,
+        "schema_valid": true,
+        "schema_errors": [],
+        "allowed_node_compliance": true,
+        "unsupported_targets": [],
+        "no_extra_prose": true,
+        "evidence_count": 3,
+        "step_count": 3,
+        "composite_score": 4
+      }
+    }
+  ],
+  "summary": {
+    "flat_json": {
+      "observations": 1,
+      "json_valid_count": 1,
+      "schema_valid_count": 1,
+      "allowed_node_compliance_count": 1,
+      "strict_json_only_count": 1,
+      "avg_composite_score": 4.0,
+      "avg_prompt_tokens_estimate": 1349.0,
+      "avg_response_tokens_estimate": 296.0
+    },
+    "sectioned_brief": {
+      "observations": 1,
+      "json_valid_count": 1,
+      "schema_valid_count": 1,
+      "allowed_node_compliance_count": 1,
+      "strict_json_only_count": 1,
+      "avg_composite_score": 4.0,
+      "avg_prompt_tokens_estimate": 1182.0,
+      "avg_response_tokens_estimate": 584.0
+    },
+    "evidence_first": {
+      "observations": 1,
+      "json_valid_count": 1,
+      "schema_valid_count": 1,
+      "allowed_node_compliance_count": 1,
+      "strict_json_only_count": 1,
+      "avg_composite_score": 4.0,
+      "avg_prompt_tokens_estimate": 1383.0,
+      "avg_response_tokens_estimate": 543.0
+    },
+    "schema_first": {
+      "observations": 1,
+      "json_valid_count": 1,
+      "schema_valid_count": 1,
+      "allowed_node_compliance_count": 1,
+      "strict_json_only_count": 1,
+      "avg_composite_score": 4.0,
+      "avg_prompt_tokens_estimate": 1349.0,
+      "avg_response_tokens_estimate": 695.0
+    }
+  }
+}
