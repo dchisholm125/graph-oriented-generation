@@ -1,5 +1,6 @@
 import os
 import re
+import json
 from pathlib import Path
 import networkx as nx
 from .ts_parser import TypeScriptParser
@@ -93,11 +94,14 @@ def _detect_vite_alias(root_dir):
             try:
                 with open(vite_path, "r", encoding="utf-8") as f:
                     content = f.read()
-                # Look for: alias: { '@': fileURLToPath(new URL('./src', import.meta.url)), ... }
-                m = re.search(
-                    r"alias\s*:.*?\{[^}]*['\"]([^'\"\s]+)['\"]\s*:\s*fileURLToPath\s*\(\s*new\s+URL\s*\(\s*['\"]([^'\"]+)['\"]",
-                    content,
-                )
+                # Look for: alias: { src: fileURLToPath(new URL('src', import.meta.url)), ... }
+                alias_block = re.search(r"alias\s*:\s*\{(?P<body>.*?)\}", content, re.DOTALL)
+                m = None
+                if alias_block:
+                    m = re.search(
+                        r"['\"]?([A-Za-z0-9_@~.-]+)['\"]?\s*:\s*fileURLToPath\s*\(\s*new\s+URL\s*\(\s*['\"]([^'\"]+)['\"]",
+                        alias_block.group("body"),
+                    )
                 if m:
                     alias_prefix = m.group(1).strip()
                     rel_dir = m.group(2).strip()
@@ -122,14 +126,13 @@ def _detect_vite_alias(root_dir):
         if os.path.exists(tsconfig_path):
             try:
                 with open(tsconfig_path, "r", encoding="utf-8") as f:
-                    tsconfig = f.read()
-                m3 = re.search(
-                    r'"paths"\s*:\s*\{[^}]*"([^"]+?)\*?"\s*:\s*\[[^\]]*"([^"]+?)"',
-                    tsconfig,
-                )
-                if m3:
-                    alias_prefix = m3.group(1).replace("/*", "").strip()
-                    rel_dir = m3.group(2).replace("/*", "").strip()
+                    tsconfig = json.load(f)
+                paths = tsconfig.get("compilerOptions", {}).get("paths", {})
+                for alias_pattern, targets in paths.items():
+                    if not targets:
+                        continue
+                    alias_prefix = alias_pattern.replace("/*", "").strip()
+                    rel_dir = str(targets[0]).replace("/*", "").strip()
                     abs_alias_dir = os.path.abspath(os.path.join(root_candidate, rel_dir))
                     return {alias_prefix: abs_alias_dir}
             except Exception:

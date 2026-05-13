@@ -1,0 +1,752 @@
+{
+  "generated_at": "2026-05-13T14:54:36.709150+00:00",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation",
+  "fixture_path": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog_cli/fixtures/semantic_plan_quality_known_problem.json",
+  "schema_path": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog_cli/schemas/mutation_plan.schema.json",
+  "results": [
+    {
+      "fixture_id": "serving_context_omits_source_content",
+      "fixture": {
+        "id": "serving_context_omits_source_content",
+        "title": "Prompt-scoped context bundles expose structure but not source content",
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "problem_statement": "The current context bundle served by gog_cli/serving.py includes selected file paths, import relations, validation commands, and allowed nodes, but it does not include source excerpts, symbol summaries, function names, or line-level evidence. A reasoner can identify the likely target file, but it cannot safely plan concrete code mutations from the served bundle alone.",
+        "expected_targets": [
+          "gog_cli/serving.py"
+        ],
+        "expected_semantic_behavior": [
+          "Target gog_cli/serving.py as the primary node.",
+          "Recognize that the served context is insufficient for concrete implementation details.",
+          "Use INSPECT_NODE before any MUTATE_NODE step, or avoid MUTATE_NODE entirely.",
+          "Mention the missing source content, source excerpts, symbol summaries, or implementation details in uncertainty.",
+          "Use the served validation command for Python syntax validation."
+        ],
+        "failure_modes": [
+          "Plans a concrete implementation without inspecting gog_cli/serving.py first.",
+          "Claims knowledge of specific functions or code structures not present in the served context.",
+          "Targets files outside context.allowed_nodes.",
+          "Omits uncertainty even though source content is absent from the served context."
+        ],
+        "validation_hint": "python3 -m py_compile gog_cli/serving.py"
+      },
+      "strategy": "flat_json",
+      "strategy_description": "Baseline flat GOG context plus MutationPlan schema.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1345,
+      "response_tokens_estimate": 0,
+      "latency_s": 23.3918,
+      "returncode": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 1,
+          "stderr": "\u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 Error: 503 Service Unavailable: model 'kimi-k2.6' is temporarily overloaded, please retry shortly or try a different model (ref: b8e26e23-f07b-4672-9783-d4aac9c33980)"
+        },
+        {
+          "attempt": 2,
+          "returncode": 1,
+          "stderr": "\u2819 \u2819 \u2838 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b Error: 503 Service Unavailable: model 'kimi-k2.6' is temporarily overloaded, please retry shortly or try a different model (ref: b903b8a4-531d-4f79-b9b7-11b5efd347ed)"
+        }
+      ],
+      "stderr": "\u2819 \u2819 \u2838 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b Error: 503 Service Unavailable: model 'kimi-k2.6' is temporarily overloaded, please retry shortly or try a different model (ref: b903b8a4-531d-4f79-b9b7-11b5efd347ed)",
+      "raw_response": "",
+      "parsed_plan": null,
+      "structural_score": {
+        "json_valid": false,
+        "schema_valid": false,
+        "schema_errors": [
+          "response is not a JSON object"
+        ],
+        "allowed_node_compliance": false,
+        "unsupported_targets": [],
+        "no_extra_prose": false,
+        "evidence_count": 0,
+        "step_count": 0,
+        "composite_score": 0
+      },
+      "semantic_score": {
+        "target_focus": false,
+        "inspect_before_mutate": false,
+        "missing_source_uncertainty": false,
+        "validation_alignment": false,
+        "no_unsupported_targets": false,
+        "semantic_score": 0,
+        "semantic_errors": [
+          "response is not a parsed MutationPlan"
+        ]
+      }
+    },
+    {
+      "fixture_id": "serving_context_omits_source_content",
+      "fixture": {
+        "id": "serving_context_omits_source_content",
+        "title": "Prompt-scoped context bundles expose structure but not source content",
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "problem_statement": "The current context bundle served by gog_cli/serving.py includes selected file paths, import relations, validation commands, and allowed nodes, but it does not include source excerpts, symbol summaries, function names, or line-level evidence. A reasoner can identify the likely target file, but it cannot safely plan concrete code mutations from the served bundle alone.",
+        "expected_targets": [
+          "gog_cli/serving.py"
+        ],
+        "expected_semantic_behavior": [
+          "Target gog_cli/serving.py as the primary node.",
+          "Recognize that the served context is insufficient for concrete implementation details.",
+          "Use INSPECT_NODE before any MUTATE_NODE step, or avoid MUTATE_NODE entirely.",
+          "Mention the missing source content, source excerpts, symbol summaries, or implementation details in uncertainty.",
+          "Use the served validation command for Python syntax validation."
+        ],
+        "failure_modes": [
+          "Plans a concrete implementation without inspecting gog_cli/serving.py first.",
+          "Claims knowledge of specific functions or code structures not present in the served context.",
+          "Targets files outside context.allowed_nodes.",
+          "Omits uncertainty even though source content is absent from the served context."
+        ],
+        "validation_hint": "python3 -m py_compile gog_cli/serving.py"
+      },
+      "strategy": "problem_framed",
+      "strategy_description": "Flat GOG context plus explicit known-problem statement.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1657,
+      "response_tokens_estimate": 477,
+      "latency_s": 129.4193,
+      "returncode": 0,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "stderr": "\u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2827 \u280f \u280b \u280b \u2839 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2839 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2834 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u2819 \u2839 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2819 \u2838 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u283c \u2834 \u2826 \u2807 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2807 \u2807 \u280b \u2819 \u2819 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2839 \u2838 \u2834 \u2826 \u2826 \u2827 \u280f \u280b \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2839 \u2838 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2807 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u2819 \u2819 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u2838 \u2834 \u2826 \u2827 \u2827 \u280f \u280f \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u2819 \u2819 \u2838 \u2838 \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2819 \u2838 \u2838 \u2834 \u2834 \u2827 \u2827 \u280f \u280f \u2819 \u2819 \u2838 \u2838 \u283c \u2826 \u2827 \u2827 \u280f \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280b \u280b \u2839 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u283c \u2834 \u2834 \u2826 \u2807 \u2807 \u280f \u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u2807 \u280b \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2819 \u2838 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280b \u280b \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2838 \u283c \u283c \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u283c \u283c \u2826 \u2826 \u2807 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280b \u280b \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2807 \u2807 \u280b \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2834"
+        }
+      ],
+      "stderr": "\u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2827 \u280f \u280b \u280b \u2839 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2839 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2834 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u2819 \u2839 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2819 \u2838 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u283c \u2834 \u2826 \u2807 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2807 \u2807 \u280b \u2819 \u2819 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2839 \u2838 \u2834 \u2826 \u2826 \u2827 \u280f \u280b \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2839 \u2838 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2807 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u2819 \u2819 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u2838 \u2834 \u2826 \u2827 \u2827 \u280f \u280f \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u2819 \u2819 \u2838 \u2838 \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2819 \u2838 \u2838 \u2834 \u2834 \u2827 \u2827 \u280f \u280f \u2819 \u2819 \u2838 \u2838 \u283c \u2826 \u2827 \u2827 \u280f \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280b \u280b \u2839 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u283c \u2834 \u2834 \u2826 \u2807 \u2807 \u280f \u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u2807 \u280b \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2819 \u2838 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280b \u280b \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2838 \u283c \u283c \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u283c \u283c \u2826 \u2826 \u2807 \u2807 \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280b \u280b \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2807 \u2807 \u280b \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2834",
+      "raw_response": "{\n  \"plan_id\": \"plan-inspect-serving-context-001\",\n  \"intent\": \"Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected. Begin by inspecting the current implementation due to missing source content in the served bundle.\",\n  \"evidence\": [\n    \"gog_cli/serving.py is the explicit file match for the prompt.\",\n    \"The served context bundle includes file paths, import relations, and validation commands, but omits source excerpts, symbol summaries, and line-level evidence.\",\n    \"Without inspecting the source of gog_cli/serving.py, concrete mutations cannot be safely planned.\"\n  ],\n  \"targets\": [\n    \"gog_cli/serving.py\"\n  ],\n  \"steps\": [\n    {\n      \"id\": \"inspect-serving\",\n      \"op\": \"INSPECT_NODE\",\n      \"target\": \"gog_cli/serving.py\",\n      \"rationale\": \"Obtain the source content, function signatures, and implementation details of gog_cli/serving.py to understand how the context bundle is currently constructed and where to inject selection rationale.\",\n      \"depends_on\": [],\n      \"parameters\": {}\n    },\n    {\n      \"id\": \"validate-serving-syntax\",\n      \"op\": \"VALIDATE\",\n      \"target\": \"gog_cli/serving.py\",\n      \"rationale\": \"Ensure gog_cli/serving.py remains syntactically valid before and after any future mutation using the provided Python validation command.\",\n      \"depends_on\": [],\n      \"parameters\": {\n        \"command\": \"python3 -m py_compile gog_cli/serving.py\"\n      }\n    }\n  ],\n  \"constraints\": [\n    \"Only reference files within context.allowed_nodes.\",\n    \"Do not assume knowledge of specific functions or internal code structures not present in the served context.\"\n  ],\n  \"validation\": [\n    \"python3 -m py_compile gog_cli/serving.py\"\n  ],\n  \"uncertainty\": [\n    \"The served context bundle does not include source excerpts, symbol summaries, or function names from gog_cli/serving.py.\",\n    \"Concrete mutation details cannot be determined until gog_cli/serving.py is inspected.\",\n    \"The exact insertion points and data structures for conveying file selection rationale are unknown without source access.\"\n  ]\n}",
+      "parsed_plan": {
+        "plan_id": "plan-inspect-serving-context-001",
+        "intent": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected. Begin by inspecting the current implementation due to missing source content in the served bundle.",
+        "evidence": [
+          "gog_cli/serving.py is the explicit file match for the prompt.",
+          "The served context bundle includes file paths, import relations, and validation commands, but omits source excerpts, symbol summaries, and line-level evidence.",
+          "Without inspecting the source of gog_cli/serving.py, concrete mutations cannot be safely planned."
+        ],
+        "targets": [
+          "gog_cli/serving.py"
+        ],
+        "steps": [
+          {
+            "id": "inspect-serving",
+            "op": "INSPECT_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Obtain the source content, function signatures, and implementation details of gog_cli/serving.py to understand how the context bundle is currently constructed and where to inject selection rationale.",
+            "depends_on": [],
+            "parameters": {}
+          },
+          {
+            "id": "validate-serving-syntax",
+            "op": "VALIDATE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Ensure gog_cli/serving.py remains syntactically valid before and after any future mutation using the provided Python validation command.",
+            "depends_on": [],
+            "parameters": {
+              "command": "python3 -m py_compile gog_cli/serving.py"
+            }
+          }
+        ],
+        "constraints": [
+          "Only reference files within context.allowed_nodes.",
+          "Do not assume knowledge of specific functions or internal code structures not present in the served context."
+        ],
+        "validation": [
+          "python3 -m py_compile gog_cli/serving.py"
+        ],
+        "uncertainty": [
+          "The served context bundle does not include source excerpts, symbol summaries, or function names from gog_cli/serving.py.",
+          "Concrete mutation details cannot be determined until gog_cli/serving.py is inspected.",
+          "The exact insertion points and data structures for conveying file selection rationale are unknown without source access."
+        ]
+      },
+      "structural_score": {
+        "json_valid": true,
+        "schema_valid": true,
+        "schema_errors": [],
+        "allowed_node_compliance": true,
+        "unsupported_targets": [],
+        "no_extra_prose": true,
+        "evidence_count": 3,
+        "step_count": 2,
+        "composite_score": 4
+      },
+      "semantic_score": {
+        "target_focus": true,
+        "inspect_before_mutate": true,
+        "missing_source_uncertainty": true,
+        "validation_alignment": true,
+        "no_unsupported_targets": true,
+        "semantic_score": 5,
+        "semantic_errors": []
+      }
+    },
+    {
+      "fixture_id": "serving_context_omits_source_content",
+      "fixture": {
+        "id": "serving_context_omits_source_content",
+        "title": "Prompt-scoped context bundles expose structure but not source content",
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "problem_statement": "The current context bundle served by gog_cli/serving.py includes selected file paths, import relations, validation commands, and allowed nodes, but it does not include source excerpts, symbol summaries, function names, or line-level evidence. A reasoner can identify the likely target file, but it cannot safely plan concrete code mutations from the served bundle alone.",
+        "expected_targets": [
+          "gog_cli/serving.py"
+        ],
+        "expected_semantic_behavior": [
+          "Target gog_cli/serving.py as the primary node.",
+          "Recognize that the served context is insufficient for concrete implementation details.",
+          "Use INSPECT_NODE before any MUTATE_NODE step, or avoid MUTATE_NODE entirely.",
+          "Mention the missing source content, source excerpts, symbol summaries, or implementation details in uncertainty.",
+          "Use the served validation command for Python syntax validation."
+        ],
+        "failure_modes": [
+          "Plans a concrete implementation without inspecting gog_cli/serving.py first.",
+          "Claims knowledge of specific functions or code structures not present in the served context.",
+          "Targets files outside context.allowed_nodes.",
+          "Omits uncertainty even though source content is absent from the served context."
+        ],
+        "validation_hint": "python3 -m py_compile gog_cli/serving.py"
+      },
+      "strategy": "rubric_first",
+      "strategy_description": "Semantic scoring rubric before context and schema.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1841,
+      "response_tokens_estimate": 371,
+      "latency_s": 33.7727,
+      "returncode": 0,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 1,
+          "stderr": "\u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 Error: 503 Service Unavailable: model 'kimi-k2.6' is temporarily overloaded, please retry shortly or try a different model (ref: 886a9161-d331-4ff2-9a0f-0417c708226d)"
+        },
+        {
+          "attempt": 2,
+          "returncode": 0,
+          "stderr": "\u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2838 \u2838 \u2834 \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2838 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280b \u2819 \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280f \u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u283c \u2834 \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2827 \u280f \u280f \u280b"
+        }
+      ],
+      "stderr": "\u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2838 \u2838 \u2834 \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2838 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280b \u2819 \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280f \u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u283c \u2834 \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2826 \u2827 \u280f \u280f \u280b",
+      "raw_response": "{\"plan_id\":\"plan-serving-context-improvement-001\",\"intent\":\"Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected, contingent on first obtaining the missing source content.\",\"evidence\":[\"The prompt explicitly identifies gog_cli/serving.py as the primary target for improvement.\",\"The served context bundle lists gog_cli/serving.py in allowed_nodes and explicit_file_matches but omits source excerpts, symbol summaries, and function-level implementation details.\",\"The available validation command python3 -m py_compile can verify Python syntax for gog_cli/serving.py.\"],\"targets\":[\"gog_cli/serving.py\"],\"steps\":[{\"id\":\"inspect-serving\",\"op\":\"INSPECT_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Source content, symbol summaries, and function names are absent from the served context. Concrete mutations cannot be safely planned without inspecting the actual source code first.\",\"depends_on\":[],\"parameters\":{}},{\"id\":\"validate-syntax\",\"op\":\"VALIDATE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Verify that gog_cli/serving.py passes Python syntax checks before and after any subsequent modifications.\",\"depends_on\":[\"inspect-serving\"],\"parameters\":{}}],\"constraints\":[\"All targets must reside within context.allowed_nodes.\",\"Do not assume knowledge of specific functions, classes, or internal structures not present in the served context.\",\"Avoid concrete MUTATE_NODE steps until source inspection provides sufficient implementation detail.\"],\"validation\":[\"python3 -m py_compile gog_cli/serving.py\"],\"uncertainty\":[\"The served context bundle does not include source excerpts, symbol summaries, or line-level implementation details for gog_cli/serving.py, preventing definition of concrete mutation parameters at this time.\",\"The exact internal functions and logic that assemble the context bundle are unknown without direct source inspection.\"]}",
+      "parsed_plan": {
+        "plan_id": "plan-serving-context-improvement-001",
+        "intent": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected, contingent on first obtaining the missing source content.",
+        "evidence": [
+          "The prompt explicitly identifies gog_cli/serving.py as the primary target for improvement.",
+          "The served context bundle lists gog_cli/serving.py in allowed_nodes and explicit_file_matches but omits source excerpts, symbol summaries, and function-level implementation details.",
+          "The available validation command python3 -m py_compile can verify Python syntax for gog_cli/serving.py."
+        ],
+        "targets": [
+          "gog_cli/serving.py"
+        ],
+        "steps": [
+          {
+            "id": "inspect-serving",
+            "op": "INSPECT_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Source content, symbol summaries, and function names are absent from the served context. Concrete mutations cannot be safely planned without inspecting the actual source code first.",
+            "depends_on": [],
+            "parameters": {}
+          },
+          {
+            "id": "validate-syntax",
+            "op": "VALIDATE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Verify that gog_cli/serving.py passes Python syntax checks before and after any subsequent modifications.",
+            "depends_on": [
+              "inspect-serving"
+            ],
+            "parameters": {}
+          }
+        ],
+        "constraints": [
+          "All targets must reside within context.allowed_nodes.",
+          "Do not assume knowledge of specific functions, classes, or internal structures not present in the served context.",
+          "Avoid concrete MUTATE_NODE steps until source inspection provides sufficient implementation detail."
+        ],
+        "validation": [
+          "python3 -m py_compile gog_cli/serving.py"
+        ],
+        "uncertainty": [
+          "The served context bundle does not include source excerpts, symbol summaries, or line-level implementation details for gog_cli/serving.py, preventing definition of concrete mutation parameters at this time.",
+          "The exact internal functions and logic that assemble the context bundle are unknown without direct source inspection."
+        ]
+      },
+      "structural_score": {
+        "json_valid": true,
+        "schema_valid": true,
+        "schema_errors": [],
+        "allowed_node_compliance": true,
+        "unsupported_targets": [],
+        "no_extra_prose": true,
+        "evidence_count": 3,
+        "step_count": 2,
+        "composite_score": 4
+      },
+      "semantic_score": {
+        "target_focus": true,
+        "inspect_before_mutate": true,
+        "missing_source_uncertainty": true,
+        "validation_alignment": true,
+        "no_unsupported_targets": true,
+        "semantic_score": 5,
+        "semantic_errors": []
+      }
+    },
+    {
+      "fixture_id": "serving_context_omits_source_content",
+      "fixture": {
+        "id": "serving_context_omits_source_content",
+        "title": "Prompt-scoped context bundles expose structure but not source content",
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "problem_statement": "The current context bundle served by gog_cli/serving.py includes selected file paths, import relations, validation commands, and allowed nodes, but it does not include source excerpts, symbol summaries, function names, or line-level evidence. A reasoner can identify the likely target file, but it cannot safely plan concrete code mutations from the served bundle alone.",
+        "expected_targets": [
+          "gog_cli/serving.py"
+        ],
+        "expected_semantic_behavior": [
+          "Target gog_cli/serving.py as the primary node.",
+          "Recognize that the served context is insufficient for concrete implementation details.",
+          "Use INSPECT_NODE before any MUTATE_NODE step, or avoid MUTATE_NODE entirely.",
+          "Mention the missing source content, source excerpts, symbol summaries, or implementation details in uncertainty.",
+          "Use the served validation command for Python syntax validation."
+        ],
+        "failure_modes": [
+          "Plans a concrete implementation without inspecting gog_cli/serving.py first.",
+          "Claims knowledge of specific functions or code structures not present in the served context.",
+          "Targets files outside context.allowed_nodes.",
+          "Omits uncertainty even though source content is absent from the served context."
+        ],
+        "validation_hint": "python3 -m py_compile gog_cli/serving.py"
+      },
+      "strategy": "minimal_platter",
+      "strategy_description": "Small handoff surface with only task, problem, files, relations, and rubric.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1430,
+      "response_tokens_estimate": 0,
+      "latency_s": 21.9387,
+      "returncode": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 1,
+          "stderr": "\u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2819 \u2838 Error: 503 Service Unavailable: model 'kimi-k2.6' is temporarily overloaded, please retry shortly or try a different model (ref: 9dbd231c-8186-4eab-8e27-8d701651239f)"
+        },
+        {
+          "attempt": 2,
+          "returncode": 1,
+          "stderr": "\u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280f \u280b \u2839 \u2838 Error: 503 Service Unavailable: model 'kimi-k2.6' is temporarily overloaded, please retry shortly or try a different model (ref: fac6ab2d-5e53-4cdc-83c6-cb6371163dc3)"
+        }
+      ],
+      "stderr": "\u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280f \u280b \u2839 \u2838 Error: 503 Service Unavailable: model 'kimi-k2.6' is temporarily overloaded, please retry shortly or try a different model (ref: fac6ab2d-5e53-4cdc-83c6-cb6371163dc3)",
+      "raw_response": "",
+      "parsed_plan": null,
+      "structural_score": {
+        "json_valid": false,
+        "schema_valid": false,
+        "schema_errors": [
+          "response is not a JSON object"
+        ],
+        "allowed_node_compliance": false,
+        "unsupported_targets": [],
+        "no_extra_prose": false,
+        "evidence_count": 0,
+        "step_count": 0,
+        "composite_score": 0
+      },
+      "semantic_score": {
+        "target_focus": false,
+        "inspect_before_mutate": false,
+        "missing_source_uncertainty": false,
+        "validation_alignment": false,
+        "no_unsupported_targets": false,
+        "semantic_score": 0,
+        "semantic_errors": [
+          "response is not a parsed MutationPlan"
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "flat_json": {
+      "observations": 1,
+      "json_valid_count": 0,
+      "schema_valid_count": 0,
+      "strict_json_only_count": 0,
+      "avg_structural_score": 0.0,
+      "avg_semantic_score": 0.0,
+      "avg_prompt_tokens_estimate": 1345.0,
+      "avg_response_tokens_estimate": 0.0
+    },
+    "problem_framed": {
+      "observations": 1,
+      "json_valid_count": 1,
+      "schema_valid_count": 1,
+      "strict_json_only_count": 1,
+      "avg_structural_score": 4.0,
+      "avg_semantic_score": 5.0,
+      "avg_prompt_tokens_estimate": 1657.0,
+      "avg_response_tokens_estimate": 477.0
+    },
+    "rubric_first": {
+      "observations": 1,
+      "json_valid_count": 1,
+      "schema_valid_count": 1,
+      "strict_json_only_count": 1,
+      "avg_structural_score": 4.0,
+      "avg_semantic_score": 5.0,
+      "avg_prompt_tokens_estimate": 1841.0,
+      "avg_response_tokens_estimate": 371.0
+    },
+    "minimal_platter": {
+      "observations": 1,
+      "json_valid_count": 0,
+      "schema_valid_count": 0,
+      "strict_json_only_count": 0,
+      "avg_structural_score": 0.0,
+      "avg_semantic_score": 0.0,
+      "avg_prompt_tokens_estimate": 1430.0,
+      "avg_response_tokens_estimate": 0.0
+    }
+  }
+}

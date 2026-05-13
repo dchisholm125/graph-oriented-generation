@@ -47,7 +47,7 @@ Output examples:
 
 Parse supported languages into normalized symbolic representations.
 
-Current implementation begins with TypeScript and Vue parsing. Future onboarding should generalize across languages and store a common intermediate graph shape.
+Current implementation now begins with Python, TypeScript, and Vue structural import graphs. Future onboarding should generalize toward richer symbol graphs and a common intermediate graph shape.
 
 Capture:
 
@@ -88,6 +88,18 @@ Examples:
 - file naming conventions
 
 Some of these can be detected statically. Others may initially be learned from examples or configured explicitly.
+
+Convention extraction must remain technology-level, not repository-specific. A rule is acceptable when it describes a general language, framework, or tooling convention, such as:
+
+- TypeScript `paths` aliases
+- Vite `resolve.alias`
+- Vue single-file component imports
+- test/spec filename patterns
+- Playwright or Cypress end-to-end test directories
+- generated API client surfaces
+- source-root and package manifest discovery
+
+A rule is not acceptable when it encodes a benchmark repository's expected answer, product domain, or exact business-specific filenames. If GOG cannot support a convention generically, onboarding should report partial coverage rather than silently adding a one-off special case.
 
 ### Stage 5: Build Auxiliary Retrieval Indices
 
@@ -139,10 +151,10 @@ After accepted edits:
 2. Reparse only affected files when possible.
 3. Recompute changed graph edges and symbol facts.
 4. Revalidate constraints touched by the change.
-5. Update persistent artifacts.
+5. Update persistent artifacts inside `.gog/`.
 6. Append the mutation to repository evolution history.
 
-This is essential if GOG is meant to sit on top of an expanding codebase rather than act as a static analysis snapshot.
+This is essential if GOG is meant to sit on top of an expanding codebase rather than act as a static analysis snapshot. The full loop only closes when `.gog/` contains the updated symbolic state after each accepted change.
 
 ---
 
@@ -193,6 +205,8 @@ Possible states:
 
 These states matter because GOG should not silently reason over stale or incomplete symbolic state.
 
+At prompt time, the onboarded repo state should then be projected into a bounded context bundle. That means onboarding stores the whole symbolic layer, while runtime serving selects only the slice needed for the current request.
+
 ---
 
 ## 7. Near-Term Implementation Milestones
@@ -206,6 +220,15 @@ Recommended sequence:
 5. Record parser coverage and unresolved imports.
 6. Introduce incremental refresh for changed files.
 7. Attach validation command discovery to onboarding.
+8. Add prompt-scoped context serving over onboarded artifacts.
+
+The current CLI exposes a coarse refresh command immediately:
+
+```bash
+python3 -m gog_cli refresh /path/to/repo
+```
+
+That rebuilds `.gog/` in place. Incremental refresh remains future work, but the explicit lifecycle boundary now exists.
 
 ---
 
@@ -221,6 +244,13 @@ The onboarding pipeline creates new benchmark questions:
 - How much total token and repair budget is saved when reasoners operate over onboarded symbolic state?
 
 Those questions distinguish GOG from short-lived prompt-context experiments.
+
+Benchmark repositories should be labeled as either:
+
+- **development repositories**, where GOG heuristics may be improved after failures are inspected
+- **holdout repositories**, where results should be recorded before any heuristic changes are made
+
+When a failure leads to a new onboarding or membrane heuristic, the change should be documented as a general convention and rerun against prior benchmark repositories to check for regressions.
 
 ---
 

@@ -1,0 +1,829 @@
+{
+  "generated_at": "2026-05-13T15:51:59.698295+00:00",
+  "benchmark": "public_vue_context_selection",
+  "repo_url": "https://github.com/mutoe/vue3-realworld-example-app",
+  "repo_path": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app",
+  "onboarding_wall_clock_s": 0.1085,
+  "total_wall_clock_s": 0.3197,
+  "manifest": {
+    "schema_version": "0.1.0",
+    "created_at": "2026-05-13T15:51:59.486990+00:00",
+    "status": "READY",
+    "repo": {
+      "root": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app",
+      "fingerprint": "fc9990aa7b99d13ef5a330d5f23b684ec1b18bdc746a2085c83e0d17b4786a87"
+    },
+    "artifacts": {
+      "root": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app/.gog",
+      "manifest": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app/.gog/manifest.json",
+      "repo_profile": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app/.gog/repo_profile.json",
+      "structural_graph_json": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app/.gog/graphs/structural_graph.json",
+      "structural_graph_pickle": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app/.gog/graphs/structural_graph.pkl",
+      "validation_commands": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app/.gog/validation/commands.json"
+    },
+    "graph": {
+      "kind": "structural_import_graph",
+      "supported_extensions": [
+        ".py",
+        ".ts",
+        ".vue"
+      ],
+      "node_count": 91,
+      "edge_count": 185,
+      "coverage": {
+        "supported_file_count": 91,
+        "total_file_count": 125
+      }
+    },
+    "validation": {
+      "commands": [
+        "npm run test",
+        "npm run test:unit",
+        "npm run lint",
+        "npm run build"
+      ]
+    },
+    "notes": [
+      "This onboarding slice persists a structural Python/TS/Vue import graph.",
+      "Future onboarding layers should add symbol, workflow, constraint, and evolution graphs."
+    ]
+  },
+  "repository_summary": {
+    "status": "READY",
+    "issues": [],
+    "repo": {
+      "root": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app",
+      "fingerprint": "fc9990aa7b99d13ef5a330d5f23b684ec1b18bdc746a2085c83e0d17b4786a87"
+    },
+    "coverage": {
+      "total_files": 125,
+      "supported_graph_files": 91,
+      "supported_extensions": [
+        ".py",
+        ".ts",
+        ".vue"
+      ]
+    },
+    "manifests": [
+      "package.json",
+      "playwright/tsconfig.json",
+      "tsconfig.json",
+      "vite.config.ts"
+    ],
+    "validation": {
+      "commands": [
+        "npm run test",
+        "npm run test:unit",
+        "npm run lint",
+        "npm run build"
+      ]
+    },
+    "graph": {
+      "node_count": 91,
+      "edge_count": 185,
+      "high_out_degree_nodes": [
+        {
+          "path": "src/components/ArticleDetailMeta.vue",
+          "degree": 6
+        },
+        {
+          "path": "src/components/ArticleDetailComments.vue",
+          "degree": 5
+        },
+        {
+          "path": "src/pages/Profile.vue",
+          "degree": 5
+        },
+        {
+          "path": "src/pages/Settings.spec.ts",
+          "degree": 5
+        },
+        {
+          "path": "playwright/page-objects/conduit.page-object.ts",
+          "degree": 4
+        },
+        {
+          "path": "playwright/specs/user.spec.ts",
+          "degree": 4
+        },
+        {
+          "path": "src/components/ArticleDetail.vue",
+          "degree": 4
+        },
+        {
+          "path": "src/components/ArticleDetailCommentsForm.vue",
+          "degree": 4
+        },
+        {
+          "path": "src/components/ArticleDetailMeta.spec.ts",
+          "degree": 4
+        },
+        {
+          "path": "src/components/ArticlesList.vue",
+          "degree": 4
+        }
+      ],
+      "high_in_degree_nodes": [
+        {
+          "path": "src/services/api.ts",
+          "degree": 22
+        },
+        {
+          "path": "src/utils/test/test.utils.ts",
+          "degree": 21
+        },
+        {
+          "path": "src/services/index.ts",
+          "degree": 17
+        },
+        {
+          "path": "src/store/user.ts",
+          "degree": 15
+        },
+        {
+          "path": "src/router.ts",
+          "degree": 14
+        },
+        {
+          "path": "src/utils/test/fixtures.ts",
+          "degree": 14
+        },
+        {
+          "path": "playwright/extends.ts",
+          "degree": 6
+        },
+        {
+          "path": "playwright/constant.ts",
+          "degree": 5
+        },
+        {
+          "path": "playwright/page-objects/conduit.page-object.ts",
+          "degree": 4
+        },
+        {
+          "path": "src/components/AppLink.vue",
+          "degree": 4
+        }
+      ]
+    },
+    "artifact_root": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app/.gog"
+  },
+  "prompts": [
+    {
+      "prompt_id": "auth_token_flow",
+      "prompt": "Find the files responsible for attaching the authentication token to API requests.",
+      "notes": "Cross-cutting auth/API request flow.",
+      "expected_files": [
+        "src/plugins/set-authorization-token.ts",
+        "src/services/index.ts",
+        "src/services/api.ts",
+        "src/store/user.ts"
+      ],
+      "gog": {
+        "retrieval_mode": "gog",
+        "selection_strategy": "identifier_filename_match",
+        "selected_files": [
+          "src/plugins/set-authorization-token.ts",
+          "src/services/index.ts",
+          "src/store/user.ts",
+          "src/config.ts",
+          "src/services/api.ts",
+          "src/utils/storage.ts"
+        ],
+        "selected_file_count": 6,
+        "relations": [
+          {
+            "source": "src/plugins/set-authorization-token.ts",
+            "relation": "imports",
+            "target": "src/services/index.ts"
+          },
+          {
+            "source": "src/plugins/set-authorization-token.ts",
+            "relation": "imports",
+            "target": "src/store/user.ts"
+          },
+          {
+            "source": "src/services/index.ts",
+            "relation": "imports",
+            "target": "src/config.ts"
+          },
+          {
+            "source": "src/services/index.ts",
+            "relation": "imports",
+            "target": "src/services/api.ts"
+          },
+          {
+            "source": "src/store/user.ts",
+            "relation": "imports",
+            "target": "src/services/index.ts"
+          },
+          {
+            "source": "src/store/user.ts",
+            "relation": "imports",
+            "target": "src/services/api.ts"
+          },
+          {
+            "source": "src/store/user.ts",
+            "relation": "imports",
+            "target": "src/utils/storage.ts"
+          }
+        ],
+        "relation_count": 7,
+        "context_tokens_estimate": 752,
+        "source_tokens_estimate": 5333,
+        "wall_clock_s": 0.1263,
+        "expected_hit_count": 4,
+        "expected_missing_count": 0,
+        "extra_file_count": 2,
+        "context_precision": 0.6667,
+        "context_recall": 1.0,
+        "context_f1": 0.8,
+        "pass_at_1_context": true,
+        "matched_expected_files": [
+          "src/plugins/set-authorization-token.ts",
+          "src/services/api.ts",
+          "src/services/index.ts",
+          "src/store/user.ts"
+        ],
+        "missing_expected_files": [],
+        "extra_files": [
+          "src/config.ts",
+          "src/utils/storage.ts"
+        ]
+      },
+      "traditional_rag": {
+        "retrieval_mode": "traditional_rag_keyword_chunks",
+        "selected_files": [
+          "src/services/api.ts",
+          "src/plugins/set-authorization-token.ts",
+          "src/utils/test/fixtures.ts",
+          "src/components/ArticleDetailMeta.spec.ts"
+        ],
+        "selected_file_count": 4,
+        "chunk_count": 4,
+        "context_tokens_estimate": 4205,
+        "source_tokens_estimate": 3470,
+        "wall_clock_s": 0.0063,
+        "expected_hit_count": 2,
+        "expected_missing_count": 2,
+        "extra_file_count": 2,
+        "context_precision": 0.5,
+        "context_recall": 0.5,
+        "context_f1": 0.5,
+        "pass_at_1_context": false,
+        "matched_expected_files": [
+          "src/plugins/set-authorization-token.ts",
+          "src/services/api.ts"
+        ],
+        "missing_expected_files": [
+          "src/services/index.ts",
+          "src/store/user.ts"
+        ],
+        "extra_files": [
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/utils/test/fixtures.ts"
+        ]
+      }
+    },
+    {
+      "prompt_id": "article_favorite_flow",
+      "prompt": "Find the files involved when a user favorites or unfavorites an article from the article preview UI.",
+      "notes": "Vue component to store/service flow.",
+      "expected_files": [
+        "src/components/ArticlesListArticlePreview.vue",
+        "src/composable/use-favorite-article.ts",
+        "src/services/index.ts",
+        "src/services/api.ts"
+      ],
+      "gog": {
+        "retrieval_mode": "gog",
+        "selection_strategy": "identifier_filename_match",
+        "selected_files": [
+          "src/components/ArticlesListArticlePreview.vue",
+          "src/composable/use-favorite-article.ts",
+          "src/store/user.ts",
+          "src/services/api.ts",
+          "src/services/index.ts",
+          "src/utils/use-async.ts",
+          "src/components/AppLink.vue",
+          "src/config.ts",
+          "src/router.ts",
+          "src/components/ArticlesListArticlePreview.spec.ts"
+        ],
+        "selected_file_count": 10,
+        "relations": [
+          {
+            "source": "src/router.ts",
+            "relation": "imports",
+            "target": "src/store/user.ts"
+          },
+          {
+            "source": "src/utils/use-async.ts",
+            "relation": "imports",
+            "target": "src/router.ts"
+          },
+          {
+            "source": "src/utils/use-async.ts",
+            "relation": "imports",
+            "target": "src/services/index.ts"
+          },
+          {
+            "source": "src/utils/use-async.ts",
+            "relation": "imports",
+            "target": "src/store/user.ts"
+          },
+          {
+            "source": "src/services/index.ts",
+            "relation": "imports",
+            "target": "src/config.ts"
+          },
+          {
+            "source": "src/services/index.ts",
+            "relation": "imports",
+            "target": "src/services/api.ts"
+          },
+          {
+            "source": "src/composable/use-favorite-article.ts",
+            "relation": "imports",
+            "target": "src/services/index.ts"
+          },
+          {
+            "source": "src/composable/use-favorite-article.ts",
+            "relation": "imports",
+            "target": "src/services/api.ts"
+          },
+          {
+            "source": "src/composable/use-favorite-article.ts",
+            "relation": "imports",
+            "target": "src/utils/use-async.ts"
+          },
+          {
+            "source": "src/store/user.ts",
+            "relation": "imports",
+            "target": "src/services/index.ts"
+          },
+          {
+            "source": "src/store/user.ts",
+            "relation": "imports",
+            "target": "src/services/api.ts"
+          },
+          {
+            "source": "src/components/ArticlesListArticlePreview.vue",
+            "relation": "imports",
+            "target": "src/composable/use-favorite-article.ts"
+          },
+          {
+            "source": "src/components/ArticlesListArticlePreview.vue",
+            "relation": "imports",
+            "target": "src/services/api.ts"
+          },
+          {
+            "source": "src/components/ArticlesListArticlePreview.spec.ts",
+            "relation": "imports",
+            "target": "src/components/ArticlesListArticlePreview.vue"
+          },
+          {
+            "source": "src/components/AppLink.vue",
+            "relation": "imports",
+            "target": "src/router.ts"
+          }
+        ],
+        "relation_count": 15,
+        "context_tokens_estimate": 1395,
+        "source_tokens_estimate": 6956,
+        "wall_clock_s": 0.0174,
+        "expected_hit_count": 4,
+        "expected_missing_count": 0,
+        "extra_file_count": 6,
+        "context_precision": 0.4,
+        "context_recall": 1.0,
+        "context_f1": 0.5714,
+        "pass_at_1_context": true,
+        "matched_expected_files": [
+          "src/components/ArticlesListArticlePreview.vue",
+          "src/composable/use-favorite-article.ts",
+          "src/services/api.ts",
+          "src/services/index.ts"
+        ],
+        "missing_expected_files": [],
+        "extra_files": [
+          "src/components/AppLink.vue",
+          "src/components/ArticlesListArticlePreview.spec.ts",
+          "src/config.ts",
+          "src/router.ts",
+          "src/store/user.ts",
+          "src/utils/use-async.ts"
+        ]
+      },
+      "traditional_rag": {
+        "retrieval_mode": "traditional_rag_keyword_chunks",
+        "selected_files": [
+          "src/services/api.ts",
+          "src/composable/use-articles.ts",
+          "src/components/ArticleDetailMeta.spec.ts",
+          "playwright/specs/article.spec.ts"
+        ],
+        "selected_file_count": 4,
+        "chunk_count": 4,
+        "context_tokens_estimate": 4971,
+        "source_tokens_estimate": 4124,
+        "wall_clock_s": 0.0063,
+        "expected_hit_count": 1,
+        "expected_missing_count": 3,
+        "extra_file_count": 3,
+        "context_precision": 0.25,
+        "context_recall": 0.25,
+        "context_f1": 0.25,
+        "pass_at_1_context": false,
+        "matched_expected_files": [
+          "src/services/api.ts"
+        ],
+        "missing_expected_files": [
+          "src/components/ArticlesListArticlePreview.vue",
+          "src/composable/use-favorite-article.ts",
+          "src/services/index.ts"
+        ],
+        "extra_files": [
+          "playwright/specs/article.spec.ts",
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/composable/use-articles.ts"
+        ]
+      }
+    },
+    {
+      "prompt_id": "router_guard_auth",
+      "prompt": "Find the files that decide whether a route requires authentication before navigation.",
+      "notes": "Routing and auth state flow.",
+      "expected_files": [
+        "src/router.ts",
+        "src/store/user.ts"
+      ],
+      "gog": {
+        "retrieval_mode": "gog",
+        "selection_strategy": "identifier_filename_match",
+        "selected_files": [
+          "src/components/AppNavigation.vue",
+          "src/components/ArticlesListNavigation.vue",
+          "src/router.ts",
+          "src/components/AppLink.vue",
+          "src/composable/use-articles.ts",
+          "src/store/user.ts",
+          "src/utils/use-async.ts",
+          "src/services/api.ts",
+          "src/services/index.ts",
+          "src/utils/storage.ts"
+        ],
+        "selected_file_count": 10,
+        "relations": [
+          {
+            "source": "src/router.ts",
+            "relation": "imports",
+            "target": "src/store/user.ts"
+          },
+          {
+            "source": "src/utils/use-async.ts",
+            "relation": "imports",
+            "target": "src/router.ts"
+          },
+          {
+            "source": "src/utils/use-async.ts",
+            "relation": "imports",
+            "target": "src/services/index.ts"
+          },
+          {
+            "source": "src/utils/use-async.ts",
+            "relation": "imports",
+            "target": "src/store/user.ts"
+          },
+          {
+            "source": "src/services/index.ts",
+            "relation": "imports",
+            "target": "src/services/api.ts"
+          },
+          {
+            "source": "src/composable/use-articles.ts",
+            "relation": "imports",
+            "target": "src/router.ts"
+          },
+          {
+            "source": "src/composable/use-articles.ts",
+            "relation": "imports",
+            "target": "src/services/index.ts"
+          },
+          {
+            "source": "src/composable/use-articles.ts",
+            "relation": "imports",
+            "target": "src/services/api.ts"
+          },
+          {
+            "source": "src/composable/use-articles.ts",
+            "relation": "imports",
+            "target": "src/utils/use-async.ts"
+          },
+          {
+            "source": "src/store/user.ts",
+            "relation": "imports",
+            "target": "src/services/index.ts"
+          },
+          {
+            "source": "src/store/user.ts",
+            "relation": "imports",
+            "target": "src/services/api.ts"
+          },
+          {
+            "source": "src/store/user.ts",
+            "relation": "imports",
+            "target": "src/utils/storage.ts"
+          },
+          {
+            "source": "src/components/AppLink.vue",
+            "relation": "imports",
+            "target": "src/router.ts"
+          },
+          {
+            "source": "src/components/AppNavigation.vue",
+            "relation": "imports",
+            "target": "src/router.ts"
+          },
+          {
+            "source": "src/components/AppNavigation.vue",
+            "relation": "imports",
+            "target": "src/store/user.ts"
+          },
+          {
+            "source": "src/components/ArticlesListNavigation.vue",
+            "relation": "imports",
+            "target": "src/composable/use-articles.ts"
+          },
+          {
+            "source": "src/components/ArticlesListNavigation.vue",
+            "relation": "imports",
+            "target": "src/router.ts"
+          },
+          {
+            "source": "src/components/ArticlesListNavigation.vue",
+            "relation": "imports",
+            "target": "src/store/user.ts"
+          }
+        ],
+        "relation_count": 18,
+        "context_tokens_estimate": 1570,
+        "source_tokens_estimate": 8439,
+        "wall_clock_s": 0.0131,
+        "expected_hit_count": 2,
+        "expected_missing_count": 0,
+        "extra_file_count": 8,
+        "context_precision": 0.2,
+        "context_recall": 1.0,
+        "context_f1": 0.3333,
+        "pass_at_1_context": true,
+        "matched_expected_files": [
+          "src/router.ts",
+          "src/store/user.ts"
+        ],
+        "missing_expected_files": [],
+        "extra_files": [
+          "src/components/AppLink.vue",
+          "src/components/AppNavigation.vue",
+          "src/components/ArticlesListNavigation.vue",
+          "src/composable/use-articles.ts",
+          "src/services/api.ts",
+          "src/services/index.ts",
+          "src/utils/storage.ts",
+          "src/utils/use-async.ts"
+        ]
+      },
+      "traditional_rag": {
+        "retrieval_mode": "traditional_rag_keyword_chunks",
+        "selected_files": [
+          "src/router.spec.ts",
+          "src/utils/test/test.utils.ts",
+          "src/router.ts",
+          "src/components/ArticlesListNavigation.vue"
+        ],
+        "selected_file_count": 4,
+        "chunk_count": 4,
+        "context_tokens_estimate": 3251,
+        "source_tokens_estimate": 2626,
+        "wall_clock_s": 0.0062,
+        "expected_hit_count": 1,
+        "expected_missing_count": 1,
+        "extra_file_count": 3,
+        "context_precision": 0.25,
+        "context_recall": 0.5,
+        "context_f1": 0.3333,
+        "pass_at_1_context": false,
+        "matched_expected_files": [
+          "src/router.ts"
+        ],
+        "missing_expected_files": [
+          "src/store/user.ts"
+        ],
+        "extra_files": [
+          "src/components/ArticlesListNavigation.vue",
+          "src/router.spec.ts",
+          "src/utils/test/test.utils.ts"
+        ]
+      }
+    },
+    {
+      "prompt_id": "profile_follow_flow",
+      "prompt": "Find the files involved when following or unfollowing a user profile.",
+      "notes": "Profile view, store, and API service flow.",
+      "expected_files": [
+        "src/pages/Profile.vue",
+        "src/composable/use-follow-profile.ts",
+        "src/composable/use-profile.ts",
+        "src/services/index.ts",
+        "src/services/api.ts"
+      ],
+      "gog": {
+        "retrieval_mode": "gog",
+        "selection_strategy": "identifier_filename_match",
+        "selected_files": [
+          "src/composable/use-follow-profile.ts",
+          "src/composable/use-profile.ts",
+          "src/pages/Profile.vue",
+          "src/store/user.ts",
+          "src/components/ArticlesList.vue",
+          "src/components/ArticlesListNavigation.vue",
+          "src/router.ts",
+          "src/services/api.ts",
+          "src/services/index.ts",
+          "src/utils/storage.ts"
+        ],
+        "selected_file_count": 10,
+        "relations": [
+          {
+            "source": "src/router.ts",
+            "relation": "imports",
+            "target": "src/store/user.ts"
+          },
+          {
+            "source": "src/services/index.ts",
+            "relation": "imports",
+            "target": "src/services/api.ts"
+          },
+          {
+            "source": "src/composable/use-profile.ts",
+            "relation": "imports",
+            "target": "src/services/index.ts"
+          },
+          {
+            "source": "src/composable/use-profile.ts",
+            "relation": "imports",
+            "target": "src/services/api.ts"
+          },
+          {
+            "source": "src/composable/use-follow-profile.ts",
+            "relation": "imports",
+            "target": "src/services/index.ts"
+          },
+          {
+            "source": "src/composable/use-follow-profile.ts",
+            "relation": "imports",
+            "target": "src/services/api.ts"
+          },
+          {
+            "source": "src/store/user.ts",
+            "relation": "imports",
+            "target": "src/services/index.ts"
+          },
+          {
+            "source": "src/store/user.ts",
+            "relation": "imports",
+            "target": "src/services/api.ts"
+          },
+          {
+            "source": "src/store/user.ts",
+            "relation": "imports",
+            "target": "src/utils/storage.ts"
+          },
+          {
+            "source": "src/pages/Profile.vue",
+            "relation": "imports",
+            "target": "src/components/ArticlesList.vue"
+          },
+          {
+            "source": "src/pages/Profile.vue",
+            "relation": "imports",
+            "target": "src/composable/use-follow-profile.ts"
+          },
+          {
+            "source": "src/pages/Profile.vue",
+            "relation": "imports",
+            "target": "src/composable/use-profile.ts"
+          },
+          {
+            "source": "src/pages/Profile.vue",
+            "relation": "imports",
+            "target": "src/services/api.ts"
+          },
+          {
+            "source": "src/pages/Profile.vue",
+            "relation": "imports",
+            "target": "src/store/user.ts"
+          },
+          {
+            "source": "src/components/ArticlesList.vue",
+            "relation": "imports",
+            "target": "src/components/ArticlesListNavigation.vue"
+          },
+          {
+            "source": "src/components/ArticlesListNavigation.vue",
+            "relation": "imports",
+            "target": "src/router.ts"
+          },
+          {
+            "source": "src/components/ArticlesListNavigation.vue",
+            "relation": "imports",
+            "target": "src/store/user.ts"
+          }
+        ],
+        "relation_count": 17,
+        "context_tokens_estimate": 1797,
+        "source_tokens_estimate": 7783,
+        "wall_clock_s": 0.0132,
+        "expected_hit_count": 5,
+        "expected_missing_count": 0,
+        "extra_file_count": 5,
+        "context_precision": 0.5,
+        "context_recall": 1.0,
+        "context_f1": 0.6667,
+        "pass_at_1_context": true,
+        "matched_expected_files": [
+          "src/composable/use-follow-profile.ts",
+          "src/composable/use-profile.ts",
+          "src/pages/Profile.vue",
+          "src/services/api.ts",
+          "src/services/index.ts"
+        ],
+        "missing_expected_files": [],
+        "extra_files": [
+          "src/components/ArticlesList.vue",
+          "src/components/ArticlesListNavigation.vue",
+          "src/router.ts",
+          "src/store/user.ts",
+          "src/utils/storage.ts"
+        ]
+      },
+      "traditional_rag": {
+        "retrieval_mode": "traditional_rag_keyword_chunks",
+        "selected_files": [
+          "src/services/api.ts",
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/pages/Profile.vue",
+          "src/pages/Settings.spec.ts"
+        ],
+        "selected_file_count": 4,
+        "chunk_count": 4,
+        "context_tokens_estimate": 4279,
+        "source_tokens_estimate": 3534,
+        "wall_clock_s": 0.006,
+        "expected_hit_count": 2,
+        "expected_missing_count": 3,
+        "extra_file_count": 2,
+        "context_precision": 0.5,
+        "context_recall": 0.4,
+        "context_f1": 0.4444,
+        "pass_at_1_context": false,
+        "matched_expected_files": [
+          "src/pages/Profile.vue",
+          "src/services/api.ts"
+        ],
+        "missing_expected_files": [
+          "src/composable/use-follow-profile.ts",
+          "src/composable/use-profile.ts",
+          "src/services/index.ts"
+        ],
+        "extra_files": [
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/pages/Settings.spec.ts"
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "prompt_count": 4,
+    "gog": {
+      "pass_at_1_context_count": 4,
+      "avg_context_precision": 0.4417,
+      "avg_context_recall": 1.0,
+      "avg_context_f1": 0.5928,
+      "avg_selected_file_count": 9.0,
+      "avg_context_tokens_estimate": 1378.5,
+      "avg_source_tokens_estimate": 7127.8,
+      "avg_wall_clock_s": 0.0425
+    },
+    "traditional_rag": {
+      "pass_at_1_context_count": 0,
+      "avg_context_precision": 0.375,
+      "avg_context_recall": 0.4125,
+      "avg_context_f1": 0.3819,
+      "avg_selected_file_count": 4.0,
+      "avg_context_tokens_estimate": 4176.5,
+      "avg_source_tokens_estimate": 3438.5,
+      "avg_wall_clock_s": 0.0062
+    }
+  }
+}

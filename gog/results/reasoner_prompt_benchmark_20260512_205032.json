@@ -1,0 +1,1338 @@
+{
+  "generated_at": "2026-05-12T20:50:32.153823+00:00",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation",
+  "schema_path": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog_cli/schemas/mutation_plan.schema.json",
+  "results": [
+    {
+      "task_id": "python_onboarding_refactor",
+      "task_prompt": "Refactor the onboarding workflow in gog_cli/onboarding.py to make artifact refresh semantics clearer without changing external behavior.",
+      "strategy": "flat_json",
+      "strategy_description": "Raw JSON bundle followed by a strict JSON response contract.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Refactor the onboarding workflow in gog_cli/onboarding.py to make artifact refresh semantics clearer without changing external behavior.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/onboarding.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "distilled_datasets/exp_19_semantics_and_emotions.py",
+            "gog_cli/onboarding.py"
+          ],
+          "selected_file_count": 5,
+          "estimated_input_tokens": 5203
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/ts_parser.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_engine/ast_parser.py",
+              "relation": "imports",
+              "target": "gog_engine/ts_parser.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/ts_parser.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1192,
+      "response_tokens_estimate": 0,
+      "latency_s": 0.0117,
+      "returncode": 1,
+      "stderr": "Error: Head \"http://127.0.0.1:11434/\": dial tcp 127.0.0.1:11434: socket: operation not permitted",
+      "raw_response": "",
+      "parsed_plan": null,
+      "score": {
+        "json_valid": false,
+        "schema_valid": false,
+        "schema_errors": [
+          "response is not a JSON object"
+        ],
+        "allowed_node_compliance": false,
+        "unsupported_targets": [],
+        "no_extra_prose": false,
+        "evidence_count": 0,
+        "step_count": 0,
+        "composite_score": 0
+      }
+    },
+    {
+      "task_id": "python_onboarding_refactor",
+      "task_prompt": "Refactor the onboarding workflow in gog_cli/onboarding.py to make artifact refresh semantics clearer without changing external behavior.",
+      "strategy": "sectioned_brief",
+      "strategy_description": "Labeled textual sections with schema requirements at the end.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Refactor the onboarding workflow in gog_cli/onboarding.py to make artifact refresh semantics clearer without changing external behavior.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/onboarding.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "distilled_datasets/exp_19_semantics_and_emotions.py",
+            "gog_cli/onboarding.py"
+          ],
+          "selected_file_count": 5,
+          "estimated_input_tokens": 5203
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/ts_parser.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_engine/ast_parser.py",
+              "relation": "imports",
+              "target": "gog_engine/ts_parser.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/ts_parser.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1040,
+      "response_tokens_estimate": 0,
+      "latency_s": 0.0098,
+      "returncode": 1,
+      "stderr": "Error: Head \"http://127.0.0.1:11434/\": dial tcp 127.0.0.1:11434: socket: operation not permitted",
+      "raw_response": "",
+      "parsed_plan": null,
+      "score": {
+        "json_valid": false,
+        "schema_valid": false,
+        "schema_errors": [
+          "response is not a JSON object"
+        ],
+        "allowed_node_compliance": false,
+        "unsupported_targets": [],
+        "no_extra_prose": false,
+        "evidence_count": 0,
+        "step_count": 0,
+        "composite_score": 0
+      }
+    },
+    {
+      "task_id": "python_onboarding_refactor",
+      "task_prompt": "Refactor the onboarding workflow in gog_cli/onboarding.py to make artifact refresh semantics clearer without changing external behavior.",
+      "strategy": "evidence_first",
+      "strategy_description": "Emphasize citing served evidence before selecting mutations.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Refactor the onboarding workflow in gog_cli/onboarding.py to make artifact refresh semantics clearer without changing external behavior.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/onboarding.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "distilled_datasets/exp_19_semantics_and_emotions.py",
+            "gog_cli/onboarding.py"
+          ],
+          "selected_file_count": 5,
+          "estimated_input_tokens": 5203
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/ts_parser.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_engine/ast_parser.py",
+              "relation": "imports",
+              "target": "gog_engine/ts_parser.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/ts_parser.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1226,
+      "response_tokens_estimate": 0,
+      "latency_s": 0.0105,
+      "returncode": 1,
+      "stderr": "Error: Head \"http://127.0.0.1:11434/\": dial tcp 127.0.0.1:11434: socket: operation not permitted",
+      "raw_response": "",
+      "parsed_plan": null,
+      "score": {
+        "json_valid": false,
+        "schema_valid": false,
+        "schema_errors": [
+          "response is not a JSON object"
+        ],
+        "allowed_node_compliance": false,
+        "unsupported_targets": [],
+        "no_extra_prose": false,
+        "evidence_count": 0,
+        "step_count": 0,
+        "composite_score": 0
+      }
+    },
+    {
+      "task_id": "python_onboarding_refactor",
+      "task_prompt": "Refactor the onboarding workflow in gog_cli/onboarding.py to make artifact refresh semantics clearer without changing external behavior.",
+      "strategy": "schema_first",
+      "strategy_description": "Lead with the MutationPlan schema and then provide repo context.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Refactor the onboarding workflow in gog_cli/onboarding.py to make artifact refresh semantics clearer without changing external behavior.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/onboarding.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "distilled_datasets/exp_19_semantics_and_emotions.py",
+            "gog_cli/onboarding.py"
+          ],
+          "selected_file_count": 5,
+          "estimated_input_tokens": 5203
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/ts_parser.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_engine/ast_parser.py",
+              "relation": "imports",
+              "target": "gog_engine/ts_parser.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/ts_parser.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1192,
+      "response_tokens_estimate": 0,
+      "latency_s": 0.0102,
+      "returncode": 1,
+      "stderr": "Error: Head \"http://127.0.0.1:11434/\": dial tcp 127.0.0.1:11434: socket: operation not permitted",
+      "raw_response": "",
+      "parsed_plan": null,
+      "score": {
+        "json_valid": false,
+        "schema_valid": false,
+        "schema_errors": [
+          "response is not a JSON object"
+        ],
+        "allowed_node_compliance": false,
+        "unsupported_targets": [],
+        "no_extra_prose": false,
+        "evidence_count": 0,
+        "step_count": 0,
+        "composite_score": 0
+      }
+    },
+    {
+      "task_id": "python_cli_argument_flow",
+      "task_prompt": "Improve the CLI argument parsing flow in gog_cli/cli.py while preserving the current commands.",
+      "strategy": "flat_json",
+      "strategy_description": "Raw JSON bundle followed by a strict JSON response contract.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve the CLI argument parsing flow in gog_cli/cli.py while preserving the current commands.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/cli.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [],
+          "selected_file_count": 8,
+          "estimated_input_tokens": 11520
+        },
+        "context": {
+          "files": [
+            "gog_cli/cli.py",
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/cli.py",
+              "relation": "imports",
+              "target": "gog_cli/serving.py"
+            },
+            {
+              "source": "gog_cli/cli.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/cli.py",
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1380,
+      "response_tokens_estimate": 0,
+      "latency_s": 0.0107,
+      "returncode": 1,
+      "stderr": "Error: Head \"http://127.0.0.1:11434/\": dial tcp 127.0.0.1:11434: socket: operation not permitted",
+      "raw_response": "",
+      "parsed_plan": null,
+      "score": {
+        "json_valid": false,
+        "schema_valid": false,
+        "schema_errors": [
+          "response is not a JSON object"
+        ],
+        "allowed_node_compliance": false,
+        "unsupported_targets": [],
+        "no_extra_prose": false,
+        "evidence_count": 0,
+        "step_count": 0,
+        "composite_score": 0
+      }
+    },
+    {
+      "task_id": "python_cli_argument_flow",
+      "task_prompt": "Improve the CLI argument parsing flow in gog_cli/cli.py while preserving the current commands.",
+      "strategy": "sectioned_brief",
+      "strategy_description": "Labeled textual sections with schema requirements at the end.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve the CLI argument parsing flow in gog_cli/cli.py while preserving the current commands.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/cli.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [],
+          "selected_file_count": 8,
+          "estimated_input_tokens": 11520
+        },
+        "context": {
+          "files": [
+            "gog_cli/cli.py",
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/cli.py",
+              "relation": "imports",
+              "target": "gog_cli/serving.py"
+            },
+            {
+              "source": "gog_cli/cli.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/cli.py",
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1260,
+      "response_tokens_estimate": 0,
+      "latency_s": 0.0102,
+      "returncode": 1,
+      "stderr": "Error: Head \"http://127.0.0.1:11434/\": dial tcp 127.0.0.1:11434: socket: operation not permitted",
+      "raw_response": "",
+      "parsed_plan": null,
+      "score": {
+        "json_valid": false,
+        "schema_valid": false,
+        "schema_errors": [
+          "response is not a JSON object"
+        ],
+        "allowed_node_compliance": false,
+        "unsupported_targets": [],
+        "no_extra_prose": false,
+        "evidence_count": 0,
+        "step_count": 0,
+        "composite_score": 0
+      }
+    },
+    {
+      "task_id": "python_cli_argument_flow",
+      "task_prompt": "Improve the CLI argument parsing flow in gog_cli/cli.py while preserving the current commands.",
+      "strategy": "evidence_first",
+      "strategy_description": "Emphasize citing served evidence before selecting mutations.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve the CLI argument parsing flow in gog_cli/cli.py while preserving the current commands.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/cli.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [],
+          "selected_file_count": 8,
+          "estimated_input_tokens": 11520
+        },
+        "context": {
+          "files": [
+            "gog_cli/cli.py",
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/cli.py",
+              "relation": "imports",
+              "target": "gog_cli/serving.py"
+            },
+            {
+              "source": "gog_cli/cli.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/cli.py",
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1414,
+      "response_tokens_estimate": 0,
+      "latency_s": 0.0102,
+      "returncode": 1,
+      "stderr": "Error: Head \"http://127.0.0.1:11434/\": dial tcp 127.0.0.1:11434: socket: operation not permitted",
+      "raw_response": "",
+      "parsed_plan": null,
+      "score": {
+        "json_valid": false,
+        "schema_valid": false,
+        "schema_errors": [
+          "response is not a JSON object"
+        ],
+        "allowed_node_compliance": false,
+        "unsupported_targets": [],
+        "no_extra_prose": false,
+        "evidence_count": 0,
+        "step_count": 0,
+        "composite_score": 0
+      }
+    },
+    {
+      "task_id": "python_cli_argument_flow",
+      "task_prompt": "Improve the CLI argument parsing flow in gog_cli/cli.py while preserving the current commands.",
+      "strategy": "schema_first",
+      "strategy_description": "Lead with the MutationPlan schema and then provide repo context.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve the CLI argument parsing flow in gog_cli/cli.py while preserving the current commands.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/cli.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [],
+          "selected_file_count": 8,
+          "estimated_input_tokens": 11520
+        },
+        "context": {
+          "files": [
+            "gog_cli/cli.py",
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/cli.py",
+              "relation": "imports",
+              "target": "gog_cli/serving.py"
+            },
+            {
+              "source": "gog_cli/cli.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/cli.py",
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1380,
+      "response_tokens_estimate": 0,
+      "latency_s": 0.0107,
+      "returncode": 1,
+      "stderr": "Error: Head \"http://127.0.0.1:11434/\": dial tcp 127.0.0.1:11434: socket: operation not permitted",
+      "raw_response": "",
+      "parsed_plan": null,
+      "score": {
+        "json_valid": false,
+        "schema_valid": false,
+        "schema_errors": [
+          "response is not a JSON object"
+        ],
+        "allowed_node_compliance": false,
+        "unsupported_targets": [],
+        "no_extra_prose": false,
+        "evidence_count": 0,
+        "step_count": 0,
+        "composite_score": 0
+      }
+    },
+    {
+      "task_id": "python_context_serving",
+      "task_prompt": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.",
+      "strategy": "flat_json",
+      "strategy_description": "Raw JSON bundle followed by a strict JSON response contract.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1349,
+      "response_tokens_estimate": 0,
+      "latency_s": 0.0106,
+      "returncode": 1,
+      "stderr": "Error: Head \"http://127.0.0.1:11434/\": dial tcp 127.0.0.1:11434: socket: operation not permitted",
+      "raw_response": "",
+      "parsed_plan": null,
+      "score": {
+        "json_valid": false,
+        "schema_valid": false,
+        "schema_errors": [
+          "response is not a JSON object"
+        ],
+        "allowed_node_compliance": false,
+        "unsupported_targets": [],
+        "no_extra_prose": false,
+        "evidence_count": 0,
+        "step_count": 0,
+        "composite_score": 0
+      }
+    },
+    {
+      "task_id": "python_context_serving",
+      "task_prompt": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.",
+      "strategy": "sectioned_brief",
+      "strategy_description": "Labeled textual sections with schema requirements at the end.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1182,
+      "response_tokens_estimate": 0,
+      "latency_s": 0.01,
+      "returncode": 1,
+      "stderr": "Error: Head \"http://127.0.0.1:11434/\": dial tcp 127.0.0.1:11434: socket: operation not permitted",
+      "raw_response": "",
+      "parsed_plan": null,
+      "score": {
+        "json_valid": false,
+        "schema_valid": false,
+        "schema_errors": [
+          "response is not a JSON object"
+        ],
+        "allowed_node_compliance": false,
+        "unsupported_targets": [],
+        "no_extra_prose": false,
+        "evidence_count": 0,
+        "step_count": 0,
+        "composite_score": 0
+      }
+    },
+    {
+      "task_id": "python_context_serving",
+      "task_prompt": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.",
+      "strategy": "evidence_first",
+      "strategy_description": "Emphasize citing served evidence before selecting mutations.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1383,
+      "response_tokens_estimate": 0,
+      "latency_s": 0.0101,
+      "returncode": 1,
+      "stderr": "Error: Head \"http://127.0.0.1:11434/\": dial tcp 127.0.0.1:11434: socket: operation not permitted",
+      "raw_response": "",
+      "parsed_plan": null,
+      "score": {
+        "json_valid": false,
+        "schema_valid": false,
+        "schema_errors": [
+          "response is not a JSON object"
+        ],
+        "allowed_node_compliance": false,
+        "unsupported_targets": [],
+        "no_extra_prose": false,
+        "evidence_count": 0,
+        "step_count": 0,
+        "composite_score": 0
+      }
+    },
+    {
+      "task_id": "python_context_serving",
+      "task_prompt": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.",
+      "strategy": "schema_first",
+      "strategy_description": "Lead with the MutationPlan schema and then provide repo context.",
+      "model": "kimi-k2.6:cloud",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py to make the reasoner handoff easier to inspect.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "prompt_tokens_estimate": 1349,
+      "response_tokens_estimate": 0,
+      "latency_s": 0.0106,
+      "returncode": 1,
+      "stderr": "Error: Head \"http://127.0.0.1:11434/\": dial tcp 127.0.0.1:11434: socket: operation not permitted",
+      "raw_response": "",
+      "parsed_plan": null,
+      "score": {
+        "json_valid": false,
+        "schema_valid": false,
+        "schema_errors": [
+          "response is not a JSON object"
+        ],
+        "allowed_node_compliance": false,
+        "unsupported_targets": [],
+        "no_extra_prose": false,
+        "evidence_count": 0,
+        "step_count": 0,
+        "composite_score": 0
+      }
+    }
+  ],
+  "summary": {
+    "flat_json": {
+      "observations": 3,
+      "json_valid_count": 0,
+      "schema_valid_count": 0,
+      "allowed_node_compliance_count": 0,
+      "strict_json_only_count": 0,
+      "avg_composite_score": 0.0,
+      "avg_prompt_tokens_estimate": 1307.0,
+      "avg_response_tokens_estimate": 0.0
+    },
+    "sectioned_brief": {
+      "observations": 3,
+      "json_valid_count": 0,
+      "schema_valid_count": 0,
+      "allowed_node_compliance_count": 0,
+      "strict_json_only_count": 0,
+      "avg_composite_score": 0.0,
+      "avg_prompt_tokens_estimate": 1160.7,
+      "avg_response_tokens_estimate": 0.0
+    },
+    "evidence_first": {
+      "observations": 3,
+      "json_valid_count": 0,
+      "schema_valid_count": 0,
+      "allowed_node_compliance_count": 0,
+      "strict_json_only_count": 0,
+      "avg_composite_score": 0.0,
+      "avg_prompt_tokens_estimate": 1341.0,
+      "avg_response_tokens_estimate": 0.0
+    },
+    "schema_first": {
+      "observations": 3,
+      "json_valid_count": 0,
+      "schema_valid_count": 0,
+      "allowed_node_compliance_count": 0,
+      "strict_json_only_count": 0,
+      "avg_composite_score": 0.0,
+      "avg_prompt_tokens_estimate": 1307.0,
+      "avg_response_tokens_estimate": 0.0
+    }
+  }
+}

@@ -1,0 +1,484 @@
+{
+  "generated_at": "2026-05-13T15:04:22.608227+00:00",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation",
+  "fixture_path": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog_cli/fixtures/semantic_plan_quality_known_problem.json",
+  "schema_path": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog_cli/schemas/mutation_plan.schema.json",
+  "results": [
+    {
+      "fixture_id": "serving_context_omits_source_content",
+      "fixture": {
+        "id": "serving_context_omits_source_content",
+        "title": "Prompt-scoped context bundles expose structure but not source content",
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "problem_statement": "The current context bundle served by gog_cli/serving.py includes selected file paths, import relations, validation commands, and allowed nodes, but it does not include source excerpts, symbol summaries, function names, or line-level evidence. A reasoner can identify the likely target file, but it cannot safely plan concrete code mutations from the served bundle alone.",
+        "expected_targets": [
+          "gog_cli/serving.py"
+        ],
+        "expected_semantic_behavior": [
+          "Target gog_cli/serving.py as the primary node.",
+          "Recognize that the served context is insufficient for concrete implementation details.",
+          "Use INSPECT_NODE before any MUTATE_NODE step, or avoid MUTATE_NODE entirely.",
+          "Mention the missing source content, source excerpts, symbol summaries, or implementation details in uncertainty.",
+          "Use the served validation command for Python syntax validation."
+        ],
+        "failure_modes": [
+          "Plans a concrete implementation without inspecting gog_cli/serving.py first.",
+          "Claims knowledge of specific functions or code structures not present in the served context.",
+          "Targets files outside context.allowed_nodes.",
+          "Omits uncertainty even though source content is absent from the served context."
+        ],
+        "validation_hint": "python3 -m py_compile gog_cli/serving.py"
+      },
+      "strategy": "minimal_platter",
+      "strategy_description": "Small handoff surface with only task, problem, files, relations, and rubric.",
+      "model": "kimi-k2.6:cloud",
+      "retrieval_mode": "gog",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "rag_bundle": null,
+      "prompt_tokens_estimate": 1430,
+      "response_tokens_estimate": 356,
+      "latency_s": 144.1408,
+      "returncode": 0,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "stderr": "\u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2839 \u2838 \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280b \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u280f \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u2819 \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2827 \u2807 \u280b \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u280f \u280b \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2807 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2819 \u2839 \u283c \u283c \u2834"
+        }
+      ],
+      "stderr": "\u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2839 \u2838 \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280b \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280f \u2819 \u2839 \u2839 \u2838 \u2834 \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u280f \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u2819 \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2827 \u2807 \u280b \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280b \u2819 \u2819 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u280f \u280b \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2827 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u280b \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u2819 \u2819 \u2838 \u283c \u2834 \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2807 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2819 \u2839 \u283c \u283c \u2834",
+      "raw_response": "{\"plan_id\":\"plan-001-serving-context-excerpts\",\"intent\":\"Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected by including source excerpts, symbol summaries, function names, and line-level evidence in the served bundle.\",\"evidence\":[\"The current context bundle served by gog_cli/serving.py includes file paths, import relations, validation commands, and allowed nodes but omits source excerpts, symbol summaries, and line-level evidence.\",\"Without source content or symbol summaries, a downstream reasoner cannot safely plan concrete code mutations from the served bundle alone.\",\"gog_cli/serving.py is the primary node responsible for assembling and emitting the context bundle.\"],\"targets\":[\"gog_cli/serving.py\"],\"steps\":[{\"id\":\"inspect-serving\",\"op\":\"INSPECT_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Concrete mutations cannot be planned because the served context lacks source excerpts, symbol summaries, and implementation details for gog_cli/serving.py. Inspection is required to discover the existing bundle assembly logic before any safe mutation can be defined.\",\"depends_on\":[],\"parameters\":{}}],\"constraints\":[\"Only mutate nodes listed in context.allowed_nodes.\",\"Do not assume files, functions, or dependencies outside the served context exist.\",\"Do not emit concrete code changes before inspecting gog_cli/serving.py.\"],\"validation\":[\"python3 -m py_compile\"],\"uncertainty\":[\"Source excerpts, symbol summaries, function names, and line-level implementation details for gog_cli/serving.py are absent from the served context.\",\"The exact functions and logic used to assemble the context bundle are unknown until gog_cli/serving.py is inspected.\",\"Concrete line-level mutations cannot be determined without first inspecting the target file.\"]}",
+      "parsed_plan": {
+        "plan_id": "plan-001-serving-context-excerpts",
+        "intent": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected by including source excerpts, symbol summaries, function names, and line-level evidence in the served bundle.",
+        "evidence": [
+          "The current context bundle served by gog_cli/serving.py includes file paths, import relations, validation commands, and allowed nodes but omits source excerpts, symbol summaries, and line-level evidence.",
+          "Without source content or symbol summaries, a downstream reasoner cannot safely plan concrete code mutations from the served bundle alone.",
+          "gog_cli/serving.py is the primary node responsible for assembling and emitting the context bundle."
+        ],
+        "targets": [
+          "gog_cli/serving.py"
+        ],
+        "steps": [
+          {
+            "id": "inspect-serving",
+            "op": "INSPECT_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Concrete mutations cannot be planned because the served context lacks source excerpts, symbol summaries, and implementation details for gog_cli/serving.py. Inspection is required to discover the existing bundle assembly logic before any safe mutation can be defined.",
+            "depends_on": [],
+            "parameters": {}
+          }
+        ],
+        "constraints": [
+          "Only mutate nodes listed in context.allowed_nodes.",
+          "Do not assume files, functions, or dependencies outside the served context exist.",
+          "Do not emit concrete code changes before inspecting gog_cli/serving.py."
+        ],
+        "validation": [
+          "python3 -m py_compile"
+        ],
+        "uncertainty": [
+          "Source excerpts, symbol summaries, function names, and line-level implementation details for gog_cli/serving.py are absent from the served context.",
+          "The exact functions and logic used to assemble the context bundle are unknown until gog_cli/serving.py is inspected.",
+          "Concrete line-level mutations cannot be determined without first inspecting the target file."
+        ]
+      },
+      "structural_score": {
+        "json_valid": true,
+        "schema_valid": true,
+        "schema_errors": [],
+        "allowed_node_compliance": true,
+        "unsupported_targets": [],
+        "no_extra_prose": true,
+        "evidence_count": 3,
+        "step_count": 1,
+        "composite_score": 4
+      },
+      "semantic_score": {
+        "target_focus": true,
+        "inspect_before_mutate": true,
+        "source_awareness": true,
+        "validation_alignment": false,
+        "no_unsupported_targets": true,
+        "semantic_score": 4,
+        "semantic_errors": [
+          "validation does not include python compile check for gog_cli/serving.py"
+        ]
+      }
+    },
+    {
+      "fixture_id": "serving_context_omits_source_content",
+      "fixture": {
+        "id": "serving_context_omits_source_content",
+        "title": "Prompt-scoped context bundles expose structure but not source content",
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "problem_statement": "The current context bundle served by gog_cli/serving.py includes selected file paths, import relations, validation commands, and allowed nodes, but it does not include source excerpts, symbol summaries, function names, or line-level evidence. A reasoner can identify the likely target file, but it cannot safely plan concrete code mutations from the served bundle alone.",
+        "expected_targets": [
+          "gog_cli/serving.py"
+        ],
+        "expected_semantic_behavior": [
+          "Target gog_cli/serving.py as the primary node.",
+          "Recognize that the served context is insufficient for concrete implementation details.",
+          "Use INSPECT_NODE before any MUTATE_NODE step, or avoid MUTATE_NODE entirely.",
+          "Mention the missing source content, source excerpts, symbol summaries, or implementation details in uncertainty.",
+          "Use the served validation command for Python syntax validation."
+        ],
+        "failure_modes": [
+          "Plans a concrete implementation without inspecting gog_cli/serving.py first.",
+          "Claims knowledge of specific functions or code structures not present in the served context.",
+          "Targets files outside context.allowed_nodes.",
+          "Omits uncertainty even though source content is absent from the served context."
+        ],
+        "validation_hint": "python3 -m py_compile gog_cli/serving.py"
+      },
+      "strategy": "traditional_rag",
+      "strategy_description": "Keyword-retrieved unstructured source chunks without graph relations.",
+      "model": "kimi-k2.6:cloud",
+      "retrieval_mode": "traditional_rag",
+      "context_bundle": {
+        "status": "READY",
+        "issues": [],
+        "prompt": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "selection": {
+          "strategy": "explicit_file_mentions",
+          "explicit_file_matches": [
+            "gog_cli/serving.py"
+          ],
+          "unsupported_explicit_file_mentions": [],
+          "identifier_matches": [
+            "gog_cli/serving.py",
+            "gog_engine/planner/renderer_prompt.py",
+            "sel/core/reasoner.py",
+            "sel/tests/test_reasoner.py"
+          ],
+          "selected_file_count": 7,
+          "estimated_input_tokens": 9634
+        },
+        "context": {
+          "files": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ],
+          "relations": [
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_cli/python_graph.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/ast_parser.py"
+            },
+            {
+              "source": "gog_cli/onboarding.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/token_utils.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_cli/onboarding.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/__init__.py"
+            },
+            {
+              "source": "gog_cli/serving.py",
+              "relation": "imports",
+              "target": "gog_engine/graph_search.py"
+            }
+          ],
+          "validation_commands": [
+            "python3 -m py_compile"
+          ],
+          "allowed_nodes": [
+            "gog_cli/onboarding.py",
+            "gog_cli/python_graph.py",
+            "gog_cli/serving.py",
+            "gog_engine/__init__.py",
+            "gog_engine/ast_parser.py",
+            "gog_engine/graph_search.py",
+            "gog_engine/token_utils.py"
+          ]
+        },
+        "handoff": {
+          "recommended_reasoner_input": "Use this bounded repository slice as the operating surface for plan creation. Emit a typed MutationPlan; do not assume files or dependencies outside the served context.",
+          "salience_evaluator_required": true,
+          "post_apply_refresh_required": true
+        }
+      },
+      "rag_bundle": {
+        "retrieved_files": [
+          "gog/benchmark_local_llm.py",
+          "sel/experiments/exp_24a.py",
+          "gog/benchmark_srm.py",
+          "gog_cli/semantic_plan_benchmark.py"
+        ],
+        "chunks": [
+          {
+            "file": "gog/benchmark_local_llm.py",
+            "score": 179,
+            "text": "import time\nimport os\nimport sys\nimport json\nimport urllib.request\nimport urllib.error\nfrom pathlib import Path\n\n# Ensure gog_engine (sibling to gog/) is on the path\nsys.path.insert(0, os.path.join(os.path.dirname(__file__), \"..\"))\n\nfrom rich.console import Console\nfrom rich.table import Table\nfrom rich.panel import Panel\nfrom rich.progress import Progress, SpinnerColumn, TextColumn\nfrom gog_engine import ast_parser, graph_search\nfrom gog_engine.salience_evaluator import SalienceEvaluator\nfrom gog_engine.token_utils import count_tokens_in_files as get_token_count\nconsole = Console()\n\n# \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n# System Muzzle\n# \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n# This directive is appended to EVERY prompt sent to the LLM.  It forces the\n# model into headless \"code generator\" mode, which is the only mode the\n# SalienceEvaluator Membrane can validate.  Without it, smaller SLMs tend to\n# respond conversationally (\"Sure! Here is how you would...\") which produces\n# no parseable code blocks and causes the Membrane to exhaust all retry\n# attempts without a single valid evaluation.\nMUZZLE = (\n    \"\\n\\n[SYSTEM DIRECTIVE: You are a headless code generator. \"\n    \"You are physically incapable of conversational text. \"\n    \"You MUST output your entire response inside a single ```ts or ```vue \"\n    \"fenced code block. Do not explain your code. \"\n    \"If you output plain text, the system will crash.]\"\n)\n\n# \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n# Ollama Client\n# \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\nclass OllamaClient:\n    def __init__(self, model=\"qwen2.5:0.5b\"):\n        self.model = model\n        self.api_url = \"http://localhost:11434/api/generate\"\n\n    @property\n    def is_present(self):\n        try:\n            req = urllib.request.Request(\"http://localhost:11434/\")\n            with urllib.request.urlopen(req) as response:\n                return response.status == 200\n        except:\n            return False\n\n    def complete(self, prompt, context_files=None):\n        if not context_files:\n            context_files = []\n\n        # Compile context into a strict string format for the SLM\n        context_str = \"\"\n        for file_path in context_files:\n            try:\n                with open(file_path, \"r\", encoding=\"utf8\") as f:\n                    context_str += f\"\\n--- {os.path.basename(file_path)} ---\\n{f.read()}\\n\"\n            except Exception:\n                pass\n\n        # The MUZZLE is concatenated AFTER the user prompt so it appears as the\n        # final instruction \u2014 models weight recency highly and are more likely\n        # to comply when it is the last thing they read.\n        full_prompt = (\n            f\"You are an expert TypeScript/Vue developer. Use ONLY the provided context files.\\n\"\n            f\"Always output your code in fenced ```ts or ```vue code blocks.\\n\\n\"\n            f\"=== CONTEXT ===\\n{context_str}\\n\\n\"\n            f\"=== TASK ===\\n{prompt}{MUZZLE}\"\n        )\n\n        # num_gpu is omitted by default \u2014 Ollama will auto-detect and use the GPU.\n        # To force CPU-only (e.g. low VRAM), set the environment variable:\n        #   NUM_GPU=0 python3 benchmark_local_llm.py\n        gpu_option = {\"num_gpu\": int(os.environ[\"NUM_GPU\"])} if \"NUM_GPU\" in os.environ else {}\n        data = json.dumps({\n            \"model\": self.model,\n            \"prompt\": full_prompt,\n            \"stream\": False,\n            \"options\": {\n                \"num_ctx\": 4096,\n                **gpu_option\n            }\n        }).encode(\"utf-8\")\n\n        req = urllib.request.Request(self.api_url, data=data, headers={\"Content-Type\": \"application/json\"})\n        try:\n            with urllib.request.urlopen(req, timeout=600) as response:\n                result = json.loads(response.read().decode(\"utf-8\"))\n                response_text = result.get(\"response\", \"\").strip()\n                if not response_text:\n                    return \"[Error: Model returned an empty string. Context likely exceeded maximum context window (Context Collapse).]\"\n                return response_text\n        except urllib.error.HTTPError as e:\n            error_body = e.read().decode(\"utf-8\")\n            try:\n                error_json = json.loads(error_body)\n                error_msg = error_json.get(\"error\", error_body)\n            except:\n                error_msg = error_body\n     "
+          },
+          {
+            "file": "sel/experiments/exp_24a.py",
+            "score": 139,
+            "text": "#!/usr/bin/env python3\n\"\"\"\nSEL Experiment 24a \u2014 Rhetorical Primitive Discovery\nLOCATION: sel/experiments/exp_24a_rhetorical_primitives.py\n\nGOAL:\n  Discover and validate the complete set of rhetorical primitives \u2014\n  the irreducible ways humans encode emotional subtext in language.\n\n  This is NOT a test of the SEL pipeline.\n  This is basic science: what ARE the primitives?\n\nHYPOTHESIS:\n  Human emotional language has a finite set of rhetorical modes\n  (how something is said, independent of what is being said).\n  These modes are discoverable, labelable, and stable across raters.\n\nDESIGN:\n  80 prompts \u00d7 2 raters (human + LLM) = 160 classifications\n  \n  Prompts selected for rhetorical variety, NOT semantic variety.\n  Multiple prompts may share the same underlying emotion but\n  differ in HOW that emotion is expressed.\n\n  Categories (provisional \u2014 UNKNOWN is always valid):\n    DIRECT        \u2014 stated plainly, no rhetorical transform\n    HINTING       \u2014 approaching the real thing indirectly\n    SHY_AWAY      \u2014 starts toward the real thing then retreats\n    IRONIC        \u2014 stated opposite, both meanings active\n    SARCASTIC     \u2014 emotional intensification through deflation\n    REVERSE       \u2014 stated opposite, only one meaning intended\n    MATTER_OF_FACT\u2014 flat affect, emotional content higher than register\n    DRY           \u2014 intellectual/philosophical framing of emotion\n    COLLOQUIAL    \u2014 idiomatic encoding, requires translation\n    METAPHORICAL  \u2014 concrete/physical language for abstract emotion\n    UNDERSTATED   \u2014 less expressed than felt\n    OVERSTATED    \u2014 hyperbole as signal (may deflate meaning)\n    UNKNOWN       \u2014 doesn't fit any category, needs new name\n\nWHAT WE'RE LOOKING FOR:\n  1. Which categories are stable (high inter-rater agreement)?\n  2. Which categories collapse into each other (not truly distinct)?\n  3. What lands in UNKNOWN (new primitives we haven't named)?\n  4. Are there prompts where BOTH raters disagree AND\n     neither UNKNOWN applies? (category boundary problems)\n\"\"\"\n\nimport json\nimport time\nimport sys\nimport subprocess\nfrom pathlib import Path\nfrom dataclasses import dataclass, asdict\nfrom datetime import datetime\n\n# \u2500\u2500 rhetorical primitive definitions \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\nRHETORICAL_PRIMITIVES = {\n    \"DIRECT\": {\n        \"description\": \"Stated plainly. No rhetorical transform. \"\n                       \"What is said = what is meant.\",\n        \"signal\": \"First-person statement, emotional word present, \"\n                  \"no irony markers, no idiom\",\n        \"examples\": [\n            \"I miss my hometown\",\n            \"I'm scared about tomorrow\",\n            \"I feel proud of what I've done\",\n        ]\n    },\n    \"HINTING\": {\n        \"description\": \"Approaching the real feeling indirectly. \"\n                       \"The real content is implied, not stated. \"\n                       \"Speaker expects listener to infer.\",\n        \"signal\": \"Vague language, hedging, 'something about', \"\n                  \"'I don't know why', trailing off\",\n        \"examples\": [\n            \"Something about seeing them just... I don't know\",\n            \"There's this feeling I keep having that I can't quite place\",\n            \"I've been thinking about them a lot lately\",\n        ]\n    },\n    \"SHY_AWAY\": {\n        \"description\": \"Starts toward the real feeling then retreats. \"\n                       \"The retreat IS the signal \u2014 what they won't \"\n                       \"say is what they mean.\",\n        \"signal\": \"Starts strong, qualifies heavily, ends with \"\n                  \"dismissal ('probably nothing', 'never mind')\",\n        \"examples\": [\n            \"Sometimes I wonder if... it's probably nothing\",\n            \"I was going to say something but forget it\",\n            \"Part of me feels \u2014 actually it doesn't matter\",\n        ]\n    },\n    \"IRONIC\": {\n        \"description\": \"Stated opposite of what is meant. \"\n                       \"BOTH meanings are active simultaneously. \"\n                       \"Speaker knows listener knows the inversion.\",\n        \"signal\": \"Positive words for negative experience, \"\n                  \"or negative words for positive, with shared \"\n                  \"awareness of the gap\",\n        \"examples\": [\n            \"Oh sure, I definitely don't think about home every day\",\n            \"Yeah I'm totally fine with how things turned out\",\n            \"I love how easy it is to let people go\",\n        ]\n    },\n    \"SARCASTIC\": {\n        \"description\": \"Emotional intensification through a"
+          },
+          {
+            "file": "gog/benchmark_srm.py",
+            "score": 129,
+            "text": "\"\"\"\nbenchmark_srm.py - SRM Pipeline Benchmark (Phase 2)\n\nCompares three tiers:\n  \u2022 Tier 1 (RAG Control) \u2014 raw prompt, ChromaDB retrieval\n  \u2022 Tier 2 (GOG Vanilla) \u2014 raw prompt, GOG deterministic isolation\n  \u2022 Tier 3-SRM (SRM Pipeline) \u2014 symbolic spec only, LLM renders syntax\n\nThe key claim: by removing reasoning from the LLM and placing it in the\ndeterministic planner, smaller models (\u22641B) produce better code.\n\nTier 3-SRM sends ONLY the renderer prompt to the LLM \u2014 NOT the original natural language.\nThis makes the result falsifiable: either the symbolic constraint works, or it doesn't.\n\"\"\"\n\nimport os\nimport time\nimport pickle\nfrom pathlib import Path\nfrom rich.console import Console\nfrom rich.table import Table\nfrom rich.panel import Panel\nfrom rich.progress import Progress, SpinnerColumn, TextColumn\n\nfrom srm_engine import ast_parser, graph_search\nfrom srm_engine.salience_evaluator import SalienceEvaluator\nfrom srm_engine.token_utils import count_tokens_in_files as get_token_count\n\nfrom srm_engine.planner.intent_parser import parse_intent, IntentParseError\nfrom srm_engine.planner.mutation_planner import plan_mutations, PlannerError\nfrom srm_engine.planner.renderer_prompt import build_renderer_prompt, build_single_file_renderer_prompt\n\nfrom benchmark_local_llm import (\n    OllamaClient,\n    run_control_pipeline,\n    run_srm_pipeline_vanilla,\n    score_response,\n    PROMPTS,\n    MUZZLE,\n)\n\nconsole = Console()\nclient = OllamaClient(model=\"qwen2.5:0.5b\")\n\n\n# \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n# Tier 3-SRM: The SRM Pipeline\n# \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\ndef _get_topological_render_order(graph, target_files_abs: list) -> list:\n    \"\"\"\n    Determine render order for multiple target files using topological sort from DAG.\n\n    The planner (not the LLM) determines the dependency order. Each file is rendered\n    in isolation, in the order determined by the import/dependency graph, so that\n    dependent files see the operations applied to their dependencies first.\n\n    Args:\n        graph: NetworkX DiGraph (GOG graph with import relationships).\n        target_files_abs: List of absolute file paths to render.\n\n    Returns:\n        List of absolute file paths in topological order (dependencies first).\n    \"\"\"\n    import networkx as nx\n\n    # Get the subgraph containing only the target files\n    subgraph_nodes = [n for n in graph.nodes() if n in target_files_abs]\n\n    # Topological sort to determine render order for dependencies.\n    # Graph edges: importing_file \u2192 imported_file (A imports B).\n    # Reverse the graph so topological_sort puts dependencies (no incoming edges) first.\n    # If the graph has no relevant edges or topological sort fails, use input order.\n    try:\n        # Check if there are any edges between target files\n        subgraph = graph.subgraph(subgraph_nodes)\n        if len(subgraph.edges()) == 0:\n            # No dependencies between target files; input order is fine\n            return target_files_abs\n\n        # Reverse graph so dependencies appear first in topological sort\n        reversed_graph = graph.reverse()\n        reversed_subgraph = reversed_graph.subgraph(subgraph_nodes)\n        topo_order = list(nx.topological_sort(reversed_subgraph))\n        # Filter to only include target files\n        return [f for f in topo_order if f in target_files_abs]\n    except:\n        # Fall back to input order if topological sort fails\n        return target_files_abs\n\n\ndef run_srm_pipeline(prompt_text: str, target_repo: str, graph) -> dict:\n    \"\"\"\n    Tier 3-SRM: Intent Parser \u2192 Mutation Planner \u2192 Renderer Prompts \u2192 LLM Renderers\n\n    Multi-file handling: For tasks with multiple files, renders each file separately\n    in topological order (dependencies first). The planner determines order; the LLM\n    renders atomically per file (renderer, not planner).\n\n    Args:\n        prompt_text: Natural language instruction from user (used by parser only).\n        target_repo: Path to target repository (for graph resolution).\n        graph: NetworkX DiGraph from ast_parser.build_graph().\n\n    Returns:\n        Dict with timing, token counts, response, and metadata.\n    \"\"\"\n    start_time = time.time()\n\n    # \u2500\u2500 Step 1: Parse Intent (deterministic) \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n    try:\n        ops = parse_intent(prompt_text)\n    except IntentParseError as e:\n        return {\n            \"time\": 0,\n            \"local_time\": 0,\n       "
+          },
+          {
+            "file": "gog_cli/semantic_plan_benchmark.py",
+            "score": 115,
+            "text": "\"\"\"Semantic-quality benchmark for GOG-backed reasoner plans.\"\"\"\n\nfrom __future__ import annotations\n\nimport argparse\nimport json\nimport re\nfrom dataclasses import dataclass\nfrom datetime import datetime, timezone\nfrom pathlib import Path\nfrom typing import Any\n\nfrom gog_engine.token_utils import count_tokens_in_string\n\nfrom .reasoner_benchmark import (\n    DEFAULT_MODEL,\n    SCHEMA_PATH,\n    extract_json_payload,\n    invoke_ollama,\n    score_plan_output,\n)\nfrom .serving import build_context_bundle\n\n\nFIXTURE_PATH = Path(__file__).resolve().parent / \"fixtures\" / \"semantic_plan_quality_known_problem.json\"\nRESULTS_DIR = Path(\"gog\") / \"results\"\n\n\n@dataclass(frozen=True)\nclass SemanticStrategy:\n    name: str\n    description: str\n\n\nSEMANTIC_STRATEGIES = [\n    SemanticStrategy(\"flat_json\", \"Baseline flat GOG context plus MutationPlan schema.\"),\n    SemanticStrategy(\"problem_framed\", \"Flat GOG context plus explicit known-problem statement.\"),\n    SemanticStrategy(\"rubric_first\", \"Semantic scoring rubric before context and schema.\"),\n    SemanticStrategy(\"minimal_platter\", \"Small handoff surface with only task, problem, files, relations, and rubric.\"),\n    SemanticStrategy(\"traditional_rag\", \"Keyword-retrieved unstructured source chunks without graph relations.\"),\n]\n\n\ndef run_semantic_benchmark(\n    repo_path: Path,\n    model: str = DEFAULT_MODEL,\n    output_dir: Path | None = None,\n    timeout_s: int = 600,\n    strategy_names: set[str] | None = None,\n    retries: int = 1,\n    retry_delay_s: int = 15,\n) -> dict[str, Any]:\n    repo_root = repo_path.expanduser().resolve()\n    fixture = json.loads(FIXTURE_PATH.read_text(encoding=\"utf-8\"))\n    schema = json.loads(SCHEMA_PATH.read_text(encoding=\"utf-8\"))\n    context_bundle = build_context_bundle(repo_root, fixture[\"prompt\"])\n    rag_bundle = build_traditional_rag_bundle(repo_root, fixture[\"prompt\"])\n    strategies = [\n        strategy\n        for strategy in SEMANTIC_STRATEGIES\n        if not strategy_names or strategy.name in strategy_names\n    ]\n    results: list[dict[str, Any]] = []\n\n    for strategy in strategies:\n        print(f\"running semantic_fixture={fixture['id']} strategy={strategy.name}\", flush=True)\n        prompt = build_semantic_prompt(\n            strategy=strategy.name,\n            fixture=fixture,\n            context_bundle=context_bundle,\n            rag_bundle=rag_bundle,\n            schema=schema,\n        )\n        response = invoke_ollama(\n            model=model,\n            prompt=prompt,\n            timeout_s=timeout_s,\n            retries=retries,\n            retry_delay_s=retry_delay_s,\n        )\n        parsed = extract_json_payload(response[\"stdout\"])\n        structural_score = score_plan_output(\n            raw_text=response[\"stdout\"],\n            parsed=parsed,\n            schema=schema,\n            allowed_nodes=_allowed_nodes_for_strategy(strategy.name, context_bundle, rag_bundle),\n        )\n        semantic_score = score_semantic_plan(\n            parsed=parsed,\n            fixture=fixture,\n            allowed_nodes=_allowed_nodes_for_strategy(strategy.name, context_bundle, rag_bundle),\n            context_has_source=strategy.name == \"traditional_rag\",\n        )\n        results.append(\n            {\n                \"fixture_id\": fixture[\"id\"],\n                \"fixture\": fixture,\n                \"strategy\": strategy.name,\n                \"strategy_description\": strategy.description,\n                \"model\": model,\n                \"retrieval_mode\": \"traditional_rag\" if strategy.name == \"traditional_rag\" else \"gog\",\n                \"context_bundle\": context_bundle,\n                \"rag_bundle\": rag_bundle if strategy.name == \"traditional_rag\" else None,\n                \"prompt_tokens_estimate\": count_tokens_in_string(prompt),\n                \"response_tokens_estimate\": count_tokens_in_string(response[\"stdout\"]),\n                \"latency_s\": response[\"latency_s\"],\n                \"returncode\": response[\"returncode\"],\n                \"attempts\": response[\"attempts\"],\n                \"stderr\": response[\"stderr\"],\n                \"raw_response\": response[\"stdout\"],\n                \"parsed_plan\": parsed,\n                \"structural_score\": structural_score,\n                \"semantic_score\": semantic_score,\n            }\n        )\n\n    payload = {\n        \"generated_at\": _now_iso(),\n        \"model\": model,\n        \"repo\": str(repo_root),\n        \"fixture_path\": str(FIXTURE_PATH),\n        \"schema_path\": str(SCHEMA_PATH),\n        \"results\": results,\n        \""
+          }
+        ]
+      },
+      "prompt_tokens_estimate": 6949,
+      "response_tokens_estimate": 764,
+      "latency_s": 119.4475,
+      "returncode": 0,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "stderr": "\u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280b \u280b \u2819 \u2838 \u2838 \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2827 \u2827 \u2807 \u280b \u280b \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u283c \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u2819 \u2819 \u2838 \u2838 \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2807 \u2807 \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u283c \u283c \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2827 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280b \u2819 \u2819 \u2838 \u2838 \u2834 \u2826 \u2826 \u2827 \u280f \u280b \u280b \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834"
+        }
+      ],
+      "stderr": "\u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u280f \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2826 \u2826 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280b \u280b \u2819 \u2838 \u2838 \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2838 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2827 \u2827 \u2807 \u280b \u280b \u2839 \u2839 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2839 \u2838 \u2838 \u283c \u2826 \u2827 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2839 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280f \u280b \u2839 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u283c \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2839 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u2819 \u2819 \u2838 \u2838 \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u283c \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2807 \u2807 \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2839 \u2839 \u283c \u283c \u2834 \u2826 \u2807 \u280f \u280b \u280b \u2839 \u2838 \u283c \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2839 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2838 \u2838 \u283c \u2826 \u2826 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280b \u280b \u2819 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2839 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2839 \u2839 \u283c \u283c \u2826 \u2826 \u2827 \u280f \u280f \u2819 \u2819 \u2838 \u283c \u2834 \u2834 \u2826 \u2807 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2827 \u2807 \u280b \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2807 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2827 \u280f \u280b \u2819 \u2819 \u2838 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2834 \u2827 \u2827 \u2807 \u280f \u2819 \u2839 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2827 \u2827 \u280f \u280b \u280b \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2826 \u2807 \u2807 \u280b \u2819 \u2819 \u2838 \u2838 \u2834 \u2826 \u2826 \u2827 \u280f \u280b \u280b \u2839 \u2838 \u283c \u283c \u2826 \u2826 \u2807 \u280f \u280b \u2819 \u2839 \u2839 \u2838 \u283c \u2826 \u2827 \u2807 \u2807 \u280b \u2819 \u2839 \u2838 \u2838 \u2834 \u2826 \u2827 \u2807 \u2807 \u280b \u2819 \u2839 \u2838 \u283c \u2834",
+      "raw_response": "{\"plan_id\":\"plan-improve-serving-provenance-001\",\"intent\":\"Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.\",\"evidence\":[\"gog_cli/semantic_plan_benchmark.py imports `build_context_bundle` from `.serving` and passes the resulting `context_bundle` into `build_semantic_prompt`, establishing that `build_context_bundle` is the site where prompt-scoped context is assembled.\",\"gog/benchmark_local_llm.py compiles `context_files` into a flat string using only `os.path.basename(file_path)` and the file content, with no metadata explaining why each file was included.\",\"gog/benchmark_srm.py computes a topological render order from a dependency graph and states that \\\"The planner (not the LLM) determines the dependency order,\\\" demonstrating that deterministic selection rationale is available at serving time and can be exposed to reasoners.\"],\"targets\":[\"gog_cli/serving.py\"],\"steps\":[{\"id\":\"inspect-build_context_bundle\",\"op\":\"INSPECT_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Determine the current return structure of `build_context_bundle` so we know how to attach per-file selection rationale without breaking existing callers.\",\"depends_on\":[],\"parameters\":{\"function\":\"build_context_bundle\"}},{\"id\":\"augment-file-entries\",\"op\":\"MUTATE_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Change the internal file representation in `build_context_bundle` from a plain path/content pair to a structure that includes a `selection_rationale` field (e.g., keyword match, graph neighbor, topological dependency).\",\"depends_on\":[\"inspect-build_context_bundle\"],\"parameters\":{\"function\":\"build_context_bundle\",\"change\":\"add_provenance_field_to_each_file_entry\"}},{\"id\":\"serialize-rationale\",\"op\":\"MUTATE_NODE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Ensure the selection rationale is serialized into the prompt-scoped output\u2014either as inline annotations in the context string or as a structured field\u2014so the downstream reasoner can read why each file was selected without external tools.\",\"depends_on\":[\"augment-file-entries\"],\"parameters\":{\"function\":\"build_context_bundle\",\"change\":\"embed_provenance_in_output_bundle_or_string\"}},{\"id\":\"validate-compile\",\"op\":\"VALIDATE\",\"target\":\"gog_cli/serving.py\",\"rationale\":\"Verify that the modified module compiles successfully and remains syntactically valid.\",\"depends_on\":[\"serialize-rationale\"],\"parameters\":{\"command\":\"python3 -m py_compile gog_cli/serving.py\"}}],\"constraints\":[\"Only mutate `gog_cli/serving.py`; do not modify benchmark or experiment files.\",\"Preserve the existing import and call signatures so callers like `gog_cli/semantic_plan_benchmark.py` continue to work.\",\"Ground every selection rationale in deterministic data available at serving time (e.g., graph edges, keyword matches, topological ordering).\"],\"validation\":[\"python3 -m py_compile gog_cli/serving.py succeeds.\",\"The modified `build_context_bundle` returns per-file provenance that a downstream reasoner can inspect.\",\"Callers in `gog_cli/semantic_plan_benchmark.py` that import `build_context_bundle` continue to run without import or runtime errors.\"],\"uncertainty\":[\"The exact current return type of `build_context_bundle` is not visible in the retrieved chunks; it may be a dict, dataclass, list, or raw string.\",\"Callers may expect the `context_bundle` to conform to a specific schema, so adding fields must not break existing prompt builders.\",\"The retrieved chunks do not reveal whether `gog_cli/serving.py` already tracks partial provenance that should be extended rather than replaced.\"]}",
+      "parsed_plan": {
+        "plan_id": "plan-improve-serving-provenance-001",
+        "intent": "Improve prompt-scoped context serving in gog_cli/serving.py so a downstream reasoner can inspect why each file was selected.",
+        "evidence": [
+          "gog_cli/semantic_plan_benchmark.py imports `build_context_bundle` from `.serving` and passes the resulting `context_bundle` into `build_semantic_prompt`, establishing that `build_context_bundle` is the site where prompt-scoped context is assembled.",
+          "gog/benchmark_local_llm.py compiles `context_files` into a flat string using only `os.path.basename(file_path)` and the file content, with no metadata explaining why each file was included.",
+          "gog/benchmark_srm.py computes a topological render order from a dependency graph and states that \"The planner (not the LLM) determines the dependency order,\" demonstrating that deterministic selection rationale is available at serving time and can be exposed to reasoners."
+        ],
+        "targets": [
+          "gog_cli/serving.py"
+        ],
+        "steps": [
+          {
+            "id": "inspect-build_context_bundle",
+            "op": "INSPECT_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Determine the current return structure of `build_context_bundle` so we know how to attach per-file selection rationale without breaking existing callers.",
+            "depends_on": [],
+            "parameters": {
+              "function": "build_context_bundle"
+            }
+          },
+          {
+            "id": "augment-file-entries",
+            "op": "MUTATE_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Change the internal file representation in `build_context_bundle` from a plain path/content pair to a structure that includes a `selection_rationale` field (e.g., keyword match, graph neighbor, topological dependency).",
+            "depends_on": [
+              "inspect-build_context_bundle"
+            ],
+            "parameters": {
+              "function": "build_context_bundle",
+              "change": "add_provenance_field_to_each_file_entry"
+            }
+          },
+          {
+            "id": "serialize-rationale",
+            "op": "MUTATE_NODE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Ensure the selection rationale is serialized into the prompt-scoped output\u2014either as inline annotations in the context string or as a structured field\u2014so the downstream reasoner can read why each file was selected without external tools.",
+            "depends_on": [
+              "augment-file-entries"
+            ],
+            "parameters": {
+              "function": "build_context_bundle",
+              "change": "embed_provenance_in_output_bundle_or_string"
+            }
+          },
+          {
+            "id": "validate-compile",
+            "op": "VALIDATE",
+            "target": "gog_cli/serving.py",
+            "rationale": "Verify that the modified module compiles successfully and remains syntactically valid.",
+            "depends_on": [
+              "serialize-rationale"
+            ],
+            "parameters": {
+              "command": "python3 -m py_compile gog_cli/serving.py"
+            }
+          }
+        ],
+        "constraints": [
+          "Only mutate `gog_cli/serving.py`; do not modify benchmark or experiment files.",
+          "Preserve the existing import and call signatures so callers like `gog_cli/semantic_plan_benchmark.py` continue to work.",
+          "Ground every selection rationale in deterministic data available at serving time (e.g., graph edges, keyword matches, topological ordering)."
+        ],
+        "validation": [
+          "python3 -m py_compile gog_cli/serving.py succeeds.",
+          "The modified `build_context_bundle` returns per-file provenance that a downstream reasoner can inspect.",
+          "Callers in `gog_cli/semantic_plan_benchmark.py` that import `build_context_bundle` continue to run without import or runtime errors."
+        ],
+        "uncertainty": [
+          "The exact current return type of `build_context_bundle` is not visible in the retrieved chunks; it may be a dict, dataclass, list, or raw string.",
+          "Callers may expect the `context_bundle` to conform to a specific schema, so adding fields must not break existing prompt builders.",
+          "The retrieved chunks do not reveal whether `gog_cli/serving.py` already tracks partial provenance that should be extended rather than replaced."
+        ]
+      },
+      "structural_score": {
+        "json_valid": true,
+        "schema_valid": true,
+        "schema_errors": [],
+        "allowed_node_compliance": false,
+        "unsupported_targets": [
+          "gog_cli/serving.py"
+        ],
+        "no_extra_prose": true,
+        "evidence_count": 3,
+        "step_count": 4,
+        "composite_score": 3
+      },
+      "semantic_score": {
+        "target_focus": true,
+        "inspect_before_mutate": true,
+        "source_awareness": true,
+        "validation_alignment": true,
+        "no_unsupported_targets": false,
+        "semantic_score": 4,
+        "semantic_errors": [
+          "plan references unsupported targets: gog_cli/serving.py"
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "minimal_platter": {
+      "observations": 1,
+      "execution_success_count": 1,
+      "execution_failure_count": 0,
+      "json_valid_count": 1,
+      "schema_valid_count": 1,
+      "strict_json_only_count": 1,
+      "avg_structural_score": 4.0,
+      "avg_semantic_score": 4.0,
+      "avg_success_semantic_score": 4.0,
+      "avg_success_total_tokens_estimate": 1786.0,
+      "avg_prompt_tokens_estimate": 1430.0,
+      "avg_response_tokens_estimate": 356.0
+    },
+    "traditional_rag": {
+      "observations": 1,
+      "execution_success_count": 1,
+      "execution_failure_count": 0,
+      "json_valid_count": 1,
+      "schema_valid_count": 1,
+      "strict_json_only_count": 1,
+      "avg_structural_score": 3.0,
+      "avg_semantic_score": 4.0,
+      "avg_success_semantic_score": 4.0,
+      "avg_success_total_tokens_estimate": 7713.0,
+      "avg_prompt_tokens_estimate": 6949.0,
+      "avg_response_tokens_estimate": 764.0
+    }
+  }
+}

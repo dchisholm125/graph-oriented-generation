@@ -57,6 +57,10 @@ The reasoner should query a GOG-served repository model that can expose:
 - graph neighborhoods
 - project-level constraints
 
+GOG should serve only the bounded context needed for the request, not the entire repository graph by default.
+
+Before a context bundle reaches the reasoner, it should pass through an always-on ContextMembrane. The ContextMembrane scores candidate files, trims low-salience graph-neighborhood noise, and records kept/rejected file audit metadata. This is separate from the mutation membrane: the ContextMembrane controls what is served to the reasoner, while the mutation membrane controls whether a returned plan or patch is admissible.
+
 ### 3.3 Constraints
 
 Examples:
@@ -230,3 +234,31 @@ Separating those metrics will make GOG's claims much more rigorous.
 The core benchmark question should become:
 
 > Given the same repository, task, validation rules, and success threshold, does a GOG-backed reasoner reach an acceptable solution with fewer total tokens, fewer repair cycles, or better final quality than a reasoner operating over less structured context?
+
+In the current architecture, any rendered implementation produced from that plan should still pass through the SalienceEvaluator or an equivalent anti-hallucination checkpoint before acceptance.
+
+The first concrete benchmark for this layer lives in:
+
+- `gog/benchmark_reasoner_prompts.py`
+- `gog_cli/reasoner_benchmark.py`
+- `gog_cli/schemas/mutation_plan.schema.json`
+
+It varies prompt presentation strategy while holding model, tasks, and context bundles fixed, then grades JSON compliance, schema compliance, strict JSON-only output, and allowed-node grounding.
+
+The next benchmark layer is semantic plan quality:
+
+- `gog/benchmark_semantic_plan_quality.py`
+- `gog_cli/semantic_plan_benchmark.py`
+- `gog_cli/fixtures/semantic_plan_quality_known_problem.json`
+
+The initial semantic fixture intentionally does **not** fix the underlying issue. It documents that `gog_cli/serving.py` currently serves structural context but not source excerpts or symbol summaries. The benchmark asks whether different GOG platter formats cause the reasoner to produce a safer plan: target the right file, acknowledge missing implementation detail, inspect before mutation, stay within `allowed_nodes`, and choose an appropriate validation command.
+
+The same semantic benchmark now includes a `traditional_rag` baseline. This baseline is intentionally simple and reproducible: it performs keyword retrieval over source files, serves unstructured chunks, and omits GOG graph relations, handoff metadata, and allowed-node semantics except for the retrieved file list. This is not a full production vector database, but it is a controlled RAG-style baseline suitable for incremental comparison.
+
+The public Vue benchmark track begins with:
+
+- `gog/benchmark_public_vue.py`
+
+This harness intentionally starts below the LLM layer. It clones or reuses a public Vue repository, runs GOG onboarding, compares GOG context selection against `traditional_rag`, and writes a JSON artifact. Later phases should reuse the same prompts for `MutationPlan` quality and executable patch benchmarks.
+
+The current public Vue repo should be treated as a development benchmark, not a final proof set. Heuristics discovered there are only valid when they generalize to Vue, Vite, TypeScript, test layout, generated-client handling, or similar technology-level conventions. Future public repos should include holdout benchmarks where GOG is run before any tuning based on their failures.
