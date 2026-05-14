@@ -1,0 +1,68 @@
+{
+  "generated_at": "2026-05-13T19:17:15.647156+00:00",
+  "benchmark": "public_vue_executable_patch",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/httpx",
+  "attempts_per_case": 1,
+  "transient_retries": 2,
+  "retry_delay_s": 15,
+  "dry_run": true,
+  "tasks": [
+    {
+      "id": "debug_normalize_header_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "prompt": "Fix the normalize_header_value function so it strips whitespace from header values without incorrectly uppercasing them. Preserve the original casing after stripping.",
+      "expected_files": [
+        "httpx/_stringutils.py",
+        "tests/test_stringutils.py"
+      ],
+      "validation_commands": [
+        [
+          "python3",
+          "-m",
+          "pytest",
+          "tests/test_stringutils.py",
+          "-x",
+          "-q"
+        ]
+      ],
+      "notes": "Small standalone utility function bug."
+    }
+  ],
+  "results": [
+    {
+      "task_id": "debug_normalize_header_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "gog",
+      "retrieved_files": [
+        "tests/client/test_headers.py",
+        "tests/models/test_headers.py",
+        "httpx/__init__.py",
+        "httpx/_stringutils.py",
+        "tests/test_stringutils.py"
+      ],
+      "context_tokens_estimate": 507,
+      "prompt_tokens_estimate": 6920,
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null
+    }
+  ],
+  "summary": {
+    "gog": {
+      "cases": 1,
+      "pass_at_1": 0,
+      "pass_at_k": 0,
+      "avg_context_tokens_estimate": 507.0,
+      "avg_prompt_tokens_estimate": 6920.0,
+      "avg_tokens_to_pass": null,
+      "avg_attempts_to_pass": null,
+      "avg_wall_clock_to_pass_s": null
+    }
+  }
+}

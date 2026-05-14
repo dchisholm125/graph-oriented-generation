@@ -1,0 +1,95 @@
+{
+  "generated_at": "2026-05-13T16:49:18.653682+00:00",
+  "benchmark": "public_vue_executable_patch",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app",
+  "attempts_per_case": 1,
+  "dry_run": true,
+  "tasks": [
+    {
+      "id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "prompt": "Fix the query parameter serialization helper so it URI-encodes keys and values, preserves 0 and false, and omits null or undefined values.",
+      "expected_files": [
+        "src/utils/params-to-query.ts",
+        "src/utils/params-to-query.spec.ts"
+      ],
+      "validation_commands": [
+        [
+          "corepack",
+          "pnpm",
+          "vitest",
+          "run",
+          "src/utils/params-to-query.spec.ts"
+        ]
+      ],
+      "notes": "Small utility bug with focused acceptance test."
+    }
+  ],
+  "results": [
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "gog",
+      "retrieved_files": [
+        "src/utils/params-to-query.ts",
+        "src/utils/params-to-query.spec.ts"
+      ],
+      "context_tokens_estimate": 471,
+      "prompt_tokens_estimate": 1067,
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null
+    },
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "traditional_rag",
+      "retrieved_files": [
+        "src/services/api.ts",
+        "src/utils/params-to-query.spec.ts",
+        "src/components/ArticleDetailMeta.spec.ts",
+        "src/utils/test/test.utils.ts",
+        "src/utils/use-async.spec.ts",
+        "src/utils/test/fixtures.ts",
+        "src/utils/params-to-query.ts"
+      ],
+      "context_tokens_estimate": 9513,
+      "prompt_tokens_estimate": 29219,
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null
+    }
+  ],
+  "summary": {
+    "gog": {
+      "cases": 1,
+      "pass_at_1": 0,
+      "pass_at_k": 0,
+      "avg_context_tokens_estimate": 471.0,
+      "avg_prompt_tokens_estimate": 1067.0,
+      "avg_tokens_to_pass": null,
+      "avg_attempts_to_pass": null,
+      "avg_wall_clock_to_pass_s": null
+    },
+    "traditional_rag": {
+      "cases": 1,
+      "pass_at_1": 0,
+      "pass_at_k": 0,
+      "avg_context_tokens_estimate": 9513.0,
+      "avg_prompt_tokens_estimate": 29219.0,
+      "avg_tokens_to_pass": null,
+      "avg_attempts_to_pass": null,
+      "avg_wall_clock_to_pass_s": null
+    }
+  }
+}

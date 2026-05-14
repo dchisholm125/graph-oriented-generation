@@ -1,0 +1,110 @@
+{
+  "generated_at": "2026-05-13T18:58:15.055254+00:00",
+  "benchmark": "public_vue_executable_patch",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/httpx",
+  "attempts_per_case": 1,
+  "transient_retries": 2,
+  "retry_delay_s": 15,
+  "dry_run": false,
+  "tasks": [
+    {
+      "id": "debug_queryparams_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "prompt": "Fix the QueryParams primitive serialization so that booleans serialize to JSON-style 'true'/'false', None serializes to an empty string, and numeric 0 is preserved rather than treated as falsy.",
+      "expected_files": [
+        "httpx/_utils.py",
+        "tests/models/test_queryparams.py"
+      ],
+      "validation_commands": [
+        [
+          "python3",
+          "-m",
+          "pytest",
+          "tests/models/test_queryparams.py",
+          "-x",
+          "-q"
+        ]
+      ],
+      "notes": "PrimitiveData serialization bug in QueryParams. Small utility fix with focused acceptance test."
+    }
+  ],
+  "results": [
+    {
+      "task_id": "debug_queryparams_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "gog",
+      "retrieved_files": [
+        "tests/client/test_queryparams.py",
+        "tests/models/test_queryparams.py",
+        "httpx/__init__.py",
+        "httpx/_utils.py"
+      ],
+      "context_tokens_estimate": 533,
+      "prompt_tokens_estimate": 3406,
+      "pass": false,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 12.0252,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 902,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "httpx/_utils.py"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": false,
+            "commands": [
+              {
+                "command": [
+                  "python3",
+                  "-m",
+                  "pytest",
+                  "tests/models/test_queryparams.py",
+                  "-x",
+                  "-q"
+                ],
+                "returncode": 1,
+                "wall_clock_s": 0.2293,
+                "stdout_tail": "",
+                "stderr_tail": " File \"/home/dchisholm125/.local/lib/python3.10/site-packages/pytest/__main__.py\", line 5, in <module>\n    raise SystemExit(pytest.console_main())\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/config/__init__.py\", line 192, in console_main\n    code = main()\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/config/__init__.py\", line 150, in main\n    config = _prepareconfig(args, plugins)\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/config/__init__.py\", line 331, in _prepareconfig\n    config = pluginmanager.hook.pytest_cmdline_parse(\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/pluggy/_hooks.py\", line 512, in __call__\n    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/pluggy/_manager.py\", line 120, in _hookexec\n    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/pluggy/_callers.py\", line 167, in _multicall\n    raise exception\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/pluggy/_callers.py\", line 139, in _multicall\n    teardown.throw(exception)\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/pluggy/_callers.py\", line 43, in run_old_style_hookwrapper\n    teardown.send(result)\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/helpconfig.py\", line 104, in pytest_cmdline_parse\n    config: Config = outcome.get_result()\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/pluggy/_result.py\", line 103, in get_result\n    raise exc.with_traceback(tb)\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/pluggy/_callers.py\", line 38, in run_old_style_hookwrapper\n    res = yield\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/pluggy/_callers.py\", line 121, in _multicall\n    res = hook_impl.function(*args)\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/config/__init__.py\", line 1075, in pytest_cmdline_parse\n    self.parse(args)\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/config/__init__.py\", line 1425, in parse\n    self._preparse(args, addopts=addopts)\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/config/__init__.py\", line 1305, in _preparse\n    self.pluginmanager.load_setuptools_entrypoints(\"pytest11\")\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/pluggy/_manager.py\", line 416, in load_setuptools_entrypoints\n    plugin = ep.load()\n  File \"/usr/lib/python3.10/importlib/metadata/__init__.py\", line 171, in load\n    module = import_module(match.group('module'))\n  File \"/usr/lib/python3.10/importlib/__init__.py\", line 126, in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n  File \"<frozen importlib._bootstrap>\", line 1050, in _gcd_import\n  File \"<frozen importlib._bootstrap>\", line 1027, in _find_and_load\n  File \"<frozen importlib._bootstrap>\", line 1006, in _find_and_load_unlocked\n  File \"<frozen importlib._bootstrap>\", line 688, in _load_unlocked\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/assertion/rewrite.py\", line 186, in exec_module\n    exec(co, module.__dict__)\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/langsmith/pytest_plugin.py\", line 14, in <module>\n    from langsmith import utils as ls_utils\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/assertion/rewrite.py\", line 186, in exec_module\n    exec(co, module.__dict__)\n  File \"/home/dchisholm125/.local/lib/python3.10/site-packages/langsmith/utils.py\", line 31, in <module>\n    import httpx\n  File \"/tmp/gog-debug_queryparams_serialization_easy-gog-dirmtdue/httpx/httpx/__init__.py\", line 2, in <module>\n    from ._api import *\n  File \"/tmp/gog-debug_queryparams_serialization_easy-gog-dirmtdue/httpx/httpx/_api.py\", line 6, in <module>\n    from ._client import Client\n  File \"/tmp/gog-debug_queryparams_serialization_easy-gog-dirmtdue/httpx/httpx/_client.py\", line 13, in <module>\n    from ._auth import Auth, BasicAuth, FunctionAuth\n  File \"/tmp/gog-debug_queryparams_serialization_easy-gog-dirmtdue/httpx/httpx/_auth.py\", line 12, in <module>\n    from ._models import Cookies, Request, Response\n  File \"/tmp/gog-debug_queryparams_serialization_easy-gog-dirmtdue/httpx/httpx/_models.py\", line 13, in <module>\n    from ._content import ByteStream, UnattachedStream, encode_request, encode_response\n  File \"/tmp/gog-debug_queryparams_serialization_easy-gog-dirmtdue/httpx/httpx/_content.py\", line 17, in <module>\n    from ._multipart import MultipartStream\n  File \"/tmp/gog-debug_queryparams_serialization_easy-gog-dirmtdue/httpx/httpx/_multipart.py\", line 18, in <module>\n    from ._utils import (\nImportError: cannot import name 'peek_filelike_length' from 'httpx._utils' (/tmp/gog-debug_queryparams_serialization_easy-gog-dirmtdue/httpx/httpx/_utils.py)\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"httpx/_utils.py\",\"content\":\"from __future__ import annotations\\n\\nimport ipaddress\\nimport os\\nimport re\\nimport typing\\nfrom urllib.request import getproxies\\n\\nfrom ._types import PrimitiveData\\n\\nif typing.TYPE_CHECKING:  # pragma: no cover\\n    from ._urls import URL\\n\\n\\ndef primitive_value_to_str(value: PrimitiveData) -> str:\\n    \\\"\\\"\\\"\\n    Coerce a primitive data type into a string value.\\n    Booleans serialize to JSON-style 'true'/'false'.\\n    None serializes to an empty string.\\n    Numeric 0 is preserved.\\n    \\\"\\\"\\\"\\n    if value is True:\\n        return \\\"true\\\"\\n    if value is False:\\n        return \\\"false\\\"\\n    if value is None:\\n        return \\\"\\\"\\n    return str(value)\\n\\n\\ndef get_environment_proxies() -> dict[str, str | None]:\\n    \\\"\\\"\\\"Gets proxy information from the environment\\\"\\\"\\\"\\n    proxy_info = getproxies()\\n    mounts: dict[str, str | None] = {}\\n    for scheme in (\\\"http\\\", \\\"https\\\", \\\"all\\\"):\\n        if proxy_info.get(scheme):\\n            hostname = proxy_info[scheme]\\n            mounts[f\\\"{scheme}://\\\"] = (\\n                hostname if \\\"://\\\" in hostname else f\\\"http://{hostname}\\\"\\n            )\\n    no_proxy_hosts = [host.strip() for host in proxy_info.get(\\\"no\\\", \\\"\\\").split(\\\",\\\")]\\n    for hostname in no_proxy_hosts:\\n        if hostname == \\\"*\\\":\\n            return {}\\n        elif hostname:\\n            if hostname.startswith(\\\".\\\"):\\n                mounts[f\\\"all://*{hostname}\\\"] = None\\n            else:\\n                mounts[f\\\"all://*{hostname}\\\"] = None\\n    return mounts\\n\\n\\ndef is_ipv4_hostname(hostname: str) -> bool:\\n    try:\\n        ipaddress.IPv4Address(hostname)\\n    except ipaddress.AddressValueError:\\n        return False\\n    return True\\n\\n\\ndef is_ipv6_hostname(hostname: str) -> bool:\\n    try:\\n        ipaddress.IPv6Address(hostname)\\n    except ipaddress.AddressValueError:\\n        return False\\n    return True\\n\\n\\ndef is_valid_ipv4_address(hostname: str) -> bool:\\n    return is_ipv4_hostname(hostname)\\n\\n\\ndef is_valid_ipv6_address(hostname: str) -> bool:\\n    return is_ipv6_hostname(hostname)\\n\\n\\ndef is_valid_proxy_hostname(hostname: str) -> bool:\\n    return is_ipv4_hostname(hostname) or is_ipv6_hostname(hostname)\\n\\n\\ndef same_origin(url: URL, other: URL) -> bool:\\n    return (url.scheme, url.host, url.port) == (other.scheme, other.host, other.port)\\n\\n\\nclass URLPattern:\\n    def __init__(self, pattern: str) -> None:\\n        self.pattern = pattern\\n        if pattern.startswith(\\\"*\\\"):\\n            self.host = pattern[1:]\\n            self.match_subdomains = True\\n        else:\\n            self.host = pattern\\n            self.match_subdomains = False\\n\\n    def matches(self, other: str) -> bool:\\n        if self.match_subdomains:\\n            return other == self.host or other.endswith(\\\".\\\" + self.host)\\n        return other == self.host\\n\\n    def __eq__(self, other: object) -> bool:\\n        return isinstance(other, URLPattern) and self.pattern == other.pattern\\n\\n    def __hash__(self) -> int:\\n        return hash(self.pattern)\\n\\n    def __repr__(self) -> str:\\n        return f\\\"URLPattern(pattern={self.pattern!r})\\\"\\n\"}],\"summary\":\"Fixed primitive_value_to_str in httpx/_utils.py to handle booleans as JSON-style 'true'/'false', None as empty string, and preserve numeric 0 (which str() already handles correctly). The key fix is using identity checks (is True, is False, is None) before falling back to str(), ensuring 0 and other falsy values are preserved.\",\"uncertainty\":[]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null
+    }
+  ],
+  "summary": {
+    "gog": {
+      "cases": 1,
+      "pass_at_1": 0,
+      "pass_at_k": 0,
+      "avg_context_tokens_estimate": 533.0,
+      "avg_prompt_tokens_estimate": 3406.0,
+      "avg_tokens_to_pass": null,
+      "avg_attempts_to_pass": null,
+      "avg_wall_clock_to_pass_s": null
+    }
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "generated_at": "2026-05-13T16:54:32.936178+00:00",
+  "benchmark": "public_vue_executable_patch",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app",
+  "attempts_per_case": 1,
+  "dry_run": false,
+  "tasks": [
+    {
+      "id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "prompt": "Fix the query parameter serialization helper so it URI-encodes keys and values, preserves 0 and false, and omits null or undefined values.",
+      "expected_files": [
+        "src/utils/params-to-query.ts",
+        "src/utils/params-to-query.spec.ts"
+      ],
+      "validation_commands": [
+        [
+          "corepack",
+          "pnpm",
+          "vitest",
+          "run",
+          "src/utils/params-to-query.spec.ts"
+        ]
+      ],
+      "notes": "Small utility bug with focused acceptance test."
+    }
+  ],
+  "results": [
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "gog",
+      "retrieved_files": [
+        "src/utils/params-to-query.ts",
+        "src/utils/params-to-query.spec.ts"
+      ],
+      "context_tokens_estimate": 471,
+      "prompt_tokens_estimate": 1067,
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 4.6998,
+          "response_tokens_estimate": 154,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/utils/params-to-query.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 9.6645,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-debug_query_serialization_easy-gog-c0z3dw60/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  12:54:09\n   Duration  1.99s (transform 237ms, setup 633ms, import 9ms, tests 4ms, environment 883ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |     100 |      100 |     100 |     100 |                   \n ...ms-to-query.ts |     100 |      100 |     100 |     100 |                   \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/utils/params-to-query.ts\",\"content\":\"export default function params2query(params: Record<string, string | number | boolean | null | undefined>): string {\\n  return Object.entries(params)\\n    .filter(([, value]) => value !== null && value !== undefined)\\n    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)\\n    .join('&')\\n}\\n\"}],\"summary\":\"Fixed params2query to: 1) URI-encode keys and values using encodeURIComponent, 2) preserve 0 and false by checking for null/undefined directly instead of using Boolean(), 3) omit null and undefined values by filtering them out before mapping.\",\"uncertainty\":[]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 1221,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 14.3663
+    },
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "traditional_rag",
+      "retrieved_files": [
+        "src/services/api.ts",
+        "src/utils/params-to-query.spec.ts",
+        "src/components/ArticleDetailMeta.spec.ts",
+        "src/utils/test/test.utils.ts",
+        "src/utils/use-async.spec.ts",
+        "src/utils/test/fixtures.ts",
+        "src/utils/params-to-query.ts"
+      ],
+      "context_tokens_estimate": 9513,
+      "prompt_tokens_estimate": 29219,
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 2.844,
+          "response_tokens_estimate": 159,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/utils/params-to-query.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 16.4658,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-debug_query_serialization_easy-traditional_rag-wk3rm31f/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  12:54:27\n   Duration  3.83s (transform 320ms, setup 736ms, import 40ms, tests 10ms, environment 966ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |     100 |      100 |     100 |     100 |                   \n ...ms-to-query.ts |     100 |      100 |     100 |     100 |                   \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/utils/params-to-query.ts\",\"content\":\"export default function params2query(params: Record<string, string | number | boolean | null | undefined>): string {\\n  return Object.entries(params)\\n    .filter(([, value]) => value !== null && value !== undefined)\\n    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)\\n    .join('&')\\n}\\n\"}],\"summary\":\"Fixed params2query to: 1) URI-encode keys and values with encodeURIComponent, 2) preserve falsy values like 0 and false by filtering only null/undefined instead of using Boolean(), 3) explicitly omit null and undefined values while keeping 0, false, and empty strings.\"}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 29378,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 19.3218
+    }
+  ],
+  "summary": {
+    "gog": {
+      "cases": 1,
+      "pass_at_1": 1,
+      "pass_at_k": 1,
+      "avg_context_tokens_estimate": 471.0,
+      "avg_prompt_tokens_estimate": 1067.0,
+      "avg_tokens_to_pass": 1221.0,
+      "avg_attempts_to_pass": 1.0,
+      "avg_wall_clock_to_pass_s": 14.366
+    },
+    "traditional_rag": {
+      "cases": 1,
+      "pass_at_1": 1,
+      "pass_at_k": 1,
+      "avg_context_tokens_estimate": 9513.0,
+      "avg_prompt_tokens_estimate": 29219.0,
+      "avg_tokens_to_pass": 29378.0,
+      "avg_attempts_to_pass": 1.0,
+      "avg_wall_clock_to_pass_s": 19.322
+    }
+  }
+}

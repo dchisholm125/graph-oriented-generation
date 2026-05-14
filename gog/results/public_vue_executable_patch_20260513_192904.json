@@ -1,0 +1,110 @@
+{
+  "generated_at": "2026-05-13T19:29:04.141824+00:00",
+  "benchmark": "public_vue_executable_patch",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/httpx",
+  "attempts_per_case": 1,
+  "transient_retries": 2,
+  "retry_delay_s": 15,
+  "dry_run": false,
+  "tasks": [
+    {
+      "id": "debug_http_date_parsing_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "prompt": "Fix the parse_http_date compat helper so it actually parses RFC 1123 ('Sun, 06 Nov 1994 08:49:37 GMT') and asctime ('Sun Nov  6 08:49:37 1994') formats and returns ISO 8601 datetime strings. It currently returns the input unchanged. You may use email.utils.parsedate_to_datetime or standard library datetime parsing.",
+      "expected_files": [
+        "httpx/_compat.py",
+        "tests/test_compat.py"
+      ],
+      "validation_commands": [
+        [
+          "python3",
+          "-m",
+          "pytest",
+          "tests/test_compat.py",
+          "-x",
+          "-q"
+        ]
+      ],
+      "notes": "Cross-module compat helper fix. Requires understanding datetime parsing edge cases."
+    }
+  ],
+  "results": [
+    {
+      "task_id": "debug_http_date_parsing_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "gog",
+      "retrieved_files": [
+        "httpx/_stringutils.py",
+        "tests/test_stringutils.py",
+        "httpx/_compat.py",
+        "tests/test_compat.py"
+      ],
+      "context_tokens_estimate": 471,
+      "prompt_tokens_estimate": 1274,
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 14.1391,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 140,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "httpx/_compat.py"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "python3",
+                  "-m",
+                  "pytest",
+                  "tests/test_compat.py",
+                  "-x",
+                  "-q"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 0.7182,
+                "stdout_tail": "...                                                                      [100%]\n3 passed in 0.01s\n",
+                "stderr_tail": ""
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"httpx/_compat.py\",\"content\":\"# Compatibility helpers\\n\\nfrom email.utils import parsedate_to_datetime\\n\\n\\ndef parse_http_date(value: str) -> str:\\n    \\\"\\\"\\\"Parse an HTTP date string and return ISO format.\\\"\\\"\\\"\\n    dt = parsedate_to_datetime(value)\\n    return dt.strftime(\\\"%Y-%m-%dT%H:%M:%S\\\")\\n\"}],\"summary\":\"Fix parse_http_date to use email.utils.parsedate_to_datetime to parse RFC 1123 and asctime format dates, returning ISO 8601 datetime strings. The parsedate_to_datetime function handles both formats natively.\",\"uncertainty\":[]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 1414,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 14.8623
+    }
+  ],
+  "summary": {
+    "gog": {
+      "cases": 1,
+      "pass_at_1": 1,
+      "pass_at_k": 1,
+      "avg_context_tokens_estimate": 471.0,
+      "avg_prompt_tokens_estimate": 1274.0,
+      "avg_tokens_to_pass": 1414.0,
+      "avg_attempts_to_pass": 1.0,
+      "avg_wall_clock_to_pass_s": 14.862
+    }
+  }
+}

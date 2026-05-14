@@ -93,6 +93,16 @@ python3 gog/benchmark_semantic_plan_quality.py . --model kimi-k2.6:cloud
 python3 gog/benchmark_semantic_plan_quality.py . --model kimi-k2.6:cloud --strategy minimal_platter
 python3 gog/benchmark_semantic_plan_quality.py . --model kimi-k2.6:cloud --strategy minimal_platter --strategy traditional_rag
 python3 gog/benchmark_public_vue.py
+python3 gog/benchmark_executable_patch.py --dry-run
+python3 gog/benchmark_executable_patch.py --model kimi-k2.6:cloud --task debug_query_serialization_easy --attempts 1 --retries 2
+python3 gog/benchmark_executable_patch.py --model kimi-k2.6:cloud --attempts 1 --retries 2
+```
+
+The executable patch benchmark validates patches inside disposable copies of the public Vue checkout. Before running it without `--dry-run`, install dependencies in the public repo checkout:
+
+```bash
+cd gog/public-repos/vue3-realworld-example-app
+corepack pnpm install
 ```
 
 `benchmark_reasoner_prompts.py` compares multiple GOG-to-reasoner prompt formats against the same onboarded context bundles and grades whether the model returns valid, grounded `MutationPlan` JSON.
@@ -102,6 +112,8 @@ Use repeated `--task` or `--strategy` flags to run focused pilots before spendin
 Both benchmark entry points support retry controls for transient Ollama/provider failures: `--retries` and `--retry-delay-s`.
 
 `benchmark_public_vue.py` starts the public-repo track. It clones or reuses a Vue repository, runs GOG onboarding, and compares GOG context selection against a reproducible `traditional_rag` keyword-chunk baseline before any LLM mutation is attempted.
+
+`benchmark_executable_patch.py` is the next layer. It copies the public Vue checkout into a disposable temp directory, injects benchmark-only acceptance tests or defects, asks the same model to produce full-file JSON patches from either GOG context or `traditional_rag` context, applies admissible patches, runs targeted validation commands, and records `Pass@1`, `Pass@k`, `TokensToPass`, `AttemptsToPass`, and `WallClockToPass`. It uses the local Ollama HTTP API with JSON mode to avoid CLI prompt-expansion artifacts when source chunks contain strings like `@example`.
 
 Benchmark repositories should be treated honestly. Current public Vue work is a development benchmark for Vue/Vite/TypeScript conventions. Future holdout repositories should be run before tuning so GOG improvements remain general-purpose rather than fitted to one codebase.
 

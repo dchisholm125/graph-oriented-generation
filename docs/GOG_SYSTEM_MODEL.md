@@ -241,6 +241,14 @@ That implies measuring:
 - `TokensToPass`
 - `AttemptsToPass`
 - `WallClockToPass`
+
+Executable patch benchmarks should split results by work domain because "coding assistant quality" is not one task:
+
+- debugging: localize and fix an existing failing behavior
+- new feature: introduce behavior that did not exist before
+- refactor: preserve behavior while improving structure
+
+They should also split by difficulty. Easy, medium, and hard cases are not interchangeable evidence. A GOG win on single-file utility fixes does not prove superiority on cross-cutting architectural work; a RAG win on one shallow feature does not disprove GOG's value as persistent symbolic state.
 - `BestQualityUnderBudget`
 - `ValidatedSuccessRate`
 
