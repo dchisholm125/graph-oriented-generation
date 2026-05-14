@@ -1,0 +1,113 @@
+{
+  "generated_at": "2026-05-13T17:06:52.652604+00:00",
+  "benchmark": "public_vue_executable_patch",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app",
+  "attempts_per_case": 1,
+  "transient_retries": 2,
+  "retry_delay_s": 20,
+  "dry_run": false,
+  "tasks": [
+    {
+      "id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "prompt": "Fix route authentication so unauthenticated users cannot access the authenticated feed, settings page, create article page, or edit article page. They should be redirected to login.",
+      "expected_files": [
+        "src/router.ts",
+        "src/router.spec.ts",
+        "src/store/user.ts"
+      ],
+      "validation_commands": [
+        [
+          "corepack",
+          "pnpm",
+          "vitest",
+          "run",
+          "src/router.spec.ts"
+        ]
+      ],
+      "notes": "Cross-cutting route/auth debugging task."
+    }
+  ],
+  "results": [
+    {
+      "task_id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "traditional_rag",
+      "retrieved_files": [
+        "playwright/specs/article.spec.ts",
+        "src/services/api.ts",
+        "src/composable/use-articles.ts",
+        "playwright/specs/auth.spec.ts",
+        "src/pages/EditArticle.spec.ts",
+        "src/router.spec.ts",
+        "src/router.ts",
+        "src/store/user.ts"
+      ],
+      "context_tokens_estimate": 7455,
+      "prompt_tokens_estimate": 20110,
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 54.6051,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 875,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/router.ts"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/router.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 3.1252,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-debug_router_auth_hard-traditional_rag-n1p4_j5z/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n\n Test Files  1 passed (1)\n      Tests  8 passed (8)\n   Start at  13:06:50\n   Duration  910ms (transform 329ms, setup 62ms, import 420ms, tests 91ms, environment 194ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |   40.55 |     17.2 |    15.9 |   40.55 |                   \n components        |   54.34 |        0 |       0 |   54.34 |                   \n  AppLink.vue      |       0 |      100 |       0 |       0 | 19                \n  ...agination.vue |      40 |      100 |       0 |      40 | 28-37             \n  ArticlesList.vue |   66.66 |      100 |       0 |   66.66 | 24,44-56          \n  ...lePreview.vue |   66.66 |        0 |       0 |   66.66 | 41,64-67          \n  ...avigation.vue |      50 |        0 |       0 |      50 | 51-101            \n  PopularTags.vue  |      50 |      100 |       0 |      50 | 21-23             \n composable        |   15.06 |        0 |       0 |   15.06 |                   \n  use-articles.ts  |   12.06 |        0 |       0 |   12.06 | 9-70,104-140      \n  ...te-article.ts |      25 |        0 |       0 |      25 | 13-21             \n  use-tags.ts      |   28.57 |      100 |       0 |   28.57 | 5-12              \n config.ts         |     100 |       50 |     100 |     100 | 2                 \n pages             |   55.26 |        0 |       0 |   55.26 |                   \n  Home.vue         |     100 |        0 |       0 |     100 | 23-33             \n  Login.vue        |   41.37 |        0 |       0 |   41.37 | 16,71-97          \n  NotFound.vue     |     100 |      100 |     100 |     100 |                   \n router.ts         |      80 |    78.57 |      50 |      80 | 93                \n services          |      50 |        0 |       0 |      50 |                   \n  index.ts         |      50 |        0 |       0 |      50 | 18-24             \n store             |   38.88 |        0 |      25 |   38.88 |                   \n  user.ts          |   38.88 |        0 |      25 |   38.88 | 12-28             \n utils             |   51.85 |    42.85 |      80 |   51.85 |                   \n  storage.ts       |     100 |      100 |     100 |     100 |                   \n  use-async.ts     |   23.52 |        0 |       0 |   23.52 | 13-34             \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/router.ts\",\"content\":\"import type { RouteParams, RouteRecordRaw } from 'vue-router'\\nimport { createRouter, createWebHashHistory } from 'vue-router'\\nimport { isAuthorized } from './store/user'\\n\\nexport type AppRouteNames\\n  = | 'global-feed'\\n    | 'my-feed'\\n    | 'tag'\\n    | 'article'\\n    | 'create-article'\\n    | 'edit-article'\\n    | 'login'\\n    | 'register'\\n    | 'profile'\\n    | 'profile-favorites'\\n    | 'settings'\\n    | 'not-found'\\n\\nexport const routes: RouteRecordRaw[] = [\\n  {\\n    name: 'global-feed',\\n    path: '/',\\n    component: () => import('./pages/Home.vue'),\\n  },\\n  {\\n    name: 'my-feed',\\n    path: '/my-feeds',\\n    component: () => import('./pages/Home.vue'),\\n    beforeEnter: () => isAuthorized() || { name: 'login' as const },\\n  },\\n  {\\n    name: 'tag',\\n    path: '/tag/:tag',\\n    component: () => import('./pages/Home.vue'),\\n  },\\n  {\\n    name: 'article',\\n    path: '/article/:slug',\\n    component: () => import('./pages/Article.vue'),\\n  },\\n  {\\n    name: 'edit-article',\\n    path: '/article/:slug/edit',\\n    component: () => import('./pages/EditArticle.vue'),\\n    beforeEnter: () => isAuthorized() || { name: 'login' as const },\\n  },\\n  {\\n    name: 'create-article',\\n    path: '/article/create',\\n    component: () => import('./pages/EditArticle.vue'),\\n    beforeEnter: () => isAuthorized() || { name: 'login' as const },\\n  },\\n  {\\n    name: 'login',\\n    path: '/login',\\n    component: () => import('./pages/Login.vue'),\\n    beforeEnter: () => isAuthorized() ? { name: 'global-feed' as const } : true,\\n  },\\n  {\\n    name: 'register',\\n    path: '/register',\\n    component: () => import('./pages/Register.vue'),\\n    beforeEnter: () => isAuthorized() ? { name: 'global-feed' as const } : true,\\n  },\\n  {\\n    name: 'profile',\\n    path: '/profile/:username',\\n    component: () => import('./pages/Profile.vue'),\\n  },\\n  {\\n    name: 'profile-favorites',\\n    path: '/profile/:username/favorites',\\n    component: () => import('./pages/Profile.vue'),\\n  },\\n  {\\n    name: 'settings',\\n    path: '/settings',\\n    component: () => import('./pages/Settings.vue'),\\n    beforeEnter: () => isAuthorized() || { name: 'login' as const },\\n  },\\n  {\\n    name: 'not-found',\\n    path: '/:pathMatch(.*)*',\\n    component: () => import('./pages/NotFound.vue'),\\n  },\\n]\\nexport const router = createRouter({\\n  history: createWebHashHistory(),\\n  routes,\\n})\\n\\nexport async function routerPush(name: AppRouteNames, params?: RouteParams): ReturnType<typeof router.push> {\\n  return params === undefined\\n    ? await router.push({ name })\\n    : await router.push({ name, params })\\n}\\n\"}],\"summary\":\"Added beforeEnter guards to my-feed, edit-article, create-article, and settings routes to redirect unauthenticated users to the login page. The existing tests in router.spec.ts already verify this behavior.\"}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 20985,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 57.751
+    }
+  ],
+  "summary": {
+    "traditional_rag": {
+      "cases": 1,
+      "pass_at_1": 1,
+      "pass_at_k": 1,
+      "avg_context_tokens_estimate": 7455.0,
+      "avg_prompt_tokens_estimate": 20110.0,
+      "avg_tokens_to_pass": 20985.0,
+      "avg_attempts_to_pass": 1.0,
+      "avg_wall_clock_to_pass_s": 57.751
+    }
+  }
+}

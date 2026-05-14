@@ -11,6 +11,8 @@ Keep these principles top of mind:
 - Compare GOG against controlled baselines, especially `traditional_rag`, before making claims.
 - Prefer incremental benchmarks: context selection, semantic `MutationPlan` quality, then executable patches.
 - Track quality and cost separately: `Pass@1`, `Pass@k`, `TokensToPass`, `AttemptsToPass`, `WallClockToPass`, context precision/recall, membrane rejects, and validation accuracy.
+- Split executable patch benchmarks by work domain and difficulty: debugging, new features, refactors; easy, medium, hard.
+- Run executable patch benchmarks in disposable repository copies with benchmark-only fixtures so public checkouts stay clean.
 - Do not fix a benchmark target problem while creating the benchmark unless the task explicitly asks for the implementation phase.
 - Do not overfit GOG to a specific benchmark repository. Improvements should be language-, framework-, or tooling-level conventions, not hard-coded knowledge of one codebase.
 - Treat benchmark repositories as either development repos or holdout repos. Tune on development repos only; record holdout failures before changing heuristics.

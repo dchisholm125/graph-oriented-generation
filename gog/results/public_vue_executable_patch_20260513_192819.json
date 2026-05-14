@@ -1,0 +1,109 @@
+{
+  "generated_at": "2026-05-13T19:28:19.573558+00:00",
+  "benchmark": "public_vue_executable_patch",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/httpx",
+  "attempts_per_case": 1,
+  "transient_retries": 2,
+  "retry_delay_s": 15,
+  "dry_run": false,
+  "tasks": [
+    {
+      "id": "feature_casefold_keys_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "prompt": "Add a casefold_keys function that takes a dict and returns a new dict with all keys lowercased. Add it to the _stringutils module and ensure tests in tests/test_casefold.py pass.",
+      "expected_files": [
+        "httpx/_stringutils.py",
+        "tests/test_casefold.py"
+      ],
+      "validation_commands": [
+        [
+          "python3",
+          "-m",
+          "pytest",
+          "tests/test_casefold.py",
+          "-x",
+          "-q"
+        ]
+      ],
+      "notes": "Add new dict helper function to existing module."
+    }
+  ],
+  "results": [
+    {
+      "task_id": "feature_casefold_keys_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "mode": "gog",
+      "retrieved_files": [
+        "tests/test_casefold.py",
+        "tests/test_stringutils.py",
+        "httpx/_stringutils.py"
+      ],
+      "context_tokens_estimate": 529,
+      "prompt_tokens_estimate": 1255,
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 13.186,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 199,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "httpx/_stringutils.py"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "python3",
+                  "-m",
+                  "pytest",
+                  "tests/test_casefold.py",
+                  "-x",
+                  "-q"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 0.7283,
+                "stdout_tail": "..                                                                       [100%]\n2 passed in 0.01s\n",
+                "stderr_tail": ""
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"httpx/_stringutils.py\",\"content\":\"# Small string utility module for httpx\\n\\ndef normalize_header_value(value: str) -> str:\\n    \\\"\\\"\\\"Normalize a header value by stripping whitespace.\\\"\\\"\\\"\\n    # BUG: uses upper() instead of preserving case after stripping\\n    return value.strip().upper()\\n\\ndef strip_quotes(value: str) -> str:\\n    if value.startswith('\\\"') and value.endswith('\\\"'):\\n        return value[1:-1]\\n    return value\\n\\ndef casefold_keys(d: dict) -> dict:\\n    \\\"\\\"\\\"Return a new dict with all keys lowercased.\\\"\\\"\\\"\\n    return {k.lower(): v for k, v in d.items()}\\n\"}],\"summary\":\"Added casefold_keys function to httpx/_stringutils.py that returns a new dict with all keys lowercased. This satisfies the tests in tests/test_casefold.py.\"}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 1454,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 13.9204
+    }
+  ],
+  "summary": {
+    "gog": {
+      "cases": 1,
+      "pass_at_1": 1,
+      "pass_at_k": 1,
+      "avg_context_tokens_estimate": 529.0,
+      "avg_prompt_tokens_estimate": 1255.0,
+      "avg_tokens_to_pass": 1454.0,
+      "avg_attempts_to_pass": 1.0,
+      "avg_wall_clock_to_pass_s": 13.92
+    }
+  }
+}

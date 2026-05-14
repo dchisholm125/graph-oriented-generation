@@ -1,0 +1,147 @@
+{
+  "generated_at": "2026-05-13T16:48:44.063679+00:00",
+  "benchmark": "public_vue_executable_patch",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app",
+  "attempts_per_case": 1,
+  "dry_run": false,
+  "tasks": [
+    {
+      "id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "prompt": "Fix the query parameter serialization helper so it URI-encodes keys and values, preserves 0 and false, and omits null or undefined values.",
+      "expected_files": [
+        "src/utils/params-to-query.ts",
+        "src/utils/params-to-query.spec.ts"
+      ],
+      "validation_commands": [
+        [
+          "corepack",
+          "pnpm",
+          "vitest",
+          "run",
+          "src/utils/params-to-query.spec.ts"
+        ]
+      ],
+      "notes": "Small utility bug with focused acceptance test."
+    }
+  ],
+  "results": [
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "gog",
+      "retrieved_files": [
+        "src/utils/params-to-query.ts",
+        "src/utils/params-to-query.spec.ts"
+      ],
+      "context_tokens_estimate": 471,
+      "prompt_tokens_estimate": 1067,
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 11.4412,
+          "response_tokens_estimate": 129,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/utils/params-to-query.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 9.6358,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-debug_query_serialization_easy-gog-wfuvx_qf/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  12:48:40\n   Duration  2.14s (transform 193ms, setup 641ms, import 21ms, tests 6ms, environment 977ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |     100 |      100 |     100 |     100 |                   \n ...ms-to-query.ts |     100 |      100 |     100 |     100 |                   \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"summary\":\"Fixed the params2query helper to use encodeURIComponent on keys and values, preserve 0/false by filtering only null/undefined, and omit null/undefined entries.\",\"files\":[{\"path\":\"src/utils/params-to-query.ts\",\"content\":\"export default function params2query(params: Record<string, string | number | boolean | null | undefined>): string {\\n  return Object.entries(params)\\n    .filter(([, value]) => value !== null && value !== undefined)\\n    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)\\n    .join('&')\\n}\\n\"}]}",
+          "stderr": "\u2819 \u2819 \u2838 \u283c \u283c \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u2807 \u280b \u2819 \u2839 \u2839 \u283c \u2834 \u2826 \u2826 \u2807 \u280f \u280f \u280b \u2839 \u2838 \u2838 \u283c \u2834 \u2826 \u2807 \u2807 \u280f \u2819 \u2819 \u2839 \u283c \u2834 \u2826 \u2826 \u2827 \u2807 \u280f \u280b \u2819 \u2839 \u2838 \u283c \u2826 \u2827 \u2827 \u280f \u280f \u2819 \u2819 \u2839 \u283c \u2834 \u2826 \u2827 \u2807 \u280f \u280f \u2819 \u2819 \u2839 \u2838 \u283c \u2834 \u2826 \u2827 \u280f \u280b \u280b \u2819"
+        }
+      ],
+      "tokens_to_pass": 1196,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 21.0797
+    },
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "traditional_rag",
+      "retrieved_files": [
+        "src/services/api.ts",
+        "src/utils/params-to-query.spec.ts",
+        "src/components/ArticleDetailMeta.spec.ts",
+        "src/utils/test/test.utils.ts",
+        "src/utils/use-async.spec.ts",
+        "src/utils/test/fixtures.ts",
+        "src/utils/params-to-query.ts"
+      ],
+      "context_tokens_estimate": 9513,
+      "prompt_tokens_estimate": 29219,
+      "pass": false,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 1,
+          "latency_s": 0.0821,
+          "response_tokens_estimate": 0,
+          "json_valid": false,
+          "patch": {
+            "applied": false,
+            "errors": [
+              "response is not a JSON object"
+            ]
+          },
+          "validation": null,
+          "raw_response": "",
+          "stderr": "Couldn't process file: \"open \\\\n      following: false,\\\\n    },\\\\n  },\\\\n  {\\\\n    id: 4,\\\\n    createdAt: '2021-11-24T12:11:08.340Z',\\\\n    updatedAt: '2021-11-24T12:11:08.340Z',\\\\n    body: 'Before starting a new implementation, please check if there is any work in progress for the stack you want to work on.',\\\\n    author: {\\\\n      username: 'Gerome',\\\\n      bio: null,\\\\n      image: 'https://api.realworld.show/images/demo-avatar.png: file name too long\"\nError: open \\n      following: false,\\n    },\\n  },\\n  {\\n    id: 4,\\n    createdAt: '2021-11-24T12:11:08.340Z',\\n    updatedAt: '2021-11-24T12:11:08.340Z',\\n    body: 'Before starting a new implementation, please check if there is any work in progress for the stack you want to work on.',\\n    author: {\\n      username: 'Gerome',\\n      bio: null,\\n      image: 'https://api.realworld.show/images/demo-avatar.png: file name too long"
+        }
+      ],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null
+    }
+  ],
+  "summary": {
+    "gog": {
+      "cases": 1,
+      "pass_at_1": 1,
+      "pass_at_k": 1,
+      "avg_context_tokens_estimate": 471.0,
+      "avg_prompt_tokens_estimate": 1067.0,
+      "avg_tokens_to_pass": 1196.0,
+      "avg_attempts_to_pass": 1.0,
+      "avg_wall_clock_to_pass_s": 21.08
+    },
+    "traditional_rag": {
+      "cases": 1,
+      "pass_at_1": 0,
+      "pass_at_k": 0,
+      "avg_context_tokens_estimate": 9513.0,
+      "avg_prompt_tokens_estimate": 29219.0,
+      "avg_tokens_to_pass": null,
+      "avg_attempts_to_pass": null,
+      "avg_wall_clock_to_pass_s": null
+    }
+  }
+}

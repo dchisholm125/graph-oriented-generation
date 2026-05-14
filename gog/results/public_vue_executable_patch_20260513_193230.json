@@ -1,0 +1,486 @@
+{
+  "generated_at": "2026-05-13T19:32:30.903462+00:00",
+  "benchmark": "public_vue_executable_patch",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/httpx",
+  "attempts_per_case": 1,
+  "transient_retries": 2,
+  "retry_delay_s": 15,
+  "dry_run": false,
+  "tasks": [
+    {
+      "id": "debug_normalize_header_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "prompt": "Fix the normalize_header_value function so it strips whitespace from header values without incorrectly uppercasing them. Preserve the original casing after stripping.",
+      "expected_files": [
+        "httpx/_stringutils.py",
+        "tests/test_stringutils.py"
+      ],
+      "validation_commands": [
+        [
+          "python3",
+          "-m",
+          "pytest",
+          "tests/test_stringutils.py",
+          "-x",
+          "-q"
+        ]
+      ],
+      "notes": "Small standalone utility function bug."
+    },
+    {
+      "id": "feature_casefold_keys_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "prompt": "Add a casefold_keys function that takes a dict and returns a new dict with all keys lowercased. Add it to the _stringutils module and ensure tests in tests/test_casefold.py pass.",
+      "expected_files": [
+        "httpx/_stringutils.py",
+        "tests/test_casefold.py"
+      ],
+      "validation_commands": [
+        [
+          "python3",
+          "-m",
+          "pytest",
+          "tests/test_casefold.py",
+          "-x",
+          "-q"
+        ]
+      ],
+      "notes": "Add new dict helper function to existing module."
+    },
+    {
+      "id": "debug_http_date_parsing_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "prompt": "Fix the parse_http_date compat helper so it actually parses RFC 1123 ('Sun, 06 Nov 1994 08:49:37 GMT') and asctime ('Sun Nov  6 08:49:37 1994') formats and returns ISO 8601 datetime strings. It currently returns the input unchanged. You may use email.utils.parsedate_to_datetime or standard library datetime parsing.",
+      "expected_files": [
+        "httpx/_compat.py",
+        "tests/test_compat.py"
+      ],
+      "validation_commands": [
+        [
+          "python3",
+          "-m",
+          "pytest",
+          "tests/test_compat.py",
+          "-x",
+          "-q"
+        ]
+      ],
+      "notes": "Cross-module compat helper fix. Requires understanding datetime parsing edge cases."
+    }
+  ],
+  "results": [
+    {
+      "task_id": "debug_normalize_header_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "gog",
+      "retrieved_files": [
+        "tests/client/test_headers.py",
+        "tests/models/test_headers.py",
+        "httpx/__init__.py",
+        "httpx/_stringutils.py",
+        "tests/test_stringutils.py"
+      ],
+      "context_tokens_estimate": 507,
+      "prompt_tokens_estimate": 6829,
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 7.4116,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 122,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "httpx/_stringutils.py"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "python3",
+                  "-m",
+                  "pytest",
+                  "tests/test_stringutils.py",
+                  "-x",
+                  "-q"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 0.7262,
+                "stdout_tail": "...                                                                      [100%]\n3 passed in 0.01s\n",
+                "stderr_tail": ""
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"httpx/_stringutils.py\",\"content\":\"# Small string utility module for httpx\\n\\ndef normalize_header_value(value: str) -> str:\\n    \\\"\\\"\\\"Normalize a header value by stripping whitespace.\\\"\\\"\\\"\\n    return value.strip()\\n\\ndef strip_quotes(value: str) -> str:\\n    if value.startswith('\\\"') and value.endswith('\\\"'):\\n        return value[1:-1]\\n    return value\\n\"}],\"summary\":\"Fixed normalize_header_value to strip whitespace without uppercasing, preserving original casing as required by tests.\"}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 6951,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 8.1588
+    },
+    {
+      "task_id": "debug_normalize_header_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "traditional_rag",
+      "retrieved_files": [
+        "httpx/_client.py",
+        "httpx/_models.py",
+        "tests/models/test_headers.py",
+        "tests/client/test_headers.py",
+        "tests/models/test_responses.py",
+        "tests/client/test_redirects.py",
+        "httpx/_stringutils.py",
+        "tests/test_stringutils.py"
+      ],
+      "context_tokens_estimate": 12212,
+      "prompt_tokens_estimate": 58297,
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 24.0352,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 166,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "httpx/_stringutils.py"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "python3",
+                  "-m",
+                  "pytest",
+                  "tests/test_stringutils.py",
+                  "-x",
+                  "-q"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 0.6808,
+                "stdout_tail": "...                                                                      [100%]\n3 passed in 0.01s\n",
+                "stderr_tail": ""
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"httpx/_stringutils.py\",\"content\":\"# Small string utility module for httpx\\n\\ndef normalize_header_value(value: str) -> str:\\n    \\\"\\\"\\\"Normalize a header value by stripping whitespace.\\\"\\\"\\\"\\n    return value.strip()\\n\\ndef strip_quotes(value: str) -> str:\\n    if value.startswith('\\\"') and value.endswith('\\\"'):\\n        return value[1:-1]\\n    return value\\n\"}],\"summary\":\"Fixed the normalize_header_value function in httpx/_stringutils.py to preserve the original casing of header values after stripping whitespace. The bug was that it called .upper() after .strip(), which incorrectly uppercased the header values. The tests in tests/test_stringutils.py verify that case is preserved and whitespace is stripped.\"}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 58463,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 24.7612
+    },
+    {
+      "task_id": "feature_casefold_keys_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "mode": "gog",
+      "retrieved_files": [
+        "tests/test_casefold.py",
+        "tests/test_stringutils.py",
+        "httpx/_stringutils.py"
+      ],
+      "context_tokens_estimate": 529,
+      "prompt_tokens_estimate": 1255,
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 33.7653,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 208,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "httpx/_stringutils.py"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "python3",
+                  "-m",
+                  "pytest",
+                  "tests/test_casefold.py",
+                  "-x",
+                  "-q"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 0.6753,
+                "stdout_tail": "..                                                                       [100%]\n2 passed in 0.01s\n",
+                "stderr_tail": ""
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"httpx/_stringutils.py\",\"content\":\"# Small string utility module for httpx\\n\\ndef normalize_header_value(value: str) -> str:\\n    \\\"\\\"\\\"Normalize a header value by stripping whitespace.\\\"\\\"\\\"\\n    # BUG: uses upper() instead of preserving case after stripping\\n    return value.strip().upper()\\n\\ndef strip_quotes(value: str) -> str:\\n    if value.startswith('\\\"') and value.endswith('\\\"'):\\n        return value[1:-1]\\n    return value\\n\\ndef casefold_keys(d: dict) -> dict:\\n    \\\"\\\"\\\"Return a new dict with all keys lowercased.\\\"\\\"\\\"\\n    return {k.lower(): v for k, v in d.items()}\\n\"}],\"summary\":\"Added casefold_keys function to httpx/_stringutils.py that takes a dict and returns a new dict with all keys lowercased via dictionary comprehension, satisfying the tests in tests/test_casefold.py.\",\"uncertainty\":[]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 1463,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 34.4419
+    },
+    {
+      "task_id": "feature_casefold_keys_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "mode": "traditional_rag",
+      "retrieved_files": [
+        "tests/test_casefold.py",
+        "httpx/_urls.py",
+        "tests/client/test_auth.py",
+        "httpx/_models.py",
+        "tests/models/test_url.py",
+        "httpx/_auth.py",
+        "httpx/_stringutils.py"
+      ],
+      "context_tokens_estimate": 10095,
+      "prompt_tokens_estimate": 46866,
+      "pass": false,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 41.5958,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 301,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "httpx/_stringutils.py"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": false,
+            "commands": [
+              {
+                "command": [
+                  "python3",
+                  "-m",
+                  "pytest",
+                  "tests/test_casefold.py",
+                  "-x",
+                  "-q"
+                ],
+                "returncode": 2,
+                "wall_clock_s": 0.8407,
+                "stdout_tail": "\n==================================== ERRORS ====================================\n___________________ ERROR collecting tests/test_casefold.py ____________________\n/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/runner.py:341: in from_call\n    result: Optional[TResult] = func()\n/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/runner.py:372: in <lambda>\n    call = CallInfo.from_call(lambda: list(collector.collect()), \"collect\")\n/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/python.py:531: in collect\n    self._inject_setup_module_fixture()\n/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/python.py:545: in _inject_setup_module_fixture\n    self.obj, (\"setUpModule\", \"setup_module\")\n/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/python.py:310: in obj\n    self._obj = obj = self._getobj()\n/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/python.py:528: in _getobj\n    return self._importtestmodule()\n/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/python.py:617: in _importtestmodule\n    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)\n/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/pathlib.py:567: in import_path\n    importlib.import_module(module_name)\n/usr/lib/python3.10/importlib/__init__.py:126: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n<frozen importlib._bootstrap>:1050: in _gcd_import\n    ???\n<frozen importlib._bootstrap>:1027: in _find_and_load\n    ???\n<frozen importlib._bootstrap>:1006: in _find_and_load_unlocked\n    ???\n<frozen importlib._bootstrap>:688: in _load_unlocked\n    ???\n/home/dchisholm125/.local/lib/python3.10/site-packages/_pytest/assertion/rewrite.py:186: in exec_module\n    exec(co, module.__dict__)\ntests/test_casefold.py:2: in <module>\n    from httpx._stringutils import casefold_keys\nhttpx/_stringutils.py:13: in <module>\n    def casefold_keys(obj: dict[str, typing.Any]) -> dict[str, typing.Any]:\nE   NameError: name 'typing' is not defined\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.15s\n",
+                "stderr_tail": ""
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"httpx/_stringutils.py\",\"content\":\"# Small string utility module for httpx\\n\\ndef normalize_header_value(value: str) -> str:\\n    \\\"\\\"\\\"Normalize a header value by stripping whitespace.\\\"\\\"\\\"\\n    # BUG: uses upper() instead of preserving case after stripping\\n    return value.strip().upper()\\n\\ndef strip_quotes(value: str) -> str:\\n    if value.startswith('\\\"') and value.endswith('\\\"'):\\n        return value[1:-1]\\n    return value\\n\\ndef casefold_keys(obj: dict[str, typing.Any]) -> dict[str, typing.Any]:\\n    return {k.lower(): v for k, v in obj.items()}\\n\"}],\"summary\":\"Add casefold_keys function to httpx/_stringutils.py that takes a dict and returns a new dict with all keys lowercased. The tests in tests/test_casefold.py import this function from httpx._stringutils and expect it to lower-case keys while preserving original values, handle empty dicts, already-lowercase keys, and return a new dict without mutating the original.\",\"uncertainty\":[\"Need to add typing import since typing.Any is used in the function signature, or use a simpler annotation. Looking at the test file, it uses from httpx._stringutils import casefold_keys with no explicit typing requirement. The simplest approach is to avoid needing typing.Any by using a generic type parameter or just using object.\"]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null
+    },
+    {
+      "task_id": "debug_http_date_parsing_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "gog",
+      "retrieved_files": [
+        "httpx/_stringutils.py",
+        "tests/test_stringutils.py",
+        "httpx/_compat.py",
+        "tests/test_compat.py"
+      ],
+      "context_tokens_estimate": 471,
+      "prompt_tokens_estimate": 1274,
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 26.6414,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 172,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "httpx/_compat.py"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "python3",
+                  "-m",
+                  "pytest",
+                  "tests/test_compat.py",
+                  "-x",
+                  "-q"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 0.6589,
+                "stdout_tail": "...                                                                      [100%]\n3 passed in 0.01s\n",
+                "stderr_tail": ""
+              }
+            ]
+          },
+          "raw_response": "{\n  \"files\": [\n    {\n      \"path\": \"httpx/_compat.py\",\n      \"content\": \"# Compatibility helpers\\n\\nfrom email.utils import parsedate_to_datetime\\n\\n\\ndef parse_http_date(value: str) -> str:\\n    \\\"\\\"\\\"Parse an HTTP date string and return ISO format.\\\"\\\"\\\"\\n    dt = parsedate_to_datetime(value)\\n    return dt.strftime(\\\"%Y-%m-%dT%H:%M:%S\\\")\\n\"\n    }\n  ],\n  \"summary\": \"Fixed parse_http_date to use email.utils.parsedate_to_datetime to parse RFC 1123 and asctime format HTTP dates, then return ISO 8601 format string without timezone offset. parsedate_to_datetime handles both formats natively and raises ValueError for invalid dates, matching test expectations.\",\n  \"uncertainty\": []\n}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 1446,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 27.3019
+    },
+    {
+      "task_id": "debug_http_date_parsing_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "traditional_rag",
+      "retrieved_files": [
+        "httpx/_models.py",
+        "httpx/_decoders.py",
+        "httpx/_urls.py",
+        "tests/test_compat.py",
+        "httpx/_client.py",
+        "httpx/_compat.py"
+      ],
+      "context_tokens_estimate": 7929,
+      "prompt_tokens_estimate": 44948,
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 39.1734,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 217,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "httpx/_compat.py"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "python3",
+                  "-m",
+                  "pytest",
+                  "tests/test_compat.py",
+                  "-x",
+                  "-q"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 0.6819,
+                "stdout_tail": "...                                                                      [100%]\n3 passed in 0.01s\n",
+                "stderr_tail": ""
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"httpx/_compat.py\",\"content\":\"# Compatibility helpers\\n\\nfrom datetime import datetime, timezone\\nfrom email.utils import parsedate_to_datetime\\n\\n\\ndef parse_http_date(value: str) -> str:\\n    \\\"\\\"\\\"Parse an HTTP date string and return ISO format.\\\"\\\"\\\"\\n    try:\\n        dt = parsedate_to_datetime(value)\\n    except (TypeError, ValueError):\\n        raise ValueError(f\\\"Invalid HTTP date: {value!r}\\\")\\n    # Convert to UTC if needed and remove tzinfo for naive ISO string output\\n    if dt.tzinfo is not None:\\n        dt = dt.astimezone(timezone.utc).replace(tzinfo=None)\\n    return dt.isoformat()\\n\"}],\"summary\":\"Fixed parse_http_date in httpx/_compat.py to use email.utils.parsedate_to_datetime for parsing RFC 1123 and asctime HTTP date formats, then convert to a naive ISO 8601 datetime string. Invalid dates now raise ValueError as expected by the tests.\"}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 45165,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 39.894
+    }
+  ],
+  "summary": {
+    "gog": {
+      "cases": 3,
+      "pass_at_1": 3,
+      "pass_at_k": 3,
+      "avg_context_tokens_estimate": 502.333,
+      "avg_prompt_tokens_estimate": 3119.333,
+      "avg_tokens_to_pass": 3286.667,
+      "avg_attempts_to_pass": 1.0,
+      "avg_wall_clock_to_pass_s": 23.301
+    },
+    "traditional_rag": {
+      "cases": 3,
+      "pass_at_1": 2,
+      "pass_at_k": 2,
+      "avg_context_tokens_estimate": 10078.667,
+      "avg_prompt_tokens_estimate": 50037.0,
+      "avg_tokens_to_pass": 51814.0,
+      "avg_attempts_to_pass": 1.0,
+      "avg_wall_clock_to_pass_s": 32.328
+    }
+  }
+}

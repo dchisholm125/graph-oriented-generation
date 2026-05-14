@@ -1,0 +1,67 @@
+{
+  "generated_at": "2026-05-13T19:06:28.878207+00:00",
+  "benchmark": "public_vue_executable_patch",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/httpx",
+  "attempts_per_case": 1,
+  "transient_retries": 2,
+  "retry_delay_s": 15,
+  "dry_run": true,
+  "tasks": [
+    {
+      "id": "debug_queryparams_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "prompt": "Fix the QueryParams primitive serialization so that booleans serialize to JSON-style 'true'/'false', None serializes to an empty string, and numeric 0 is preserved rather than treated as falsy.",
+      "expected_files": [
+        "httpx/_utils.py",
+        "tests/models/test_queryparams.py"
+      ],
+      "validation_commands": [
+        [
+          "python3",
+          "-m",
+          "pytest",
+          "tests/models/test_queryparams.py",
+          "-x",
+          "-q"
+        ]
+      ],
+      "notes": "PrimitiveData serialization bug in QueryParams. Small utility fix with focused acceptance test."
+    }
+  ],
+  "results": [
+    {
+      "task_id": "debug_queryparams_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "gog",
+      "retrieved_files": [
+        "tests/client/test_queryparams.py",
+        "tests/models/test_queryparams.py",
+        "httpx/__init__.py",
+        "httpx/_utils.py"
+      ],
+      "context_tokens_estimate": 533,
+      "prompt_tokens_estimate": 3406,
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null
+    }
+  ],
+  "summary": {
+    "gog": {
+      "cases": 1,
+      "pass_at_1": 0,
+      "pass_at_k": 0,
+      "avg_context_tokens_estimate": 533.0,
+      "avg_prompt_tokens_estimate": 3406.0,
+      "avg_tokens_to_pass": null,
+      "avg_attempts_to_pass": null,
+      "avg_wall_clock_to_pass_s": null
+    }
+  }
+}

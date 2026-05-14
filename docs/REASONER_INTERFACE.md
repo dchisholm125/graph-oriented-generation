@@ -261,4 +261,31 @@ The public Vue benchmark track begins with:
 
 This harness intentionally starts below the LLM layer. It clones or reuses a public Vue repository, runs GOG onboarding, compares GOG context selection against `traditional_rag`, and writes a JSON artifact. Later phases should reuse the same prompts for `MutationPlan` quality and executable patch benchmarks.
 
+The executable patch layer begins with:
+
+- `gog/benchmark_executable_patch.py`
+- `gog_cli/executable_patch_benchmark.py`
+
+This layer evaluates coding work as validated repo mutation, not just plausible planning. Each case runs in a disposable copy of the public repository, applies benchmark-only setup patches, serves either GOG or `traditional_rag` context to the same model, requires a strict JSON full-file patch response, applies only patches inside the served file set, and runs targeted validation commands.
+
+Transient provider failures should be retried and recorded separately from coding failures. A 503, timeout, or connection reset is infrastructure noise; it should not be counted as a failed patch unless retry budget is exhausted.
+
+Initial task domains should be tracked separately:
+
+- debugging: fix failing behavior in an existing feature
+- new feature: add behavior covered by new acceptance tests
+- refactor: preserve behavior while improving structure or maintainability
+
+Difficulty should also be explicit. Easy tasks should usually touch one focused utility. Medium tasks should involve a component or composable plus tests. Hard tasks should cross subsystem boundaries such as router/auth, store/API, or component/service flows.
+
+Executable patch scoring should report quality and cost independently:
+
+- `Pass@1`: first generated patch validates
+- `Pass@k`: any attempt validates within the configured attempt budget
+- `TokensToPass`: cumulative prompt plus response tokens until the first passing attempt
+- `AttemptsToPass`: number of model attempts until first passing validation
+- `WallClockToPass`: elapsed benchmark time until first passing validation
+- `ValidationFailure`: patch was syntactically admissible but failed the target command
+- `AdmissibilityFailure`: patch was rejected before validation, usually for invalid JSON or out-of-context file mutation
+
 The current public Vue repo should be treated as a development benchmark, not a final proof set. Heuristics discovered there are only valid when they generalize to Vue, Vite, TypeScript, test layout, generated-client handling, or similar technology-level conventions. Future public repos should include holdout benchmarks where GOG is run before any tuning based on their failures.

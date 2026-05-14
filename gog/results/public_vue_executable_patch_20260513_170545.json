@@ -1,0 +1,71 @@
+{
+  "generated_at": "2026-05-13T17:05:45.475931+00:00",
+  "benchmark": "public_vue_executable_patch",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app",
+  "attempts_per_case": 1,
+  "transient_retries": 1,
+  "retry_delay_s": 15,
+  "dry_run": true,
+  "tasks": [
+    {
+      "id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "prompt": "Fix route authentication so unauthenticated users cannot access the authenticated feed, settings page, create article page, or edit article page. They should be redirected to login.",
+      "expected_files": [
+        "src/router.ts",
+        "src/router.spec.ts",
+        "src/store/user.ts"
+      ],
+      "validation_commands": [
+        [
+          "corepack",
+          "pnpm",
+          "vitest",
+          "run",
+          "src/router.spec.ts"
+        ]
+      ],
+      "notes": "Cross-cutting route/auth debugging task."
+    }
+  ],
+  "results": [
+    {
+      "task_id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "traditional_rag",
+      "retrieved_files": [
+        "playwright/specs/article.spec.ts",
+        "src/services/api.ts",
+        "src/composable/use-articles.ts",
+        "playwright/specs/auth.spec.ts",
+        "src/pages/EditArticle.spec.ts",
+        "src/router.spec.ts",
+        "src/router.ts",
+        "src/store/user.ts"
+      ],
+      "context_tokens_estimate": 7455,
+      "prompt_tokens_estimate": 20110,
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null
+    }
+  ],
+  "summary": {
+    "traditional_rag": {
+      "cases": 1,
+      "pass_at_1": 0,
+      "pass_at_k": 0,
+      "avg_context_tokens_estimate": 7455.0,
+      "avg_prompt_tokens_estimate": 20110.0,
+      "avg_tokens_to_pass": null,
+      "avg_attempts_to_pass": null,
+      "avg_wall_clock_to_pass_s": null
+    }
+  }
+}

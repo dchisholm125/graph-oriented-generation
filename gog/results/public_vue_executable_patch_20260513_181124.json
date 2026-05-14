@@ -1,0 +1,461 @@
+{
+  "generated_at": "2026-05-13T18:11:24.466757+00:00",
+  "benchmark": "public_vue_executable_patch",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/httpx",
+  "attempts_per_case": 1,
+  "transient_retries": 2,
+  "retry_delay_s": 15,
+  "dry_run": false,
+  "tasks": [
+    {
+      "id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "prompt": "Fix the query parameter serialization helper so it URI-encodes keys and values, preserves 0 and false, and omits null or undefined values.",
+      "expected_files": [
+        "src/utils/params-to-query.ts",
+        "src/utils/params-to-query.spec.ts"
+      ],
+      "validation_commands": [
+        [
+          "corepack",
+          "pnpm",
+          "vitest",
+          "run",
+          "src/utils/params-to-query.spec.ts"
+        ]
+      ],
+      "notes": "Small utility bug with focused acceptance test."
+    },
+    {
+      "id": "feature_pagination_edges_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "prompt": "Add previous and next pagination controls. Previous must emit the prior page unless already on page 1, and next must emit the next page unless already on the final page.",
+      "expected_files": [
+        "src/components/AppPagination.vue",
+        "src/components/AppPagination.spec.ts"
+      ],
+      "validation_commands": [
+        [
+          "corepack",
+          "pnpm",
+          "vitest",
+          "run",
+          "src/components/AppPagination.spec.ts"
+        ]
+      ],
+      "notes": "New component behavior validated through UI-level tests."
+    },
+    {
+      "id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "prompt": "Fix route authentication so unauthenticated users cannot access the authenticated feed, settings page, create article page, or edit article page. They should be redirected to login.",
+      "expected_files": [
+        "src/router.ts",
+        "src/router.spec.ts",
+        "src/store/user.ts"
+      ],
+      "validation_commands": [
+        [
+          "corepack",
+          "pnpm",
+          "vitest",
+          "run",
+          "src/router.spec.ts"
+        ]
+      ],
+      "notes": "Cross-cutting route/auth debugging task."
+    }
+  ],
+  "results": [
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "gog",
+      "retrieved_files": [
+        "src/utils/params-to-query.ts",
+        "tests/client/test_queryparams.py",
+        "tests/models/test_queryparams.py",
+        "httpx/__init__.py",
+        "src/utils/params-to-query.spec.ts"
+      ],
+      "context_tokens_estimate": 713,
+      "prompt_tokens_estimate": 3779,
+      "pass": false,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 30.5767,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 162,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": false,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/utils/params-to-query.spec.ts"
+                ],
+                "returncode": 1,
+                "wall_clock_s": 2.8873,
+                "stdout_tail": "[ERR_PNPM_NO_PKG_MANIFEST] No package.json found in /tmp/gog-debug_query_serialization_easy-gog-vr11dvz9/httpx\n[ERROR] Command failed with exit code 1: /media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/.nvm/versions/node/v24.13.0/bin/node /home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/bin/pnpm.mjs install\n\npnpm: Command failed with exit code 1: /media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/.nvm/versions/node/v24.13.0/bin/node /home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/bin/pnpm.mjs install\n    at getFinalError (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:28661:14)\n    at makeError (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:30968:21)\n    at getSyncResult (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:32812:10)\n    at spawnSubprocessSync (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:32772:14)\n    at execaCoreSync (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:32702:23)\n    at callBoundExeca (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:35230:23)\n    at boundExeca (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:35207:49)\n    at sync (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:35366:10)\n    at runPnpmCli (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:211039:5)\n    at runDepsStatusCheck (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:212745:7)\n",
+                "stderr_tail": ""
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/utils/params-to-query.ts\",\"content\":\"export default function params2query(params: Record<string, string | number | boolean | null | undefined>): string {\\n  return Object.entries(params)\\n    .filter(([, value]) => value !== null && value !== undefined)\\n    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)\\n    .join('&')\\n}\\n\"}],\"summary\":\"Fixed the query parameter serialization helper to: 1) URI-encode keys and values using encodeURIComponent, 2) preserve falsy values 0 and false by filtering only null/undefined instead of using Boolean(), and 3) omit null and undefined values from the output. The existing test already validates all these requirements.\"}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null
+    },
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "traditional_rag",
+      "retrieved_files": [
+        "httpx/_urls.py",
+        "httpx/_client.py",
+        "tests/models/test_queryparams.py",
+        "httpx/_models.py",
+        "tests/models/test_url.py",
+        "httpx/_api.py",
+        "src/utils/params-to-query.ts",
+        "src/utils/params-to-query.spec.ts"
+      ],
+      "context_tokens_estimate": 11480,
+      "prompt_tokens_estimate": 58807,
+      "pass": false,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 17.0689,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 155,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": false,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/utils/params-to-query.spec.ts"
+                ],
+                "returncode": 1,
+                "wall_clock_s": 0.9962,
+                "stdout_tail": "[ERR_PNPM_NO_PKG_MANIFEST] No package.json found in /tmp/gog-debug_query_serialization_easy-traditional_rag-ir12ltve/httpx\n[ERROR] Command failed with exit code 1: /media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/.nvm/versions/node/v24.13.0/bin/node /home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/bin/pnpm.mjs install\n\npnpm: Command failed with exit code 1: /media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/.nvm/versions/node/v24.13.0/bin/node /home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/bin/pnpm.mjs install\n    at getFinalError (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:28661:14)\n    at makeError (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:30968:21)\n    at getSyncResult (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:32812:10)\n    at spawnSubprocessSync (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:32772:14)\n    at execaCoreSync (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:32702:23)\n    at callBoundExeca (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:35230:23)\n    at boundExeca (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:35207:49)\n    at sync (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:35366:10)\n    at runPnpmCli (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:211039:5)\n    at runDepsStatusCheck (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:212745:7)\n",
+                "stderr_tail": ""
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/utils/params-to-query.ts\",\"content\":\"export default function params2query(params: Record<string, string | number | boolean | null | undefined>): string {\\n  return Object.entries(params)\\n    .filter(([, value]) => value !== null && value !== undefined)\\n    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)\\n    .join('&')\\n}\\n\"}],\"summary\":\"Fixed the query parameter serialization helper to: (1) URI-encode keys and values using encodeURIComponent, (2) preserve falsy values like 0 and false by filtering only null/undefined instead of using Boolean(value), and (3) omit null or undefined values from the output.\"}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null
+    },
+    {
+      "task_id": "feature_pagination_edges_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "mode": "gog",
+      "retrieved_files": [
+        "src/components/AppPagination.spec.ts",
+        "src/components/AppPagination.vue"
+      ],
+      "context_tokens_estimate": 339,
+      "prompt_tokens_estimate": 1218,
+      "pass": false,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 69.0469,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 1020,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/components/AppPagination.vue",
+              "src/components/AppPagination.spec.ts"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": false,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/components/AppPagination.spec.ts"
+                ],
+                "returncode": 1,
+                "wall_clock_s": 1.027,
+                "stdout_tail": "[ERR_PNPM_NO_PKG_MANIFEST] No package.json found in /tmp/gog-feature_pagination_edges_medium-gog-szc1918x/httpx\n[ERROR] Command failed with exit code 1: /media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/.nvm/versions/node/v24.13.0/bin/node /home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/bin/pnpm.mjs install\n\npnpm: Command failed with exit code 1: /media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/.nvm/versions/node/v24.13.0/bin/node /home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/bin/pnpm.mjs install\n    at getFinalError (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:28661:14)\n    at makeError (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:30968:21)\n    at getSyncResult (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:32812:10)\n    at spawnSubprocessSync (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:32772:14)\n    at execaCoreSync (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:32702:23)\n    at callBoundExeca (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:35230:23)\n    at boundExeca (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:35207:49)\n    at sync (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:35366:10)\n    at runPnpmCli (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:211039:5)\n    at runDepsStatusCheck (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:212745:7)\n",
+                "stderr_tail": ""
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/components/AppPagination.vue\",\"content\":\"<script setup lang=\\\"ts\\\">\\ninterface Props {\\n  page: number\\n  count: number\\n  onPageChange: (page: number) => void\\n}\\n\\nconst props = defineProps<Props>()\\nconst pagesCount = computed(() => Math.ceil(props.count / 10))\\n</script>\\n\\n<template>\\n  <ul class=\\\"pagination\\\">\\n    <li :class=\\\"{ disabled: page === 1 }\\\">\\n      <a href=\\\"#\\\" @click.prevent=\\\"page > 1 && onPageChange(page - 1)\\\" role=\\\"link\\\" aria-label=\\\"Go to previous page\\\">\\n        Previous\\n      </a>\\n    </li>\\n    <li v-for=\\\"p in pagesCount\\\" :key=\\\"p\\\" :class=\\\"{ active: p === page }\\\">\\n      <a href=\\\"#\\\" @click.prevent=\\\"onPageChange(p)\\\" :aria-label=\\\"`Go to page ${p}`\\\" role=\\\"link\\\">\\n        {{ p }}\\n      </a>\\n    </li>\\n    <li :class=\\\"{ disabled: page === pagesCount }\\\">\\n      <a href=\\\"#\\\" @click.prevent=\\\"page < pagesCount && onPageChange(page + 1)\\\" role=\\\"link\\\" aria-label=\\\"Go to next page\\\">\\n        Next\\n      </a>\\n    </li>\\n  </ul>\\n</template>\\n\"},{\"path\":\"src/components/AppPagination.spec.ts\",\"content\":\"import { describe, expect, it, vi } from 'vitest'\\nimport { fireEvent, render } from '@testing-library/vue'\\nimport { renderOptions } from 'src/utils/test/test.utils'\\nimport AppPagination from './AppPagination.vue'\\n\\ndescribe('# AppPagination', () => {\\n  it('should highlight current active page', () => {\\n    const { getByRole } = render(AppPagination, renderOptions({\\n      props: { page: 1, count: 15 },\\n    }))\\n\\n    expect(getByRole('link', { name: 'Go to page 1' }).parentNode).toHaveClass('active')\\n    expect(getByRole('link', { name: 'Go to page 2' }).parentNode).not.toHaveClass('active')\\n  })\\n\\n  it('should call onPageChange when click a page item', async () => {\\n    const onPageChange = vi.fn()\\n    const { getByRole } = render(AppPagination, renderOptions({\\n      props: { page: 1, count: 15, onPageChange },\\n    }))\\n\\n    await fireEvent.click(getByRole('link', { name: 'Go to page 2' }))\\n\\n    expect(onPageChange).toHaveBeenCalledWith(2)\\n  })\\n\\n  it('should emit previous and next page changes within pagination bounds', async () => {\\n    const onPageChange = vi.fn()\\n    const { getByRole } = render(AppPagination, renderOptions({\\n      props: { page: 2, count: 25, onPageChange },\\n    }))\\n\\n    await fireEvent.click(getByRole('link', { name: 'Go to previous page' }))\\n    await fireEvent.click(getByRole('link', { name: 'Go to next page' }))\\n\\n    expect(onPageChange).toHaveBeenNthCalledWith(1, 1)\\n    expect(onPageChange).toHaveBeenNthCalledWith(2, 3)\\n  })\\n\\n  it('should not emit previous or next when already at the boundary', async () => {\\n    const onPageChange = vi.fn()\\n    const { getByRole, rerender } = render(AppPagination, renderOptions({\\n      props: { page: 1, count: 15, onPageChange },\\n    }))\\n\\n    await fireEvent.click(getByRole('link', { name: 'Go to previous page' }))\\n    await rerender({ page: 2, count: 15, onPageChange })\\n    await fireEvent.click(getByRole('link', { name: 'Go to next page' }))\\n\\n    expect(onPageChange).not.toHaveBeenCalled()\\n  })\\n})\\n\"}],\"summary\":\"Added previous and next pagination controls to AppPagination.vue. Previous emits page-1 when not on page 1, next emits page+1 when not on the final page. Both are disabled at their respective boundaries. Updated the spec to fix the boundary test: the second boundary check now uses page 2 with count 15 (only 2 pages) so clicking next on page 2 correctly does nothing, while the previous boundary on page 1 also does nothing.\",\"uncertainty\":[]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null
+    },
+    {
+      "task_id": "feature_pagination_edges_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "mode": "traditional_rag",
+      "retrieved_files": [
+        "src/components/AppPagination.spec.ts",
+        "httpx/_client.py",
+        "httpx/_utils.py",
+        "tests/client/test_redirects.py",
+        "tests/test_auth.py",
+        "httpx/_urlparse.py",
+        "src/components/AppPagination.vue"
+      ],
+      "context_tokens_estimate": 10732,
+      "prompt_tokens_estimate": 43609,
+      "pass": false,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 1,
+          "latency_s": 338.664,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 1,
+              "stderr": "HTTP Error 500: Internal Server Error"
+            }
+          ],
+          "response_tokens_estimate": 0,
+          "json_valid": false,
+          "patch": {
+            "applied": false,
+            "errors": [
+              "response is not a JSON object"
+            ]
+          },
+          "validation": null,
+          "raw_response": "",
+          "stderr": "HTTP Error 500: Internal Server Error"
+        }
+      ],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null
+    },
+    {
+      "task_id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "gog",
+      "retrieved_files": [
+        "src/router.spec.ts",
+        "src/router.ts",
+        "src/store/user.ts"
+      ],
+      "context_tokens_estimate": 322,
+      "prompt_tokens_estimate": 1076,
+      "pass": false,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 34.3251,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 708,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/router.ts"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": false,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/router.spec.ts"
+                ],
+                "returncode": 1,
+                "wall_clock_s": 1.0381,
+                "stdout_tail": "[ERR_PNPM_NO_PKG_MANIFEST] No package.json found in /tmp/gog-debug_router_auth_hard-gog-_4pe4ent/httpx\n[ERROR] Command failed with exit code 1: /media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/.nvm/versions/node/v24.13.0/bin/node /home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/bin/pnpm.mjs install\n\npnpm: Command failed with exit code 1: /media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/.nvm/versions/node/v24.13.0/bin/node /home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/bin/pnpm.mjs install\n    at getFinalError (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:28661:14)\n    at makeError (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:30968:21)\n    at getSyncResult (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:32812:10)\n    at spawnSubprocessSync (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:32772:14)\n    at execaCoreSync (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:32702:23)\n    at callBoundExeca (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:35230:23)\n    at boundExeca (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:35207:49)\n    at sync (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:35366:10)\n    at runPnpmCli (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:211039:5)\n    at runDepsStatusCheck (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:212745:7)\n",
+                "stderr_tail": ""
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/router.ts\",\"content\":\"import { createRouter, createWebHistory } from 'vue-router'\\nimport { storeToRefs } from 'pinia'\\nimport { useUserStore } from 'src/store/user'\\nimport HomeView from 'src/views/HomeView.vue'\\n\\nconst routes = [\\n  {\\n    path: '/',\\n    name: 'global-feed',\\n    component: HomeView,\\n  },\\n  {\\n    path: '/my-feeds',\\n    name: 'my-feeds',\\n    component: () => import('src/views/MyFeeds.vue'),\\n    meta: { requiresAuth: true },\\n  },\\n  {\\n    path: '/login',\\n    name: 'login',\\n    component: () => import('src/views/LoginView.vue'),\\n    meta: { requiresGuest: true },\\n  },\\n  {\\n    path: '/register',\\n    name: 'register',\\n    component: () => import('src/views/RegisterView.vue'),\\n    meta: { requiresGuest: true },\\n  },\\n  {\\n    path: '/settings',\\n    name: 'settings',\\n    component: () => import('src/views/SettingsView.vue'),\\n    meta: { requiresAuth: true },\\n  },\\n  {\\n    path: '/article/:slug',\\n    name: 'article',\\n    component: () => import('src/views/ArticleView.vue'),\\n  },\\n  {\\n    path: '/article/create',\\n    name: 'create-article',\\n    component: () => import('src/views/CreateArticleView.vue'),\\n    meta: { requiresAuth: true },\\n  },\\n  {\\n    path: '/article/:slug/edit',\\n    name: 'edit-article',\\n    component: () => import('src/views/EditArticleView.vue'),\\n    meta: { requiresAuth: true },\\n  },\\n  {\\n    path: '/:pathMatch(.*)*',\\n    name: 'not-found',\\n    component: () => import('src/views/NotFoundView.vue'),\\n  },\\n]\\n\\nexport const createAppRouter = () => {\\n  const router = createRouter({\\n    history: createWebHistory(),\\n    routes,\\n  })\\n\\n  router.beforeEach((to) => {\\n    const { isAuthenticated } = storeToRefs(useUserStore())\\n\\n    if (to.meta.requiresAuth && !isAuthenticated.value) {\\n      return { name: 'login' }\\n    }\\n\\n    if (to.meta.requiresGuest && isAuthenticated.value) {\\n      return { name: 'global-feed' }\\n    }\\n  })\\n\\n  return router\\n}\\n\"}],\"summary\":\"Fixed route authentication by adding meta: { requiresAuth: true } to the /my-feeds, /settings, /article/create, and /article/:slug/edit routes. The existing beforeEach guard already checks requiresAuth and redirects to login when not authenticated. Also added meta: { requiresGuest: true } to /login and /register to match expected behavior for authenticated users.\",\"uncertainty\":[]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null
+    },
+    {
+      "task_id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "traditional_rag",
+      "retrieved_files": [
+        "src/router.spec.ts",
+        "httpx/_client.py",
+        "httpx/_auth.py",
+        "tests/models/test_url.py",
+        "httpx/_config.py",
+        "tests/models/test_responses.py",
+        "src/router.ts",
+        "src/store/user.ts"
+      ],
+      "context_tokens_estimate": 10343,
+      "prompt_tokens_estimate": 50057,
+      "pass": false,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 51.2645,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 683,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/router.ts"
+            ],
+            "errors": []
+          },
+          "validation": {
+            "passed": false,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/router.spec.ts"
+                ],
+                "returncode": 1,
+                "wall_clock_s": 1.0208,
+                "stdout_tail": "[ERR_PNPM_NO_PKG_MANIFEST] No package.json found in /tmp/gog-debug_router_auth_hard-traditional_rag-m3usuxu_/httpx\n[ERROR] Command failed with exit code 1: /media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/.nvm/versions/node/v24.13.0/bin/node /home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/bin/pnpm.mjs install\n\npnpm: Command failed with exit code 1: /media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/.nvm/versions/node/v24.13.0/bin/node /home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/bin/pnpm.mjs install\n    at getFinalError (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:28661:14)\n    at makeError (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:30968:21)\n    at getSyncResult (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:32812:10)\n    at spawnSubprocessSync (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:32772:14)\n    at execaCoreSync (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:32702:23)\n    at callBoundExeca (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:35230:23)\n    at boundExeca (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:35207:49)\n    at sync (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:35366:10)\n    at runPnpmCli (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:211039:5)\n    at runDepsStatusCheck (file:///home/dchisholm125/.cache/node/corepack/v1/pnpm/11.1.1/dist/pnpm.mjs:212745:7)\n",
+                "stderr_tail": ""
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/router.ts\",\"content\":\"import { createRouter, createWebHistory } from 'vue-router'\\nimport { userStorage } from 'src/store/user'\\n\\nconst router = createRouter({\\n  history: createWebHistory(),\\n  routes: [\\n    {\\n      path: '/',\\n      name: 'global-feed',\\n      component: () => import('src/pages/global-feed.vue'),\\n    },\\n    {\\n      path: '/my-feeds',\\n      name: 'my-feeds',\\n      component: () => import('src/pages/my-feeds.vue'),\\n      meta: { requiresAuth: true },\\n    },\\n    {\\n      path: '/login',\\n      name: 'login',\\n      component: () => import('src/pages/login.vue'),\\n      meta: { requiresGuest: true },\\n    },\\n    {\\n      path: '/register',\\n      name: 'register',\\n      component: () => import('src/pages/register.vue'),\\n      meta: { requiresGuest: true },\\n    },\\n    {\\n      path: '/settings',\\n      name: 'settings',\\n      component: () => import('src/pages/settings.vue'),\\n      meta: { requiresAuth: true },\\n    },\\n    {\\n      path: '/article/create',\\n      name: 'create-article',\\n      component: () => import('src/pages/create-edit-article.vue'),\\n      meta: { requiresAuth: true },\\n    },\\n    {\\n      path: '/article/:slug',\\n      name: 'article',\\n      component: () => import('src/pages/article.vue'),\\n    },\\n    {\\n      path: '/article/:slug/edit',\\n      name: 'edit-article',\\n      component: () => import('src/pages/create-edit-article.vue'),\\n      meta: { requiresAuth: true },\\n    },\\n    {\\n      path: '/profile/:username',\\n      name: 'profile',\\n      component: () => import('src/pages/profile.vue'),\\n    },\\n    {\\n      path: '/:pathMatch(.*)*',\\n      name: 'not-found',\\n      component: () => import('src/pages/not-found.vue'),\\n    },\\n  ],\\n})\\n\\nrouter.beforeEach((to, _from, next) => {\\n  const isAuthenticated = userStorage.get() !== null\\n\\n  if (to.meta.requiresAuth && !isAuthenticated) {\\n    next({ name: 'login' })\\n  } else if (to.meta.requiresGuest && isAuthenticated) {\\n    next({ name: 'global-feed' })\\n  } else {\\n    next()\\n  }\\n})\\n\\nexport { router }\\n\"}],\"summary\":\"Fix route authentication by adding meta fields to protected routes (my-feeds, settings, create-article, edit-article) and implementing a router.beforeEach guard that redirects unauthenticated users to login and authenticated users away from guest-only routes.\",\"uncertainty\":[]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null
+    }
+  ],
+  "summary": {
+    "gog": {
+      "cases": 3,
+      "pass_at_1": 0,
+      "pass_at_k": 0,
+      "avg_context_tokens_estimate": 458.0,
+      "avg_prompt_tokens_estimate": 2024.333,
+      "avg_tokens_to_pass": null,
+      "avg_attempts_to_pass": null,
+      "avg_wall_clock_to_pass_s": null
+    },
+    "traditional_rag": {
+      "cases": 3,
+      "pass_at_1": 0,
+      "pass_at_k": 0,
+      "avg_context_tokens_estimate": 10851.667,
+      "avg_prompt_tokens_estimate": 50824.333,
+      "avg_tokens_to_pass": null,
+      "avg_attempts_to_pass": null,
+      "avg_wall_clock_to_pass_s": null
+    }
+  }
+}
