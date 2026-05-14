@@ -31,6 +31,7 @@ from .onboarding import onboard_repository
 from .reasoner_benchmark import DEFAULT_MODEL, extract_json_payload, normalize_cli_output
 from .semantic_plan_benchmark import build_traditional_rag_bundle
 from .serving import build_context_bundle
+from .lite_serving import build_lite_context_bundle
 
 
 RESULTS_DIR = Path("gog") / "results"
@@ -307,7 +308,7 @@ def run_executable_patch_benchmark(
     _assert_env_ready(repo_root, dry_run)
     active_tasks = tasks if tasks else TASKS
     selected_tasks = [task for task in active_tasks if not task_ids or task.id in task_ids]
-    selected_modes = [mode for mode in ("gog", "traditional_rag") if not modes or mode in modes]
+    selected_modes = [mode for mode in ("gog", "gog_lite", "traditional_rag") if not modes or mode in modes]
     results: list[dict[str, Any]] = []
 
     for task in selected_tasks:
@@ -482,6 +483,17 @@ def build_patch_context(
             "source_files": read_source_files(repo_root, files),
             "graph_relations": bundle["context"]["relations"],
             "context_membrane": bundle["context_membrane"],
+            "validation_commands": [" ".join(command) for command in task.validation_commands],
+            "tokens": count_tokens_in_string(json.dumps(bundle)),
+        }
+    if mode == "gog_lite":
+        bundle = build_lite_context_bundle(repo_root, task.prompt)
+        files = _merge_expected_hints(bundle["metadata"]["rel_paths"], task.expected_files)
+        return {
+            "mode": "gog_lite",
+            "files": files,
+            "source_files": read_source_files(repo_root, files),
+            "lite_metadata": bundle["metadata"],
             "validation_commands": [" ".join(command) for command in task.validation_commands],
             "tokens": count_tokens_in_string(json.dumps(bundle)),
         }
@@ -853,7 +865,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--model", default=DEFAULT_MODEL, help="Ollama model tag to benchmark.")
     parser.add_argument("--output-dir", help="Optional output directory for JSON results.")
     parser.add_argument("--task", action="append", dest="tasks")
-    parser.add_argument("--mode", action="append", dest="modes", choices=["gog", "traditional_rag"])
+    parser.add_argument("--mode", action="append", dest="modes", choices=["gog", "gog_lite", "traditional_rag"])
     parser.add_argument("--attempts", type=int, default=1, help="Attempts per task/mode for Pass@k.")
     parser.add_argument("--timeout-s", type=int, default=600, help="Per-model-call timeout.")
     parser.add_argument("--retries", type=int, default=1, help="Retry transient Ollama/provider failures per attempt.")

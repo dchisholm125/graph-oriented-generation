@@ -71,9 +71,17 @@ def build_lite_context_bundle(
     selected = membrane_result["selected_nodes"]
     file_contents: dict[str, str] = {}
 
+    # Also track relative paths for benchmark compatibility
+    rel_paths: list[str] = []
     for node in selected:
+        node_path = Path(node)
         try:
-            text = Path(node).read_text(encoding="utf-8", errors="replace")
+            rel = node_path.resolve().relative_to(repo_root.resolve()).as_posix()
+        except ValueError:
+            rel = node_path.name
+        rel_paths.append(rel)
+        try:
+            text = node_path.read_text(encoding="utf-8", errors="replace")
             file_contents[node] = text
         except (OSError, UnicodeDecodeError):
             file_contents[node] = "# [unreadable file]"
@@ -88,6 +96,7 @@ def build_lite_context_bundle(
         "membrane": membrane_result["config"],
         "kept_reasons": [k["reason"] for k in membrane_result["kept"]],
         "rejected_count": len(membrane_result["rejected"]),
+        "rel_paths": rel_paths,
     }
 
     return {

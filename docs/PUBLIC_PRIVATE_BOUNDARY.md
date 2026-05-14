@@ -1,5 +1,47 @@
 # Public / Private / SRM Lab Boundary
 
+## What is GOG-Lite?
+
+`gog_engine_lite/` provides the **GOG Reference Implementation** — a simplified graph-native context layer that demonstrates the core GOG thesis:
+
+> Graph-routed context can compete with flat keyword retrieval for coding tasks.
+
+It does **not** include:
+- Advanced scoring heuristics
+- Semantic embeddings for seeding
+- Persistent `.gog/` artifact onboarding
+- Production-grade context membranes
+- Graph fusion, runtime graphs, or change graphs
+
+### What GOG-Lite does
+
+- **Simple import graph** (`import_graph.py`): Builds dependency graphs via regex scanning (not tree-sitter).
+- **Keyword-based seeding** (`graph_search.py`): Extracts filename mentions and keyword tokens from prompts.
+- **Bounded expansion**: BFS up to depth=2 from seeds.
+- **Distance-based cap** (`lite_membrane.py`): Keeps closest files, no multi-factor scoring.
+- **Direct serving** (`lite_serving.py`): Builds context bundles without persistent artifacts.
+
+### What GOG-Lite does not do
+
+- Semantic similarity (sentence-transformers) for seeding
+- Multi-phase ASR or production tree-sitter parsing
+- Repo fingerprinting, `.gog/` artifacts, or onboarding
+- Advanced test-file / config-file penalties
+- Task-specific graph seeding or runtime graph fusion
+- Production integrations (e.g., OpenClaw, enterprise agents)
+
+### Running a GOG-Lite benchmark
+
+```bash
+# Public repo: compare GOG-Lite against traditional RAG
+python3 gog/benchmark_executable_patch.py --mode gog_lite --mode traditional_rag --dry-run
+
+# Context poisoning benchmark (includes GOG + GOG-Lite + RAG)
+python3 gog/benchmark_context_poisoning.py --dry-run --task debug_query_serialization_easy
+```
+
+The benchmark harness automatically runs both `gog` and `gog_lite` modes during context poisoning trials, so the public repo can compare three context strategies side by side.
+
 ## What This Repository Contains
 
 This repository is the **GOG-Lite reference implementation and benchmark lab** for Graph-Oriented Generation.
