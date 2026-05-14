@@ -49,7 +49,8 @@ def build_import_graph(
         supported_extensions = (".py", ".ts", ".vue", ".js")
     if ignored_dirs is None:
         ignored_dirs = {
-            ".git", ".venv", "__pycache__", "node_modules", "public-repos",
+            ".git", ".venv", "__pycache__", "node_modules", ".gog",
+            "dist", "build", "coverage", ".pytest_cache",
         }
 
     graph = nx.DiGraph()
@@ -63,7 +64,9 @@ def build_import_graph(
             if ext == ".py" and path.name == "__init__.py":
                 continue
             abs_path = str(path.resolve())
-            graph.add_node(abs_path, path=abs_path, ext=ext)
+            rel_path = path.resolve().relative_to(repo_root.resolve()).as_posix()
+            size = path.stat().st_size if path.exists() else 0
+            graph.add_node(abs_path, path=abs_path, rel_path=rel_path, ext=ext, size=size)
             file_index[str(path.resolve())] = path
 
     # Build edges via simple import scanning

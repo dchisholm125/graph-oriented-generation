@@ -1,1 +1,0 @@
-"""SEL — Semantic Emotional Layer."""

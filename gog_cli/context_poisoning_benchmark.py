@@ -45,7 +45,7 @@ def run_context_poisoning_benchmark(
     results = []
     for trial_index in range(1, trials + 1):
         for task in selected_tasks:
-            for mode in ("gog", "gog_lite"):
+            for mode in ("gog_lite",):
                 print(f"running context_poisoning trial={trial_index} task={task.id} mode={mode}", flush=True)
                 gog_row = run_task_mode(
                     source_repo=repo_root,
@@ -105,9 +105,8 @@ def run_context_poisoning_benchmark(
 
 
 def summarize_poisoning_results(results: list[dict[str, Any]]) -> dict[str, Any]:
-    gog_summary = _summarize_rows([row for row in results if row["mode"] == "gog"])
     gog_lite_summary = _summarize_rows([row for row in results if row["mode"] == "gog_lite"])
-    summary: dict[str, Any] = {"gog": gog_summary, "gog_lite": gog_lite_summary}
+    summary: dict[str, Any] = {"gog_lite": gog_lite_summary}
     budgets = sorted(
         {
             row["poison_source_token_budget"]
@@ -124,9 +123,8 @@ def summarize_poisoning_results(results: list[dict[str, Any]]) -> dict[str, Any]
                 if row["mode"] == "traditional_rag" and row["poison_source_token_budget"] == budget
             ]
         )
-        _add_relative_costs(budget_summary, gog_summary)
+        _add_relative_costs(budget_summary, gog_lite_summary)
         summary["traditional_rag_by_budget"][str(budget)] = budget_summary
-    _add_relative_costs(gog_summary, gog_summary)
     _add_relative_costs(gog_lite_summary, gog_lite_summary)
     return summary
 
@@ -175,11 +173,11 @@ def _tokens_spent_per_pass(rows: list[dict[str, Any]]) -> float | None:
 
 
 def _add_relative_costs(summary: dict[str, Any], gog_summary: dict[str, Any]) -> None:
-    summary["relative_prompt_cost_vs_gog"] = _relative(
+    summary["relative_prompt_cost_vs_gog_lite"] = _relative(
         summary.get("avg_prompt_tokens_estimate"),
         gog_summary.get("avg_prompt_tokens_estimate"),
     )
-    summary["relative_cost_to_pass_vs_gog"] = _relative(
+    summary["relative_cost_to_pass_vs_gog_lite"] = _relative(
         summary.get("tokens_spent_per_pass"),
         gog_summary.get("tokens_spent_per_pass"),
     )
@@ -193,13 +191,13 @@ def _relative(value: float | None, baseline: float | None) -> float | None:
 
 def summary_markdown_table(payload: dict[str, Any]) -> str:
     summary = payload["summary"]
-    rows = [("GOG", summary["gog"]), ("GOG-Lite", summary.get("gog_lite", {}))]
+    rows = [("GOG-Lite", summary.get("gog_lite", {}))]
     rows.extend(
         (f"RAG {budget}", values)
         for budget, values in summary["traditional_rag_by_budget"].items()
     )
     lines = [
-        "| Mode | Pass@1 | Avg prompt tokens | Relative prompt cost vs GOG | Tokens spent / pass | Relative cost-to-pass vs GOG | Noise ratio |",
+        "| Mode | Pass@1 | Avg prompt tokens | Relative prompt cost vs GOG-Lite | Tokens spent / pass | Relative cost-to-pass vs GOG-Lite | Noise ratio |",
         "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for label, values in rows:
@@ -210,9 +208,9 @@ def summary_markdown_table(payload: dict[str, Any]) -> str:
                     label,
                     f"{values['pass_at_1']}/{values['cases']}",
                     _fmt_number(values["avg_prompt_tokens_estimate"]),
-                    _fmt_multiplier(values["relative_prompt_cost_vs_gog"]),
+                    _fmt_multiplier(values["relative_prompt_cost_vs_gog_lite"]),
                     _fmt_number(values["tokens_spent_per_pass"]),
-                    _fmt_multiplier(values["relative_cost_to_pass_vs_gog"]),
+                    _fmt_multiplier(values["relative_cost_to_pass_vs_gog_lite"]),
                     f"{values['avg_noise_ratio']:.3f}",
                 ]
             )

@@ -16,15 +16,13 @@ repo_root = Path(__file__).resolve().parents[1]
 if str(repo_root) not in sys.path:
     sys.path.insert(0, str(repo_root))
 
-from gog_engine.token_utils import count_tokens_in_string
-
-from gog_cli.onboarding import onboard_repository
-from gog_cli.semantic_plan_benchmark import build_traditional_rag_bundle
-from gog_cli.serving import build_context_bundle, summarize_repository
+from gog_cli.executable_patch_benchmark import build_traditional_rag_bundle
+from gog_cli.lite_serving import build_lite_context_bundle
+from gog_cli.token_utils import count_tokens_in_string
 
 
 DEFAULT_REPO_URL = "https://github.com/mutoe/vue3-realworld-example-app"
-DEFAULT_WORK_DIR = Path("gog") / "public-repos"
+DEFAULT_WORK_DIR = Path("gog") / "fixtures"
 RESULTS_DIR = Path("gog") / "results"
 
 
@@ -101,15 +99,12 @@ def run_public_vue_benchmark(
         skip_clone=skip_clone,
     )
 
-    onboard_start = time.time()
-    manifest = onboard_repository(target_repo, force=True)
-    onboarding_wall_clock_s = round(time.time() - onboard_start, 4)
-    summary = summarize_repository(target_repo)
+    summary = {"mode": "gog_lite", "repo": str(target_repo)}
 
     prompt_results = []
     for prompt in CONTEXT_PROMPTS:
         gog_start = time.time()
-        gog_bundle = build_context_bundle(target_repo, prompt.prompt)
+        gog_bundle = build_lite_context_bundle(target_repo, prompt.prompt)
         gog_wall_clock_s = round(time.time() - gog_start, 4)
 
         rag_start = time.time()
@@ -122,7 +117,7 @@ def run_public_vue_benchmark(
                 "prompt": prompt.prompt,
                 "notes": prompt.notes,
                 "expected_files": list(prompt.expected_files),
-                "gog": score_gog_context(prompt, gog_bundle, gog_wall_clock_s),
+                "gog_lite": score_gog_context(prompt, gog_bundle, gog_wall_clock_s),
                 "traditional_rag": score_rag_context(prompt, rag_bundle, rag_wall_clock_s),
             }
         )
@@ -132,9 +127,7 @@ def run_public_vue_benchmark(
         "benchmark": "public_vue_context_selection",
         "repo_url": repo_url,
         "repo_path": str(target_repo),
-        "onboarding_wall_clock_s": onboarding_wall_clock_s,
         "total_wall_clock_s": round(time.time() - start, 4),
-        "manifest": manifest,
         "repository_summary": summary,
         "prompts": prompt_results,
         "summary": summarize_prompt_results(prompt_results),
@@ -176,17 +169,17 @@ def resolve_target_repo(
 
 
 def score_gog_context(prompt: ContextPrompt, bundle: dict[str, Any], wall_clock_s: float) -> dict[str, Any]:
-    selected_files = bundle["context"]["files"]
+    selected_files = bundle["metadata"]["rel_paths"]
     expected_files = list(prompt.expected_files)
     return {
-        "retrieval_mode": "gog",
-        "selection_strategy": bundle["selection"]["strategy"],
+        "retrieval_mode": "gog_lite",
+        "selection_strategy": "gog_lite_keyword_graph",
         "selected_files": selected_files,
         "selected_file_count": len(selected_files),
-        "relations": bundle["context"]["relations"],
-        "relation_count": len(bundle["context"]["relations"]),
+        "relations": [],
+        "relation_count": 0,
         "context_tokens_estimate": count_tokens_in_string(json.dumps(bundle)),
-        "source_tokens_estimate": bundle["selection"]["estimated_input_tokens"],
+        "source_tokens_estimate": bundle["metadata"]["total_tokens_estimate"],
         "wall_clock_s": wall_clock_s,
         **score_selection(expected_files, selected_files),
     }
@@ -235,7 +228,7 @@ def score_selection(expected_files: list[str], selected_files: list[str]) -> dic
 def summarize_prompt_results(prompt_results: list[dict[str, Any]]) -> dict[str, Any]:
     return {
         "prompt_count": len(prompt_results),
-        "gog": summarize_mode(prompt_results, "gog"),
+        "gog_lite": summarize_mode(prompt_results, "gog_lite"),
         "traditional_rag": summarize_mode(prompt_results, "traditional_rag"),
     }
 

@@ -1,0 +1,32 @@
+name: Check Swagger API
+
+on:
+  schedule:
+    - cron: '35 17 */4 * 4'
+
+env:
+  CI: true
+
+jobs:
+  e2e_tests:
+    name: E2E test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      # https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22.x
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: E2E test
+        run: pnpm test:e2e:prod

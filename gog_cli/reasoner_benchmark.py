@@ -12,9 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from gog_engine.token_utils import count_tokens_in_string
-
-from .serving import build_context_bundle
+from .token_utils import count_tokens_in_string
 
 
 DEFAULT_MODEL = "kimi-k2.6:cloud"
@@ -64,6 +62,10 @@ def run_benchmark(
     retries: int = 0,
     retry_delay_s: int = 15,
 ) -> dict[str, Any]:
+    raise RuntimeError(
+        "Full GOG reasoner prompt benchmarking depends on GOG Professional. "
+        "Use gog/benchmark_executable_patch.py --mode gog_lite for the public reference benchmark."
+    )
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
     repo_root = repo_path.expanduser().resolve()
     results: list[dict[str, Any]] = []

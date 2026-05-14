@@ -1,7 +1,0 @@
-word,source,hypothesis,run1_avg,run2_avg,run3_avg,mean_composite,range_score,stability_class,qwen_avg,gemma_avg,llama_avg,model_variance,top_concept,concept_consistency,cultural_output_rate,semantic_output_rate,output_classification,vs_layer1_mean,is_above_baseline,linguistic_drift_rate,verdict
-TRUTH,claude,genuine semantic primitive alongside LOVE,4.79,4.03,3.89,4.237,0.9,STABLE,4.43,7.65,0.63,2.872,TRUTH,0.156,0.022,0.2,AMBIGUOUS,-2.197,False,0.0,AMBIGUOUS — insufficient signal
-SPIRIT,derek,"culturally specific, not universal primitive",4.44,3.39,3.83,3.884,1.05,STABLE,2.36,7.46,1.83,2.538,Spirit,0.133,0.022,0.178,AMBIGUOUS,-2.55,False,0.0,AMBIGUOUS — insufficient signal
-GOD,derek,"culturally specific, not universal primitive",4.09,3.59,3.73,3.802,0.5,STABLE,3.25,6.75,1.41,2.213,GOD,0.267,0.556,0.044,CULTURAL,-2.632,False,0.0,"CULTURAL CONSTRUCT — training-dependent, not universal"
-SELF,claude,most primitive of all — Wierzbicka's deepest prime,3.56,4.08,3.27,3.637,0.81,STABLE,2.67,7.14,1.11,2.556,SELF,0.205,0.111,0.0,AMBIGUOUS,-2.797,False,0.0,AMBIGUOUS — insufficient signal
-LOVE,derek,semantic truth OR training saturation,3.52,3.36,3.44,3.44,0.16,STABLE,2.53,7.55,0.24,3.05,Love,0.209,0.022,0.133,AMBIGUOUS,-2.994,False,0.0,AMBIGUOUS — insufficient signal
-DEATH,claude,biologically universal but culturally processed,3.13,4.07,2.37,3.189,1.7,MARGINAL,3.06,5.99,0.52,2.234,death,0.2,0.178,0.2,AMBIGUOUS,-3.245,False,0.022,AMBIGUOUS — insufficient signal
