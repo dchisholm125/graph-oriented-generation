@@ -1,7 +1,7 @@
 # Graph-Oriented Generation (GOG)
 ### Persistent Symbolic State for Software Generation
 
-> **Status:** GOG is evolving from a benchmark prototype into a repo-resident system model for graph-native software agents.
+> **Status:** GOG is evolving from a benchmark prototype into a repo-resident system model for graph-native software agents. See [docs/PUBLIC_PRIVATE_BOUNDARY.md](./docs/PUBLIC_PRIVATE_BOUNDARY.md) for how this repo relates to production and research boundaries.
 
 ---
 
