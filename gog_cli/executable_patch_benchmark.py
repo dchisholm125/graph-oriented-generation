@@ -17,8 +17,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from gog_engine.token_utils import count_tokens_in_string
-
 from .failure_taxonomy import classify_attempt_failure, summarize_failure_classes
 from .gold_context import (
     count_spurious_import_lines,
@@ -27,14 +25,13 @@ from .gold_context import (
     score_context_selection,
     score_edit_surface,
 )
-from .onboarding import onboard_repository
 from .reasoner_benchmark import DEFAULT_MODEL, extract_json_payload, normalize_cli_output
-from .semantic_plan_benchmark import build_traditional_rag_bundle
-from .serving import build_context_bundle
+from .lite_serving import build_lite_context_bundle
+from .token_utils import count_tokens_in_string
 
 
 RESULTS_DIR = Path("gog") / "results"
-DEFAULT_REPO = Path("gog") / "public-repos" / "vue3-realworld-example-app"
+DEFAULT_REPO = Path("gog") / "fixtures" / "vue3-realworld-example-app"
 PATCH_RESPONSE_SCHEMA = {
     "type": "object",
     "required": ["files", "summary"],
@@ -307,7 +304,7 @@ def run_executable_patch_benchmark(
     _assert_env_ready(repo_root, dry_run)
     active_tasks = tasks if tasks else TASKS
     selected_tasks = [task for task in active_tasks if not task_ids or task.id in task_ids]
-    selected_modes = [mode for mode in ("gog", "traditional_rag") if not modes or mode in modes]
+    selected_modes = [mode for mode in ("gog_lite", "traditional_rag") if not modes or mode in modes]
     results: list[dict[str, Any]] = []
 
     for task in selected_tasks:
@@ -362,7 +359,6 @@ def run_task_mode(
         work_repo = Path(tmp) / source_repo.name
         copy_repo(source_repo, work_repo)
         apply_setup_patches(work_repo, task)
-        onboard_repository(work_repo, force=True)
 
         context = build_patch_context(
             work_repo,
@@ -474,14 +470,18 @@ def build_patch_context(
     rag_source_token_budget: int | None = None,
 ) -> dict[str, Any]:
     if mode == "gog":
-        bundle = build_context_bundle(repo_root, task.prompt)
-        files = _merge_expected_hints(bundle["context"]["files"], task.expected_files)
+        raise RuntimeError(
+            "Full GOG mode is part of GOG Professional. "
+            "Use --mode gog_lite for the public reference implementation."
+        )
+    if mode == "gog_lite":
+        bundle = build_lite_context_bundle(repo_root, task.prompt)
+        files = _merge_expected_hints(bundle["metadata"]["rel_paths"], task.expected_files)
         return {
-            "mode": "gog",
+            "mode": "gog_lite",
             "files": files,
             "source_files": read_source_files(repo_root, files),
-            "graph_relations": bundle["context"]["relations"],
-            "context_membrane": bundle["context_membrane"],
+            "lite_metadata": bundle["metadata"],
             "validation_commands": [" ".join(command) for command in task.validation_commands],
             "tokens": count_tokens_in_string(json.dumps(bundle)),
         }
@@ -536,6 +536,105 @@ def read_source_files(repo_root: Path, files: list[str]) -> list[dict[str, str]]
             continue
         source_files.append({"path": rel_path, "content": path.read_text(encoding="utf-8")})
     return source_files
+
+
+def build_traditional_rag_bundle(
+    repo_root: Path,
+    prompt: str,
+    max_files: int = 4,
+    max_chars_per_file: int = 4500,
+    max_source_tokens: int | None = None,
+) -> dict[str, Any]:
+    """Build a simple keyword RAG baseline from unstructured source text."""
+    query_terms = _query_terms(prompt)
+    explicit_files = _explicit_prompt_files(repo_root, prompt)
+    explicit_rel_paths = {path.relative_to(repo_root).as_posix() for path in explicit_files}
+    candidates: list[tuple[int, str, str]] = []
+    for path in explicit_files + [
+        path for path in _iter_source_files(repo_root)
+        if path.relative_to(repo_root).as_posix() not in explicit_rel_paths
+    ]:
+        rel_path = path.relative_to(repo_root).as_posix()
+        try:
+            text = path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        haystack = f"{rel_path}\n{text}".lower()
+        score = sum(haystack.count(term) for term in query_terms)
+        if rel_path in explicit_rel_paths:
+            score += 10000
+        if score <= 0:
+            continue
+        candidates.append((score, rel_path, text[:max_chars_per_file]))
+
+    ranked_candidates = sorted(candidates, key=lambda item: (-item[0], item[1]))
+    ranked = []
+    source_tokens = 0
+    for score, rel_path, text in ranked_candidates:
+        if len(ranked) >= max_files:
+            break
+        next_tokens = count_tokens_in_string(text)
+        if max_source_tokens is not None and ranked and source_tokens + next_tokens > max_source_tokens:
+            break
+        ranked.append((score, rel_path, text))
+        source_tokens += next_tokens
+    return {
+        "retrieved_files": [rel_path for _, rel_path, _ in ranked],
+        "chunks": [
+            {
+                "file": rel_path,
+                "score": score,
+                "text": text,
+            }
+            for score, rel_path, text in ranked
+        ],
+        "max_source_tokens": max_source_tokens,
+        "source_tokens_estimate": source_tokens,
+    }
+
+
+def _query_terms(prompt: str) -> set[str]:
+    terms = {
+        term.lower()
+        for term in re.findall(r"[A-Za-z_][A-Za-z0-9_]{3,}", prompt)
+        if term.lower() not in {"this", "that", "with", "from", "into", "downstream"}
+    }
+    for file_match in re.findall(r"[A-Za-z0-9_/.-]+\.(?:py|ts|vue|js)", prompt):
+        path = Path(file_match)
+        terms.add(path.name.lower())
+        terms.add(path.stem.lower())
+    return terms
+
+
+def _explicit_prompt_files(repo_root: Path, prompt: str) -> list[Path]:
+    matches: list[Path] = []
+    seen = set()
+    for mention in re.findall(r"[A-Za-z0-9_/.-]+\.(?:py|ts|vue|js)", prompt):
+        candidate = repo_root / mention
+        if candidate.exists() and candidate.is_file() and candidate not in seen:
+            seen.add(candidate)
+            matches.append(candidate)
+    return matches
+
+
+def _iter_source_files(repo_root: Path):
+    ignored_parts = {
+        ".git",
+        ".gog",
+        "node_modules",
+        "dist",
+        "build",
+        "coverage",
+        "__pycache__",
+        ".pytest_cache",
+    }
+    for path in repo_root.rglob("*"):
+        if not path.is_file():
+            continue
+        if any(part in ignored_parts for part in path.parts):
+            continue
+        if path.suffix.lower() in {".py", ".ts", ".tsx", ".vue", ".js", ".jsx"}:
+            yield path
 
 
 def copy_repo(source_repo: Path, work_repo: Path) -> None:
@@ -702,7 +801,7 @@ def _is_transient_error(message: str) -> bool:
 
 def summarize_results(results: list[dict[str, Any]]) -> dict[str, Any]:
     summary: dict[str, Any] = {}
-    for mode in ("gog", "traditional_rag"):
+    for mode in ("gog_lite", "traditional_rag"):
         rows = [row for row in results if row["mode"] == mode]
         if not rows:
             continue
@@ -853,7 +952,16 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--model", default=DEFAULT_MODEL, help="Ollama model tag to benchmark.")
     parser.add_argument("--output-dir", help="Optional output directory for JSON results.")
     parser.add_argument("--task", action="append", dest="tasks")
-    parser.add_argument("--mode", action="append", dest="modes", choices=["gog", "traditional_rag"])
+    parser.add_argument(
+        "--mode",
+        action="append",
+        dest="modes",
+        choices=["gog_lite", "traditional_rag"],
+        help=(
+            "Public benchmark mode. Full GOG mode is part of GOG Professional; "
+            "use gog_lite for the public reference implementation."
+        ),
+    )
     parser.add_argument("--attempts", type=int, default=1, help="Attempts per task/mode for Pass@k.")
     parser.add_argument("--timeout-s", type=int, default=600, help="Per-model-call timeout.")
     parser.add_argument("--retries", type=int, default=1, help="Retry transient Ollama/provider failures per attempt.")

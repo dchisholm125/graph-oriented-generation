@@ -19,5 +19,10 @@ htmlcov/
 .vscode/
 node_modules/
 .gog/
+.gog_artifacts/
+*.pkl
+*.pkl.json
+public-repos/*/
+!public-repos/.gitkeep
 Modelfile*
 output*

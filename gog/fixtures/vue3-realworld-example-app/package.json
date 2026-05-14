@@ -1,0 +1,87 @@
+{
+  "name": "vue3-realworld-example-app",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">= 20"
+  },
+  "packageManager": "pnpm@10.33.0",
+  "type": "module",
+  "scripts": {
+    "prepare": "simple-git-hooks",
+    "dev": "vite --port 4173",
+    "build": "vite build",
+    "build:analyze": "cross-env ANALYZE=1 vite build && size-limit",
+    "serve": "vite preview --port 4173",
+    "type-check": "vue-tsc --noEmit",
+    "lint": "eslint --fix .",
+    "test": "pnpm test:unit && pnpm test:e2e && tsx scripts/merge-coverage.ts",
+    "test:e2e": "pnpm build && cross-env CI=true playwright test",
+    "test:e2e:prod": "cross-env E2E_BASE_URL='https://vue3-realworld-example-app-mutoe.vercel.app' playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:ui:debug": "playwright test --ui --headed --debug",
+    "test:unit": "vitest run",
+    "generate:api": "curl -sL https://raw.githubusercontent.com/gothinkster/realworld/refs/heads/main/api/openapi.yml -o ./src/services/openapi.yml && sta generate -p ./src/services/openapi.yml -o ./src/services -n api.ts"
+  },
+  "dependencies": {
+    "insane": "^2.6.2",
+    "marked": "^18.0.0",
+    "pinia": "^3.0.4",
+    "vue": "^3.5.32",
+    "vue-router": "^5.0.4"
+  },
+  "devDependencies": {
+    "@mutoe/eslint-config": "^7.6.1-5",
+    "@pinia/testing": "^1.0.3",
+    "@playwright/test": "1.55.1",
+    "@size-limit/preset-app": "^12.1.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/user-event": "^14.6.1",
+    "@testing-library/vue": "^8.1.0",
+    "@types/node": "^25.6.0",
+    "@vitejs/plugin-vue": "^6.0.6",
+    "@vitest/coverage-v8": "^4.1.4",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.2.0",
+    "eslint-plugin-vuejs-accessibility": "^2.5.0",
+    "happy-dom": "^20.9.0",
+    "lint-staged": "^16.4.0",
+    "monocart-coverage-reports": "^2.12.9",
+    "msw": "^2.13.3",
+    "rollup-plugin-analyzer": "^4.0.0",
+    "simple-git-hooks": "^2.13.1",
+    "size-limit": "^12.1.0",
+    "swagger-typescript-api": "^13.6.8",
+    "tsx": "^4.21.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.0.8",
+    "vitest": "^4.1.4",
+    "vitest-monocart-coverage": "^4.0.2",
+    "vue-tsc": "^3.2.6"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npm exec lint-staged",
+    "pre-push": "pnpm type-check && pnpm build"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
+  },
+  "size-limit": [
+    {
+      "name": "html",
+      "path": "dist/index.html"
+    },
+    {
+      "name": "css",
+      "path": "dist/**/*.css"
+    },
+    {
+      "name": "bundle",
+      "path": "dist/**/index-*.js"
+    },
+    {
+      "name": "others(pages, hooks, etc)",
+      "path": "dist/**/!(index-*.js|*.css)"
+    }
+  ]
+}

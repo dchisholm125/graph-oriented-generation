@@ -285,11 +285,12 @@ The reasoner should receive a context bundle closer to:
 
 not a whole-repo context flood.
 
-The current CLI begins this path with:
+The public reference implementation begins this path with:
 
-- `gog refresh`
-- `gog summarize`
-- `gog context --prompt "..."`
+- `gog_engine_lite/import_graph.py`
+- `gog_engine_lite/graph_search.py`
+- `gog_cli/lite_serving.py`
+- `gog_cli/lite_membrane.py`
 
 ---
 
@@ -307,21 +308,18 @@ If a future symbolic reasoning model proves non-hallucinatory, this checkpoint m
 
 Relevant implementation areas:
 
-- `gog_engine/ast_parser.py`
-- `gog_engine/graph_search.py`
-- `gog_engine/planner/intent_parser.py`
-- `gog_engine/planner/mutation_planner.py`
-- `gog_engine/planner/renderer_prompt.py`
-- `gog_engine/salience_evaluator.py`
+- `gog_engine_lite/import_graph.py`
+- `gog_engine_lite/graph_search.py`
+- `gog_cli/lite_serving.py`
+- `gog_cli/lite_membrane.py`
+- `gog_cli/gold_context.py`
+- `gog_cli/failure_taxonomy.py`
 
 Relevant experimental evidence:
 
-- `SRM_PAPER.md`
-- `docs/SRM_PHASE_2_FINAL_RESULTS.md`
-- `docs/SRM_PHASE_2_HONEST_ASSESSMENT.md`
 - `gog/results/`
 
 Relevant next-step architecture docs:
 
-- `docs/REASONER_INTERFACE.md`
-- `docs/REPO_ONBOARDING_PIPELINE.md`
+- `docs/GOG_LITE_DESIGN.md`
+- `docs/PUBLIC_PRIVATE_BOUNDARY.md`

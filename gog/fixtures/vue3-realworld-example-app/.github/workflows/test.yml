@@ -1,0 +1,140 @@
+name: Test
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+
+env:
+  CI: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22.x
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: TypeScript check
+        run: pnpm type-check
+
+      - name: Eslint check
+        run: pnpm lint
+
+      - name: Build check
+        if: github.event_name == 'push'
+        run: pnpm build
+
+      - name: Bundle check
+        if: github.event_name == 'pull_request'
+        uses: andresz1/size-limit-action@v1
+        env:
+          ANALYZE: true
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          skip_step: install
+
+  unit_test:
+    name: Unit test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22.x
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Unit test
+        run: pnpm test:unit
+
+      - name: Update coverage report
+        uses: codecov/codecov-action@v6
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/unit/lcov.info
+
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: unit-test-report
+          path: |
+            coverage/
+          retention-days: 30
+
+  e2e_tests:
+    name: Playwright E2E test
+    timeout-minutes: 10
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22.x
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Get playwright version
+        id: playwright-version
+        run: echo "version=$(pnpm info playwright version)" >> $GITHUB_OUTPUT
+
+      - name: Cache playwright binary
+        id: cache-playwright-binary
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-binary-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
+
+      - name: Install Playwright binary
+        if: steps.cache-playwright-binary.outputs.cache-hit != 'true'
+        run: pnpm playwright install --with-deps
+
+      - name: E2E test
+        run: pnpm test:e2e
+
+      - name: Update coverage report
+        uses: codecov/codecov-action@v6
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/e2e/lcov.info
+
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: e2e-test-report
+          path: |
+            playwright-report/
+            coverage/
+          retention-days: 30

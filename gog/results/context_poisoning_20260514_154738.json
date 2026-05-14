@@ -1,0 +1,1429 @@
+{
+  "generated_at": "2026-05-14T15:47:38.848401+00:00",
+  "benchmark": "context_poisoning_executable_patch",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app",
+  "attempts_per_case": 1,
+  "transient_retries": 1,
+  "retry_delay_s": 15,
+  "dry_run": true,
+  "trials": 1,
+  "rag_source_token_budgets": [
+    1000,
+    4000,
+    16000,
+    64000
+  ],
+  "failure_taxonomy": [
+    {
+      "name": "invalid_json",
+      "label": "Invalid JSON",
+      "recoverable_by_retry": true,
+      "architectural_concern": "low",
+      "description": "The model did not return a parseable JSON patch payload."
+    },
+    {
+      "name": "invalid_syntax",
+      "label": "Invalid syntax",
+      "recoverable_by_retry": true,
+      "architectural_concern": "medium",
+      "description": "The patch applied but produced a syntax or parser error."
+    },
+    {
+      "name": "missing_semantic_behavior",
+      "label": "Missing semantic behavior",
+      "recoverable_by_retry": false,
+      "architectural_concern": "high",
+      "description": "The patch applied and compiled but failed task acceptance behavior."
+    },
+    {
+      "name": "spurious_import",
+      "label": "Spurious import",
+      "recoverable_by_retry": true,
+      "architectural_concern": "medium",
+      "description": "The patch introduced imports outside expected edit files."
+    },
+    {
+      "name": "wrong_file_edited",
+      "label": "Wrong file edited",
+      "recoverable_by_retry": false,
+      "architectural_concern": "high",
+      "description": "The model edited, or attempted to edit, files outside the expected edit surface."
+    },
+    {
+      "name": "patch_rejected",
+      "label": "Patch rejected",
+      "recoverable_by_retry": true,
+      "architectural_concern": "medium",
+      "description": "The model returned JSON, but the benchmark rejected the patch contract."
+    },
+    {
+      "name": "validation_failure",
+      "label": "Validation failure",
+      "recoverable_by_retry": false,
+      "architectural_concern": "high",
+      "description": "The patch failed validation for an unclassified reason."
+    }
+  ],
+  "results": [
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "gog",
+      "gold_context": {
+        "task_id": "debug_query_serialization_easy",
+        "gold_files": [
+          "src/utils/params-to-query.ts",
+          "src/utils/params-to-query.spec.ts"
+        ],
+        "gold_symbols": [
+          "params2query"
+        ],
+        "expected_edit_files": [
+          "src/utils/params-to-query.ts"
+        ],
+        "failure_mode": "query serialization drops falsy values and skips URI encoding"
+      },
+      "retrieved_files": [
+        "src/utils/params-to-query.ts",
+        "src/utils/params-to-query.spec.ts"
+      ],
+      "context_tokens_estimate": 471,
+      "prompt_tokens_estimate": 1166,
+      "context_metrics": {
+        "context_precision": 1.0,
+        "context_recall": 1.0,
+        "noise_ratio": 0.0,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 0,
+        "matched_gold_files": [
+          "src/utils/params-to-query.spec.ts",
+          "src/utils/params-to-query.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": []
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "trial_index": 1,
+      "poison_source_token_budget": null
+    },
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_query_serialization_easy",
+        "gold_files": [
+          "src/utils/params-to-query.ts",
+          "src/utils/params-to-query.spec.ts"
+        ],
+        "gold_symbols": [
+          "params2query"
+        ],
+        "expected_edit_files": [
+          "src/utils/params-to-query.ts"
+        ],
+        "failure_mode": "query serialization drops falsy values and skips URI encoding"
+      },
+      "retrieved_files": [
+        "src/services/api.ts",
+        "src/utils/params-to-query.ts",
+        "src/utils/params-to-query.spec.ts"
+      ],
+      "context_tokens_estimate": 1980,
+      "prompt_tokens_estimate": 8603,
+      "context_metrics": {
+        "context_precision": 0.6667,
+        "context_recall": 1.0,
+        "noise_ratio": 0.3333,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 1,
+        "matched_gold_files": [
+          "src/utils/params-to-query.spec.ts",
+          "src/utils/params-to-query.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "src/services/api.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "trial_index": 1,
+      "poison_source_token_budget": 1000
+    },
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_query_serialization_easy",
+        "gold_files": [
+          "src/utils/params-to-query.ts",
+          "src/utils/params-to-query.spec.ts"
+        ],
+        "gold_symbols": [
+          "params2query"
+        ],
+        "expected_edit_files": [
+          "src/utils/params-to-query.ts"
+        ],
+        "failure_mode": "query serialization drops falsy values and skips URI encoding"
+      },
+      "retrieved_files": [
+        "src/services/api.ts",
+        "src/utils/params-to-query.spec.ts",
+        "src/components/ArticleDetailMeta.spec.ts",
+        "src/utils/params-to-query.ts"
+      ],
+      "context_tokens_estimate": 3608,
+      "prompt_tokens_estimate": 11592,
+      "context_metrics": {
+        "context_precision": 0.5,
+        "context_recall": 1.0,
+        "noise_ratio": 0.5,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 2,
+        "matched_gold_files": [
+          "src/utils/params-to-query.spec.ts",
+          "src/utils/params-to-query.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/services/api.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "trial_index": 1,
+      "poison_source_token_budget": 4000
+    },
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_query_serialization_easy",
+        "gold_files": [
+          "src/utils/params-to-query.ts",
+          "src/utils/params-to-query.spec.ts"
+        ],
+        "gold_symbols": [
+          "params2query"
+        ],
+        "expected_edit_files": [
+          "src/utils/params-to-query.ts"
+        ],
+        "failure_mode": "query serialization drops falsy values and skips URI encoding"
+      },
+      "retrieved_files": [
+        "src/services/api.ts",
+        "src/utils/params-to-query.spec.ts",
+        "src/components/ArticleDetailMeta.spec.ts",
+        "src/utils/test/test.utils.ts",
+        "src/utils/use-async.spec.ts",
+        "src/utils/test/fixtures.ts",
+        "playwright/page-objects/conduit.page-object.ts",
+        "src/components/ArticlesListNavigation.vue",
+        "playwright/page-objects/edit-article.page-object.ts",
+        "src/composable/use-profile.ts",
+        "src/setup-tests.ts",
+        "src/utils/params-to-query.ts",
+        "playwright/page-objects/register.page-object.ts",
+        "src/components/ArticleDetail.spec.ts",
+        "src/composable/use-articles.ts",
+        "src/store/user.ts",
+        "src/utils/use-async.ts",
+        "config/mcr.base.config.ts",
+        "playwright.config.ts",
+        "playwright/extends.ts",
+        "playwright/page-objects/login.page-object.ts",
+        "src/components/ArticleDetailComment.spec.ts",
+        "src/pages/Login.vue",
+        "src/pages/Profile.spec.ts",
+        "src/pages/Register.vue"
+      ],
+      "context_tokens_estimate": 19324,
+      "prompt_tokens_estimate": 48801,
+      "context_metrics": {
+        "context_precision": 0.08,
+        "context_recall": 1.0,
+        "noise_ratio": 0.92,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 23,
+        "matched_gold_files": [
+          "src/utils/params-to-query.spec.ts",
+          "src/utils/params-to-query.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "config/mcr.base.config.ts",
+          "playwright.config.ts",
+          "playwright/extends.ts",
+          "playwright/page-objects/conduit.page-object.ts",
+          "playwright/page-objects/edit-article.page-object.ts",
+          "playwright/page-objects/login.page-object.ts",
+          "playwright/page-objects/register.page-object.ts",
+          "src/components/ArticleDetail.spec.ts",
+          "src/components/ArticleDetailComment.spec.ts",
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/components/ArticlesListNavigation.vue",
+          "src/composable/use-articles.ts",
+          "src/composable/use-profile.ts",
+          "src/pages/Login.vue",
+          "src/pages/Profile.spec.ts",
+          "src/pages/Register.vue",
+          "src/services/api.ts",
+          "src/setup-tests.ts",
+          "src/store/user.ts",
+          "src/utils/test/fixtures.ts",
+          "src/utils/test/test.utils.ts",
+          "src/utils/use-async.spec.ts",
+          "src/utils/use-async.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "trial_index": 1,
+      "poison_source_token_budget": 16000
+    },
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_query_serialization_easy",
+        "gold_files": [
+          "src/utils/params-to-query.ts",
+          "src/utils/params-to-query.spec.ts"
+        ],
+        "gold_symbols": [
+          "params2query"
+        ],
+        "expected_edit_files": [
+          "src/utils/params-to-query.ts"
+        ],
+        "failure_mode": "query serialization drops falsy values and skips URI encoding"
+      },
+      "retrieved_files": [
+        "src/services/api.ts",
+        "src/utils/params-to-query.spec.ts",
+        "src/components/ArticleDetailMeta.spec.ts",
+        "src/utils/test/test.utils.ts",
+        "src/utils/use-async.spec.ts",
+        "src/utils/test/fixtures.ts",
+        "playwright/page-objects/conduit.page-object.ts",
+        "src/components/ArticlesListNavigation.vue",
+        "playwright/page-objects/edit-article.page-object.ts",
+        "src/composable/use-profile.ts",
+        "src/setup-tests.ts",
+        "src/utils/params-to-query.ts",
+        "playwright/page-objects/register.page-object.ts",
+        "src/components/ArticleDetail.spec.ts",
+        "src/composable/use-articles.ts",
+        "src/store/user.ts",
+        "src/utils/use-async.ts",
+        "config/mcr.base.config.ts",
+        "playwright.config.ts",
+        "playwright/extends.ts",
+        "playwright/page-objects/login.page-object.ts",
+        "src/components/ArticleDetailComment.spec.ts",
+        "src/pages/Login.vue",
+        "src/pages/Profile.spec.ts",
+        "src/pages/Register.vue",
+        "src/pages/Settings.spec.ts",
+        "src/pages/Settings.vue",
+        "src/utils/storage.spec.ts",
+        "src/utils/storage.ts",
+        "playwright/specs/auth.spec.ts",
+        "src/components/ArticleDetailComment.vue",
+        "src/components/ArticleDetailComments.spec.ts",
+        "src/components/ArticleDetailCommentsForm.spec.ts",
+        "src/pages/Profile.vue",
+        "src/plugins/marked.ts",
+        "src/plugins/set-authorization-token.ts",
+        "src/router.ts",
+        "vite.config.ts"
+      ],
+      "context_tokens_estimate": 27050,
+      "prompt_tokens_estimate": 64256,
+      "context_metrics": {
+        "context_precision": 0.0526,
+        "context_recall": 1.0,
+        "noise_ratio": 0.9474,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 36,
+        "matched_gold_files": [
+          "src/utils/params-to-query.spec.ts",
+          "src/utils/params-to-query.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "config/mcr.base.config.ts",
+          "playwright.config.ts",
+          "playwright/extends.ts",
+          "playwright/page-objects/conduit.page-object.ts",
+          "playwright/page-objects/edit-article.page-object.ts",
+          "playwright/page-objects/login.page-object.ts",
+          "playwright/page-objects/register.page-object.ts",
+          "playwright/specs/auth.spec.ts",
+          "src/components/ArticleDetail.spec.ts",
+          "src/components/ArticleDetailComment.spec.ts",
+          "src/components/ArticleDetailComment.vue",
+          "src/components/ArticleDetailComments.spec.ts",
+          "src/components/ArticleDetailCommentsForm.spec.ts",
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/components/ArticlesListNavigation.vue",
+          "src/composable/use-articles.ts",
+          "src/composable/use-profile.ts",
+          "src/pages/Login.vue",
+          "src/pages/Profile.spec.ts",
+          "src/pages/Profile.vue",
+          "src/pages/Register.vue",
+          "src/pages/Settings.spec.ts",
+          "src/pages/Settings.vue",
+          "src/plugins/marked.ts",
+          "src/plugins/set-authorization-token.ts",
+          "src/router.ts",
+          "src/services/api.ts",
+          "src/setup-tests.ts",
+          "src/store/user.ts",
+          "src/utils/storage.spec.ts",
+          "src/utils/storage.ts",
+          "src/utils/test/fixtures.ts",
+          "src/utils/test/test.utils.ts",
+          "src/utils/use-async.spec.ts",
+          "src/utils/use-async.ts",
+          "vite.config.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "trial_index": 1,
+      "poison_source_token_budget": 64000
+    },
+    {
+      "task_id": "feature_pagination_edges_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "mode": "gog",
+      "gold_context": {
+        "task_id": "feature_pagination_edges_medium",
+        "gold_files": [
+          "src/components/AppPagination.vue",
+          "src/components/AppPagination.spec.ts"
+        ],
+        "gold_symbols": [
+          "AppPagination",
+          "onPageChange"
+        ],
+        "expected_edit_files": [
+          "src/components/AppPagination.vue"
+        ],
+        "failure_mode": "pagination component lacks bounded previous and next controls"
+      },
+      "retrieved_files": [
+        "src/components/AppPagination.vue",
+        "src/components/ArticlesList.vue",
+        "src/components/ArticlesListArticlePreview.vue",
+        "src/components/ArticlesListNavigation.vue",
+        "src/composable/use-articles.ts",
+        "src/composable/use-favorite-article.ts",
+        "src/router.ts",
+        "src/services/api.ts",
+        "src/services/index.ts",
+        "src/store/user.ts",
+        "src/components/AppPagination.spec.ts"
+      ],
+      "context_tokens_estimate": 1659,
+      "prompt_tokens_estimate": 13258,
+      "context_metrics": {
+        "context_precision": 0.1818,
+        "context_recall": 1.0,
+        "noise_ratio": 0.8182,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 9,
+        "matched_gold_files": [
+          "src/components/AppPagination.spec.ts",
+          "src/components/AppPagination.vue"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "src/components/ArticlesList.vue",
+          "src/components/ArticlesListArticlePreview.vue",
+          "src/components/ArticlesListNavigation.vue",
+          "src/composable/use-articles.ts",
+          "src/composable/use-favorite-article.ts",
+          "src/router.ts",
+          "src/services/api.ts",
+          "src/services/index.ts",
+          "src/store/user.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "trial_index": 1,
+      "poison_source_token_budget": null
+    },
+    {
+      "task_id": "feature_pagination_edges_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "feature_pagination_edges_medium",
+        "gold_files": [
+          "src/components/AppPagination.vue",
+          "src/components/AppPagination.spec.ts"
+        ],
+        "gold_symbols": [
+          "AppPagination",
+          "onPageChange"
+        ],
+        "expected_edit_files": [
+          "src/components/AppPagination.vue"
+        ],
+        "failure_mode": "pagination component lacks bounded previous and next controls"
+      },
+      "retrieved_files": [
+        "playwright/specs/auth.spec.ts",
+        "src/components/AppPagination.vue",
+        "src/components/AppPagination.spec.ts"
+      ],
+      "context_tokens_estimate": 1198,
+      "prompt_tokens_estimate": 3825,
+      "context_metrics": {
+        "context_precision": 0.6667,
+        "context_recall": 1.0,
+        "noise_ratio": 0.3333,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 1,
+        "matched_gold_files": [
+          "src/components/AppPagination.spec.ts",
+          "src/components/AppPagination.vue"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright/specs/auth.spec.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "trial_index": 1,
+      "poison_source_token_budget": 1000
+    },
+    {
+      "task_id": "feature_pagination_edges_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "feature_pagination_edges_medium",
+        "gold_files": [
+          "src/components/AppPagination.vue",
+          "src/components/AppPagination.spec.ts"
+        ],
+        "gold_symbols": [
+          "AppPagination",
+          "onPageChange"
+        ],
+        "expected_edit_files": [
+          "src/components/AppPagination.vue"
+        ],
+        "failure_mode": "pagination component lacks bounded previous and next controls"
+      },
+      "retrieved_files": [
+        "playwright/specs/auth.spec.ts",
+        "src/components/AppPagination.spec.ts",
+        "playwright/specs/article.spec.ts",
+        "playwright/extends.ts",
+        "src/components/AppPagination.vue",
+        "playwright/specs/home.spec.ts"
+      ],
+      "context_tokens_estimate": 4805,
+      "prompt_tokens_estimate": 10103,
+      "context_metrics": {
+        "context_precision": 0.3333,
+        "context_recall": 1.0,
+        "noise_ratio": 0.6667,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 4,
+        "matched_gold_files": [
+          "src/components/AppPagination.spec.ts",
+          "src/components/AppPagination.vue"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright/extends.ts",
+          "playwright/specs/article.spec.ts",
+          "playwright/specs/auth.spec.ts",
+          "playwright/specs/home.spec.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "trial_index": 1,
+      "poison_source_token_budget": 4000
+    },
+    {
+      "task_id": "feature_pagination_edges_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "feature_pagination_edges_medium",
+        "gold_files": [
+          "src/components/AppPagination.vue",
+          "src/components/AppPagination.spec.ts"
+        ],
+        "gold_symbols": [
+          "AppPagination",
+          "onPageChange"
+        ],
+        "expected_edit_files": [
+          "src/components/AppPagination.vue"
+        ],
+        "failure_mode": "pagination component lacks bounded previous and next controls"
+      },
+      "retrieved_files": [
+        "playwright/specs/auth.spec.ts",
+        "src/components/AppPagination.spec.ts",
+        "playwright/specs/article.spec.ts",
+        "playwright/extends.ts",
+        "src/components/AppPagination.vue",
+        "playwright/specs/home.spec.ts",
+        "src/composable/use-articles.ts",
+        "playwright/page-objects/edit-article.page-object.ts",
+        "playwright/page-objects/article-detail.page-object.ts",
+        "playwright/page-objects/conduit.page-object.ts",
+        "playwright/page-objects/register.page-object.ts",
+        "playwright/page-objects/login.page-object.ts",
+        "playwright/specs/user.spec.ts",
+        "src/router.ts",
+        "src/components/ArticlesList.vue",
+        "src/components/ArticleDetailMeta.vue",
+        "src/pages/Settings.spec.ts",
+        "src/components/ArticlesListArticlePreview.vue",
+        "src/components/ArticleDetailComment.vue",
+        "src/pages/Article.vue",
+        "src/pages/NotFound.vue",
+        "src/pages/Profile.spec.ts",
+        "src/pages/Settings.vue",
+        "src/components/ArticleDetailCommentsForm.vue",
+        "src/pages/EditArticle.vue",
+        "src/pages/Home.vue",
+        "src/pages/Login.vue",
+        "src/pages/NotFound.spec.ts",
+        "src/pages/Register.spec.ts",
+        "src/pages/Register.vue",
+        "src/services/index.ts",
+        "playwright/utils/test-decorators.ts"
+      ],
+      "context_tokens_estimate": 19601,
+      "prompt_tokens_estimate": 39683,
+      "context_metrics": {
+        "context_precision": 0.0625,
+        "context_recall": 1.0,
+        "noise_ratio": 0.9375,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 30,
+        "matched_gold_files": [
+          "src/components/AppPagination.spec.ts",
+          "src/components/AppPagination.vue"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright/extends.ts",
+          "playwright/page-objects/article-detail.page-object.ts",
+          "playwright/page-objects/conduit.page-object.ts",
+          "playwright/page-objects/edit-article.page-object.ts",
+          "playwright/page-objects/login.page-object.ts",
+          "playwright/page-objects/register.page-object.ts",
+          "playwright/specs/article.spec.ts",
+          "playwright/specs/auth.spec.ts",
+          "playwright/specs/home.spec.ts",
+          "playwright/specs/user.spec.ts",
+          "playwright/utils/test-decorators.ts",
+          "src/components/ArticleDetailComment.vue",
+          "src/components/ArticleDetailCommentsForm.vue",
+          "src/components/ArticleDetailMeta.vue",
+          "src/components/ArticlesList.vue",
+          "src/components/ArticlesListArticlePreview.vue",
+          "src/composable/use-articles.ts",
+          "src/pages/Article.vue",
+          "src/pages/EditArticle.vue",
+          "src/pages/Home.vue",
+          "src/pages/Login.vue",
+          "src/pages/NotFound.spec.ts",
+          "src/pages/NotFound.vue",
+          "src/pages/Profile.spec.ts",
+          "src/pages/Register.spec.ts",
+          "src/pages/Register.vue",
+          "src/pages/Settings.spec.ts",
+          "src/pages/Settings.vue",
+          "src/router.ts",
+          "src/services/index.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "trial_index": 1,
+      "poison_source_token_budget": 16000
+    },
+    {
+      "task_id": "feature_pagination_edges_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "feature_pagination_edges_medium",
+        "gold_files": [
+          "src/components/AppPagination.vue",
+          "src/components/AppPagination.spec.ts"
+        ],
+        "gold_symbols": [
+          "AppPagination",
+          "onPageChange"
+        ],
+        "expected_edit_files": [
+          "src/components/AppPagination.vue"
+        ],
+        "failure_mode": "pagination component lacks bounded previous and next controls"
+      },
+      "retrieved_files": [
+        "playwright/specs/auth.spec.ts",
+        "src/components/AppPagination.spec.ts",
+        "playwright/specs/article.spec.ts",
+        "playwright/extends.ts",
+        "src/components/AppPagination.vue",
+        "playwright/specs/home.spec.ts",
+        "src/composable/use-articles.ts",
+        "playwright/page-objects/edit-article.page-object.ts",
+        "playwright/page-objects/article-detail.page-object.ts",
+        "playwright/page-objects/conduit.page-object.ts",
+        "playwright/page-objects/register.page-object.ts",
+        "playwright/page-objects/login.page-object.ts",
+        "playwright/specs/user.spec.ts",
+        "src/router.ts",
+        "src/components/ArticlesList.vue",
+        "src/components/ArticleDetailMeta.vue",
+        "src/pages/Settings.spec.ts",
+        "src/components/ArticlesListArticlePreview.vue",
+        "src/components/ArticleDetailComment.vue",
+        "src/pages/Article.vue",
+        "src/pages/NotFound.vue",
+        "src/pages/Profile.spec.ts",
+        "src/pages/Settings.vue",
+        "src/components/ArticleDetailCommentsForm.vue",
+        "src/pages/EditArticle.vue",
+        "src/pages/Home.vue",
+        "src/pages/Login.vue",
+        "src/pages/NotFound.spec.ts",
+        "src/pages/Register.spec.ts",
+        "src/pages/Register.vue",
+        "src/services/index.ts",
+        "playwright/utils/test-decorators.ts",
+        "src/pages/EditArticle.spec.ts",
+        "src/pages/Login.spec.ts",
+        "src/pages/Profile.vue",
+        "playwright.config.ts",
+        "src/components/AppLink.spec.ts",
+        "src/components/ArticleDetail.vue",
+        "src/components/ArticleDetailComment.spec.ts",
+        "src/pages/Article.spec.ts",
+        "src/utils/test/fixtures.ts",
+        "src/utils/test/test.utils.ts",
+        "src/utils/use-async.ts"
+      ],
+      "context_tokens_estimate": 30413,
+      "prompt_tokens_estimate": 67201,
+      "context_metrics": {
+        "context_precision": 0.0465,
+        "context_recall": 1.0,
+        "noise_ratio": 0.9535,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 41,
+        "matched_gold_files": [
+          "src/components/AppPagination.spec.ts",
+          "src/components/AppPagination.vue"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright.config.ts",
+          "playwright/extends.ts",
+          "playwright/page-objects/article-detail.page-object.ts",
+          "playwright/page-objects/conduit.page-object.ts",
+          "playwright/page-objects/edit-article.page-object.ts",
+          "playwright/page-objects/login.page-object.ts",
+          "playwright/page-objects/register.page-object.ts",
+          "playwright/specs/article.spec.ts",
+          "playwright/specs/auth.spec.ts",
+          "playwright/specs/home.spec.ts",
+          "playwright/specs/user.spec.ts",
+          "playwright/utils/test-decorators.ts",
+          "src/components/AppLink.spec.ts",
+          "src/components/ArticleDetail.vue",
+          "src/components/ArticleDetailComment.spec.ts",
+          "src/components/ArticleDetailComment.vue",
+          "src/components/ArticleDetailCommentsForm.vue",
+          "src/components/ArticleDetailMeta.vue",
+          "src/components/ArticlesList.vue",
+          "src/components/ArticlesListArticlePreview.vue",
+          "src/composable/use-articles.ts",
+          "src/pages/Article.spec.ts",
+          "src/pages/Article.vue",
+          "src/pages/EditArticle.spec.ts",
+          "src/pages/EditArticle.vue",
+          "src/pages/Home.vue",
+          "src/pages/Login.spec.ts",
+          "src/pages/Login.vue",
+          "src/pages/NotFound.spec.ts",
+          "src/pages/NotFound.vue",
+          "src/pages/Profile.spec.ts",
+          "src/pages/Profile.vue",
+          "src/pages/Register.spec.ts",
+          "src/pages/Register.vue",
+          "src/pages/Settings.spec.ts",
+          "src/pages/Settings.vue",
+          "src/router.ts",
+          "src/services/index.ts",
+          "src/utils/test/fixtures.ts",
+          "src/utils/test/test.utils.ts",
+          "src/utils/use-async.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "trial_index": 1,
+      "poison_source_token_budget": 64000
+    },
+    {
+      "task_id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "gog",
+      "gold_context": {
+        "task_id": "debug_router_auth_hard",
+        "gold_files": [
+          "src/router.ts",
+          "src/router.spec.ts",
+          "src/store/user.ts"
+        ],
+        "gold_symbols": [
+          "beforeEach",
+          "userStorage"
+        ],
+        "expected_edit_files": [
+          "src/router.ts"
+        ],
+        "failure_mode": "route guard does not protect all authenticated-only routes"
+      },
+      "retrieved_files": [
+        "src/pages/EditArticle.vue",
+        "src/pages/Article.vue",
+        "src/pages/Login.vue",
+        "src/pages/Settings.vue",
+        "src/components/ArticleDetail.vue",
+        "src/components/ArticleDetailComments.vue",
+        "src/store/user.ts",
+        "src/components/ArticleDetailComment.vue",
+        "src/components/ArticleDetailCommentsForm.vue",
+        "src/components/ArticleDetailMeta.vue",
+        "src/router.ts",
+        "src/router.spec.ts"
+      ],
+      "context_tokens_estimate": 1813,
+      "prompt_tokens_estimate": 9565,
+      "context_metrics": {
+        "context_precision": 0.25,
+        "context_recall": 1.0,
+        "noise_ratio": 0.75,
+        "gold_hit_count": 3,
+        "gold_missing_count": 0,
+        "noise_file_count": 9,
+        "matched_gold_files": [
+          "src/router.spec.ts",
+          "src/router.ts",
+          "src/store/user.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "src/components/ArticleDetail.vue",
+          "src/components/ArticleDetailComment.vue",
+          "src/components/ArticleDetailComments.vue",
+          "src/components/ArticleDetailCommentsForm.vue",
+          "src/components/ArticleDetailMeta.vue",
+          "src/pages/Article.vue",
+          "src/pages/EditArticle.vue",
+          "src/pages/Login.vue",
+          "src/pages/Settings.vue"
+        ]
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "trial_index": 1,
+      "poison_source_token_budget": null
+    },
+    {
+      "task_id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_router_auth_hard",
+        "gold_files": [
+          "src/router.ts",
+          "src/router.spec.ts",
+          "src/store/user.ts"
+        ],
+        "gold_symbols": [
+          "beforeEach",
+          "userStorage"
+        ],
+        "expected_edit_files": [
+          "src/router.ts"
+        ],
+        "failure_mode": "route guard does not protect all authenticated-only routes"
+      },
+      "retrieved_files": [
+        "playwright/specs/article.spec.ts",
+        "src/router.ts",
+        "src/router.spec.ts",
+        "src/store/user.ts"
+      ],
+      "context_tokens_estimate": 1428,
+      "prompt_tokens_estimate": 4849,
+      "context_metrics": {
+        "context_precision": 0.75,
+        "context_recall": 1.0,
+        "noise_ratio": 0.25,
+        "gold_hit_count": 3,
+        "gold_missing_count": 0,
+        "noise_file_count": 1,
+        "matched_gold_files": [
+          "src/router.spec.ts",
+          "src/router.ts",
+          "src/store/user.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright/specs/article.spec.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "trial_index": 1,
+      "poison_source_token_budget": 1000
+    },
+    {
+      "task_id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_router_auth_hard",
+        "gold_files": [
+          "src/router.ts",
+          "src/router.spec.ts",
+          "src/store/user.ts"
+        ],
+        "gold_symbols": [
+          "beforeEach",
+          "userStorage"
+        ],
+        "expected_edit_files": [
+          "src/router.ts"
+        ],
+        "failure_mode": "route guard does not protect all authenticated-only routes"
+      },
+      "retrieved_files": [
+        "playwright/specs/article.spec.ts",
+        "src/services/api.ts",
+        "src/composable/use-articles.ts",
+        "src/router.ts",
+        "src/router.spec.ts",
+        "src/store/user.ts"
+      ],
+      "context_tokens_estimate": 4642,
+      "prompt_tokens_estimate": 15049,
+      "context_metrics": {
+        "context_precision": 0.5,
+        "context_recall": 1.0,
+        "noise_ratio": 0.5,
+        "gold_hit_count": 3,
+        "gold_missing_count": 0,
+        "noise_file_count": 3,
+        "matched_gold_files": [
+          "src/router.spec.ts",
+          "src/router.ts",
+          "src/store/user.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright/specs/article.spec.ts",
+          "src/composable/use-articles.ts",
+          "src/services/api.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "trial_index": 1,
+      "poison_source_token_budget": 4000
+    },
+    {
+      "task_id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_router_auth_hard",
+        "gold_files": [
+          "src/router.ts",
+          "src/router.spec.ts",
+          "src/store/user.ts"
+        ],
+        "gold_symbols": [
+          "beforeEach",
+          "userStorage"
+        ],
+        "expected_edit_files": [
+          "src/router.ts"
+        ],
+        "failure_mode": "route guard does not protect all authenticated-only routes"
+      },
+      "retrieved_files": [
+        "playwright/specs/article.spec.ts",
+        "src/services/api.ts",
+        "src/composable/use-articles.ts",
+        "playwright/specs/auth.spec.ts",
+        "src/pages/EditArticle.spec.ts",
+        "src/router.spec.ts",
+        "src/router.ts",
+        "src/components/ArticleDetailMeta.vue",
+        "src/components/ArticleDetailMeta.spec.ts",
+        "src/components/ArticlesListNavigation.vue",
+        "playwright/specs/home.spec.ts",
+        "src/pages/Settings.spec.ts",
+        "src/utils/test/test.utils.ts",
+        "src/pages/EditArticle.vue",
+        "src/components/ArticleDetail.vue",
+        "src/components/ArticlesList.vue",
+        "src/components/ArticlesListArticlePreview.vue",
+        "playwright/specs/user.spec.ts",
+        "playwright/page-objects/conduit.page-object.ts",
+        "src/store/user.ts"
+      ],
+      "context_tokens_estimate": 18908,
+      "prompt_tokens_estimate": 42342,
+      "context_metrics": {
+        "context_precision": 0.15,
+        "context_recall": 1.0,
+        "noise_ratio": 0.85,
+        "gold_hit_count": 3,
+        "gold_missing_count": 0,
+        "noise_file_count": 17,
+        "matched_gold_files": [
+          "src/router.spec.ts",
+          "src/router.ts",
+          "src/store/user.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright/page-objects/conduit.page-object.ts",
+          "playwright/specs/article.spec.ts",
+          "playwright/specs/auth.spec.ts",
+          "playwright/specs/home.spec.ts",
+          "playwright/specs/user.spec.ts",
+          "src/components/ArticleDetail.vue",
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/components/ArticleDetailMeta.vue",
+          "src/components/ArticlesList.vue",
+          "src/components/ArticlesListArticlePreview.vue",
+          "src/components/ArticlesListNavigation.vue",
+          "src/composable/use-articles.ts",
+          "src/pages/EditArticle.spec.ts",
+          "src/pages/EditArticle.vue",
+          "src/pages/Settings.spec.ts",
+          "src/services/api.ts",
+          "src/utils/test/test.utils.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "trial_index": 1,
+      "poison_source_token_budget": 16000
+    },
+    {
+      "task_id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_router_auth_hard",
+        "gold_files": [
+          "src/router.ts",
+          "src/router.spec.ts",
+          "src/store/user.ts"
+        ],
+        "gold_symbols": [
+          "beforeEach",
+          "userStorage"
+        ],
+        "expected_edit_files": [
+          "src/router.ts"
+        ],
+        "failure_mode": "route guard does not protect all authenticated-only routes"
+      },
+      "retrieved_files": [
+        "playwright/specs/article.spec.ts",
+        "src/services/api.ts",
+        "src/composable/use-articles.ts",
+        "playwright/specs/auth.spec.ts",
+        "src/pages/EditArticle.spec.ts",
+        "src/router.spec.ts",
+        "src/router.ts",
+        "src/components/ArticleDetailMeta.vue",
+        "src/components/ArticleDetailMeta.spec.ts",
+        "src/components/ArticlesListNavigation.vue",
+        "playwright/specs/home.spec.ts",
+        "src/pages/Settings.spec.ts",
+        "src/utils/test/test.utils.ts",
+        "src/pages/EditArticle.vue",
+        "src/components/ArticleDetail.vue",
+        "src/components/ArticlesList.vue",
+        "src/components/ArticlesListArticlePreview.vue",
+        "playwright/specs/user.spec.ts",
+        "playwright/page-objects/conduit.page-object.ts",
+        "src/pages/Login.spec.ts",
+        "src/pages/Profile.spec.ts",
+        "src/components/ArticleDetail.spec.ts",
+        "src/components/ArticleDetailComments.spec.ts",
+        "src/pages/Settings.vue",
+        "playwright/extends.ts",
+        "playwright/page-objects/article-detail.page-object.ts",
+        "playwright/page-objects/edit-article.page-object.ts",
+        "src/pages/Article.spec.ts",
+        "src/composable/use-favorite-article.ts",
+        "src/pages/Profile.vue",
+        "src/components/ArticleDetailComments.vue",
+        "src/components/AppPagination.vue",
+        "src/components/ArticlesListArticlePreview.spec.ts",
+        "src/components/ArticlesListNavigation.spec.ts",
+        "src/pages/Login.vue",
+        "src/pages/Register.spec.ts",
+        "playwright/page-objects/login.page-object.ts",
+        "src/components/AppNavigation.vue",
+        "src/components/ArticleDetailCommentsForm.spec.ts",
+        "src/utils/test/fixtures.ts",
+        "playwright/page-objects/register.page-object.ts",
+        "src/components/ArticlesList.spec.ts",
+        "src/components/AppPagination.spec.ts",
+        "src/pages/Article.vue",
+        "playwright/constant.ts",
+        "src/pages/Register.vue",
+        "src/components/ArticleDetailComment.spec.ts",
+        "src/components/ArticleDetailCommentsForm.vue",
+        "src/pages/Home.vue",
+        "src/components/AppLink.vue",
+        "src/main.ts",
+        "src/store/user.ts",
+        "src/types/global-component.d.ts",
+        "src/utils/use-async.ts",
+        "src/pages/NotFound.vue",
+        "src/utils/use-async.spec.ts",
+        "src/components/AppNavigation.spec.ts",
+        "src/pages/NotFound.spec.ts",
+        "src/components/AppLink.spec.ts",
+        "src/services/index.ts",
+        "src/utils/storage.spec.ts",
+        "playwright.config.ts",
+        "playwright/utils/test-decorators.ts",
+        "src/components/ArticleDetailComment.vue"
+      ],
+      "context_tokens_estimate": 40141,
+      "prompt_tokens_estimate": 90419,
+      "context_metrics": {
+        "context_precision": 0.0469,
+        "context_recall": 1.0,
+        "noise_ratio": 0.9531,
+        "gold_hit_count": 3,
+        "gold_missing_count": 0,
+        "noise_file_count": 61,
+        "matched_gold_files": [
+          "src/router.spec.ts",
+          "src/router.ts",
+          "src/store/user.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright.config.ts",
+          "playwright/constant.ts",
+          "playwright/extends.ts",
+          "playwright/page-objects/article-detail.page-object.ts",
+          "playwright/page-objects/conduit.page-object.ts",
+          "playwright/page-objects/edit-article.page-object.ts",
+          "playwright/page-objects/login.page-object.ts",
+          "playwright/page-objects/register.page-object.ts",
+          "playwright/specs/article.spec.ts",
+          "playwright/specs/auth.spec.ts",
+          "playwright/specs/home.spec.ts",
+          "playwright/specs/user.spec.ts",
+          "playwright/utils/test-decorators.ts",
+          "src/components/AppLink.spec.ts",
+          "src/components/AppLink.vue",
+          "src/components/AppNavigation.spec.ts",
+          "src/components/AppNavigation.vue",
+          "src/components/AppPagination.spec.ts",
+          "src/components/AppPagination.vue",
+          "src/components/ArticleDetail.spec.ts",
+          "src/components/ArticleDetail.vue",
+          "src/components/ArticleDetailComment.spec.ts",
+          "src/components/ArticleDetailComment.vue",
+          "src/components/ArticleDetailComments.spec.ts",
+          "src/components/ArticleDetailComments.vue",
+          "src/components/ArticleDetailCommentsForm.spec.ts",
+          "src/components/ArticleDetailCommentsForm.vue",
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/components/ArticleDetailMeta.vue",
+          "src/components/ArticlesList.spec.ts",
+          "src/components/ArticlesList.vue",
+          "src/components/ArticlesListArticlePreview.spec.ts",
+          "src/components/ArticlesListArticlePreview.vue",
+          "src/components/ArticlesListNavigation.spec.ts",
+          "src/components/ArticlesListNavigation.vue",
+          "src/composable/use-articles.ts",
+          "src/composable/use-favorite-article.ts",
+          "src/main.ts",
+          "src/pages/Article.spec.ts",
+          "src/pages/Article.vue",
+          "src/pages/EditArticle.spec.ts",
+          "src/pages/EditArticle.vue",
+          "src/pages/Home.vue",
+          "src/pages/Login.spec.ts",
+          "src/pages/Login.vue",
+          "src/pages/NotFound.spec.ts",
+          "src/pages/NotFound.vue",
+          "src/pages/Profile.spec.ts",
+          "src/pages/Profile.vue",
+          "src/pages/Register.spec.ts",
+          "src/pages/Register.vue",
+          "src/pages/Settings.spec.ts",
+          "src/pages/Settings.vue",
+          "src/services/api.ts",
+          "src/services/index.ts",
+          "src/types/global-component.d.ts",
+          "src/utils/storage.spec.ts",
+          "src/utils/test/fixtures.ts",
+          "src/utils/test/test.utils.ts",
+          "src/utils/use-async.spec.ts",
+          "src/utils/use-async.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "trial_index": 1,
+      "poison_source_token_budget": 64000
+    }
+  ],
+  "summary": {
+    "gog": {
+      "cases": 3,
+      "pass_at_1": 0,
+      "pass_at_k": 0,
+      "pass_at_1_rate": 0.0,
+      "avg_context_precision": 0.477,
+      "avg_context_recall": 1.0,
+      "avg_noise_ratio": 0.523,
+      "avg_context_tokens_estimate": 1314.333,
+      "avg_prompt_tokens_estimate": 7996.333,
+      "total_tokens_spent": 0.0,
+      "tokens_spent_per_pass": null,
+      "avg_tokens_to_pass": null,
+      "avg_wall_clock_to_pass_s": null,
+      "failures": {
+        "failed_cases": 0,
+        "failure_class_counts": {},
+        "recoverable_failure_count": 0,
+        "unrecoverable_failure_count": 0,
+        "high_architectural_concern_count": 0
+      },
+      "relative_prompt_cost_vs_gog": 1.0,
+      "relative_cost_to_pass_vs_gog": null
+    },
+    "traditional_rag_by_budget": {
+      "1000": {
+        "cases": 3,
+        "pass_at_1": 0,
+        "pass_at_k": 0,
+        "pass_at_1_rate": 0.0,
+        "avg_context_precision": 0.694,
+        "avg_context_recall": 1.0,
+        "avg_noise_ratio": 0.306,
+        "avg_context_tokens_estimate": 1535.333,
+        "avg_prompt_tokens_estimate": 5759.0,
+        "total_tokens_spent": 0.0,
+        "tokens_spent_per_pass": null,
+        "avg_tokens_to_pass": null,
+        "avg_wall_clock_to_pass_s": null,
+        "failures": {
+          "failed_cases": 0,
+          "failure_class_counts": {},
+          "recoverable_failure_count": 0,
+          "unrecoverable_failure_count": 0,
+          "high_architectural_concern_count": 0
+        },
+        "relative_prompt_cost_vs_gog": 0.72,
+        "relative_cost_to_pass_vs_gog": null
+      },
+      "4000": {
+        "cases": 3,
+        "pass_at_1": 0,
+        "pass_at_k": 0,
+        "pass_at_1_rate": 0.0,
+        "avg_context_precision": 0.444,
+        "avg_context_recall": 1.0,
+        "avg_noise_ratio": 0.556,
+        "avg_context_tokens_estimate": 4351.667,
+        "avg_prompt_tokens_estimate": 12248.0,
+        "total_tokens_spent": 0.0,
+        "tokens_spent_per_pass": null,
+        "avg_tokens_to_pass": null,
+        "avg_wall_clock_to_pass_s": null,
+        "failures": {
+          "failed_cases": 0,
+          "failure_class_counts": {},
+          "recoverable_failure_count": 0,
+          "unrecoverable_failure_count": 0,
+          "high_architectural_concern_count": 0
+        },
+        "relative_prompt_cost_vs_gog": 1.532,
+        "relative_cost_to_pass_vs_gog": null
+      },
+      "16000": {
+        "cases": 3,
+        "pass_at_1": 0,
+        "pass_at_k": 0,
+        "pass_at_1_rate": 0.0,
+        "avg_context_precision": 0.097,
+        "avg_context_recall": 1.0,
+        "avg_noise_ratio": 0.902,
+        "avg_context_tokens_estimate": 19277.667,
+        "avg_prompt_tokens_estimate": 43608.667,
+        "total_tokens_spent": 0.0,
+        "tokens_spent_per_pass": null,
+        "avg_tokens_to_pass": null,
+        "avg_wall_clock_to_pass_s": null,
+        "failures": {
+          "failed_cases": 0,
+          "failure_class_counts": {},
+          "recoverable_failure_count": 0,
+          "unrecoverable_failure_count": 0,
+          "high_architectural_concern_count": 0
+        },
+        "relative_prompt_cost_vs_gog": 5.454,
+        "relative_cost_to_pass_vs_gog": null
+      },
+      "64000": {
+        "cases": 3,
+        "pass_at_1": 0,
+        "pass_at_k": 0,
+        "pass_at_1_rate": 0.0,
+        "avg_context_precision": 0.049,
+        "avg_context_recall": 1.0,
+        "avg_noise_ratio": 0.951,
+        "avg_context_tokens_estimate": 32534.667,
+        "avg_prompt_tokens_estimate": 73958.667,
+        "total_tokens_spent": 0.0,
+        "tokens_spent_per_pass": null,
+        "avg_tokens_to_pass": null,
+        "avg_wall_clock_to_pass_s": null,
+        "failures": {
+          "failed_cases": 0,
+          "failure_class_counts": {},
+          "recoverable_failure_count": 0,
+          "unrecoverable_failure_count": 0,
+          "high_architectural_concern_count": 0
+        },
+        "relative_prompt_cost_vs_gog": 9.249,
+        "relative_cost_to_pass_vs_gog": null
+      }
+    }
+  }
+}

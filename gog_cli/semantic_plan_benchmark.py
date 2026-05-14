@@ -10,8 +10,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from gog_engine.token_utils import count_tokens_in_string
-
 from .reasoner_benchmark import (
     DEFAULT_MODEL,
     SCHEMA_PATH,
@@ -19,7 +17,7 @@ from .reasoner_benchmark import (
     invoke_ollama,
     score_plan_output,
 )
-from .serving import build_context_bundle
+from .token_utils import count_tokens_in_string
 
 
 FIXTURE_PATH = Path(__file__).resolve().parent / "fixtures" / "semantic_plan_quality_known_problem.json"
@@ -50,6 +48,10 @@ def run_semantic_benchmark(
     retries: int = 1,
     retry_delay_s: int = 15,
 ) -> dict[str, Any]:
+    raise RuntimeError(
+        "Full GOG semantic plan benchmarking depends on GOG Professional. "
+        "The public benchmark lab supports gog_lite and traditional_rag executable-patch benchmarks."
+    )
     repo_root = repo_path.expanduser().resolve()
     fixture = json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))

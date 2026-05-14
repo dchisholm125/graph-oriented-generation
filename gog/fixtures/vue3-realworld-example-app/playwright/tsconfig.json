@@ -1,0 +1,19 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "target": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "paths": {
+      "src/*": ["../src/*"],
+      "page-objects/*": ["./page-objects/*"]
+    },
+    "types": ["node"],
+    "noEmit": false,
+    "isolatedModules": false
+  },
+  "include": [
+    ".",
+    "../config/*"
+  ]
+}
