@@ -2,7 +2,7 @@
 
 Graph-Oriented Generation (GOG) is a research direction for making software repositories easier for AI systems to inspect, edit, and validate. The core thesis is simple: a codebase is not a flat bag of text chunks. It is a graph of files, imports, symbols, tests, and validation surfaces, and retrieval should preserve enough of that structure to help a model act with less noise.
 
-This repository is the public GOG reference implementation and benchmark lab. It is meant to be runnable, inspectable, and scientifically useful. It contains GOG-Lite, public benchmark harnesses, gold-context scoring, failure taxonomy, curated result artifacts, and methodology notes.
+This public repository contains the GOG reference implementation and benchmark lab. It is meant to be runnable, inspectable, and scientifically useful. It contains GOG-Lite, public benchmark harnesses, gold-context scoring, failure taxonomy, curated result artifacts, and methodology notes.
 
 The production-grade engine is developed separately for commercial use. SRM and SEL research are maintained separately as moonshot research. This public repo focuses on reproducible evidence: when graph-oriented retrieval helps, when it fails, and how to compare it honestly against RAG-style baselines.
 
@@ -48,6 +48,8 @@ The public benchmark lab currently supports:
 
 Full production GOG mode is not part of this public package. If a benchmark menu used to expose `gog`, use `--mode gog_lite` for the public reference path.
 
+Some historical benchmark artifacts were produced using the pre-separation/full GOG engine. The public GOG-Lite implementation is provided to make the core graph-routed context thesis inspectable and reproducible without the production engine.
+
 Run the main dry-run checks:
 
 ```bash
@@ -63,15 +65,16 @@ PYTHONPATH=. PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 pytest tests/test_gog_lite.py
 
 ## Current Results
 
-Early repeated trials show that prompt-scoped graph retrieval can reduce context noise and improve target-file precision on focused code-edit tasks. The strongest public sanity check is the `debug_query_serialization_easy` dry run:
+Early repeated trials show that prompt-scoped graph retrieval can reduce context noise and improve target-file precision on focused code-edit tasks. Some curated historical results were produced with the pre-separation/full GOG engine and should be read as professional-engine results, not as claims about the smaller public GOG-Lite implementation.
 
-- GOG-Lite returns the two expected files:
-  - `src/utils/params-to-query.spec.ts`
-  - `src/utils/params-to-query.ts`
+On the debug query serialization dry-run fixture, the public GOG-Lite path currently returns the expected files:
+
+- `src/utils/params-to-query.spec.ts`
+- `src/utils/params-to-query.ts`
 - Context precision: `1.0`
 - Noise ratio: `0.0`
 
-The context-poisoning benchmark compares that focused context against RAG contexts at larger token budgets. Current research focus: when does GOG fail, and what failure modes are recoverable versus structural?
+That is a focused debug dry run, not a universal claim that GOG-Lite achieves zero noise. The context-poisoning benchmark compares that focused context against RAG contexts at larger token budgets. Current research focus: when does GOG fail, and what failure modes are recoverable versus structural?
 
 ## Failure Taxonomy
 
