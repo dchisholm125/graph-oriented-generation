@@ -36,11 +36,29 @@ It does **not** include:
 # Public repo: compare GOG-Lite against traditional RAG
 python3 gog/benchmark_executable_patch.py --mode gog_lite --mode traditional_rag --dry-run
 
-# Context poisoning benchmark (includes GOG + GOG-Lite + RAG)
-python3 gog/benchmark_context_poisoning.py --dry-run --task debug_query_serialization_easy
+# Context dilution benchmark (includes GOG-Lite + RAG)
+python3 gog/benchmark_context_dilution.py --dry-run --task debug_query_serialization_easy
 ```
 
-The benchmark harness automatically runs both `gog` and `gog_lite` modes during context poisoning trials, so the public repo can compare three context strategies side by side.
+Dry-run mode validates retrieval and context construction only. It does not invoke a model or run validation commands, so Pass@1, cost-to-pass, and failure taxonomy are not available in dry-run summaries.
+
+For a public model-backed benchmark, install a local Ollama model and the Vue fixture dependencies, then run without `--dry-run`:
+
+```bash
+ollama pull kimi-k2.6:cloud
+
+cd gog/fixtures/vue3-realworld-example-app
+corepack pnpm install
+cd ../../..
+
+PYTHONPATH=. python3 gog/benchmark_context_dilution.py \
+  --task debug_query_serialization_easy \
+  --trials 1 \
+  --attempts 1 \
+  --model kimi-k2.6:cloud
+```
+
+That command compares `gog_lite` against `traditional_rag` budgets using the public harness and the local Ollama HTTP API. It writes JSON and Markdown artifacts under `gog/results/` by default. The public CLI also supports `--output-dir`, repeated `--task`, repeated `--rag-budget`, `--timeout-s`, and retry controls. Full `gog` mode remains private as part of GOG Professional.
 
 ## What This Repository Contains
 

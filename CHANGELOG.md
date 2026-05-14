@@ -174,7 +174,7 @@ This empirically demonstrates the SRM thesis: LLMs are not reasoning engines. Th
 **Significance:**
 This is the proof-of-concept for SRM as an architectural paradigm shift. It is falsifiable: if symbolic specifications do not improve small-model correctness on additional tasks, the hypothesis is rejected. This single result does not prove generalization. But it does prove the mechanism works in principle.
 
-## 2026-03-10 — SRM renderer: surgical content stripping (content poisoning fix)
+## 2026-03-10 — SRM renderer: surgical content stripping (content dilution fix)
 
 - Fixed critical issue: renderer prompt was passing entire raw file content to LLM
   Problem: authStore.ts is 14KB with 96.6% noise (DUMMY_ASSETS base64 blobs + boilerplate comments)

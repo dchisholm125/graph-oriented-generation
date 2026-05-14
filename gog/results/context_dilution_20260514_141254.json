@@ -1,6 +1,6 @@
 {
   "generated_at": "2026-05-14T14:12:54.445163+00:00",
-  "benchmark": "context_poisoning_executable_patch",
+  "benchmark": "context_dilution_executable_patch",
   "model": "kimi-k2.6:cloud",
   "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app",
   "attempts_per_case": 1,
@@ -98,7 +98,7 @@
       "attempts_to_pass": null,
       "wall_clock_to_pass_s": null,
       "trial_index": 1,
-      "poison_source_token_budget": null
+      "dilution_source_token_budget": null
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -204,7 +204,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 6.8044,
       "trial_index": 1,
-      "poison_source_token_budget": 1000
+      "dilution_source_token_budget": 1000
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -312,7 +312,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 6.5119,
       "trial_index": 1,
-      "poison_source_token_budget": 4000
+      "dilution_source_token_budget": 4000
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -462,7 +462,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 8.6427,
       "trial_index": 1,
-      "poison_source_token_budget": 16000
+      "dilution_source_token_budget": 16000
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -638,7 +638,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 8.3865,
       "trial_index": 1,
-      "poison_source_token_budget": 64000
+      "dilution_source_token_budget": 64000
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -761,7 +761,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 16.6653,
       "trial_index": 1,
-      "poison_source_token_budget": null
+      "dilution_source_token_budget": null
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -872,7 +872,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 24.2277,
       "trial_index": 1,
-      "poison_source_token_budget": 1000
+      "dilution_source_token_budget": 1000
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -985,7 +985,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 14.681,
       "trial_index": 1,
-      "poison_source_token_budget": 4000
+      "dilution_source_token_budget": 4000
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -1150,7 +1150,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 18.0861,
       "trial_index": 1,
-      "poison_source_token_budget": 16000
+      "dilution_source_token_budget": 16000
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -1337,7 +1337,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 17.1525,
       "trial_index": 1,
-      "poison_source_token_budget": 64000
+      "dilution_source_token_budget": 64000
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -1463,7 +1463,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 17.4346,
       "trial_index": 1,
-      "poison_source_token_budget": null
+      "dilution_source_token_budget": null
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -1573,7 +1573,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 15.2618,
       "trial_index": 1,
-      "poison_source_token_budget": 1000
+      "dilution_source_token_budget": 1000
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -1687,7 +1687,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 20.3988,
       "trial_index": 1,
-      "poison_source_token_budget": 4000
+      "dilution_source_token_budget": 4000
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -1829,7 +1829,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 23.5729,
       "trial_index": 1,
-      "poison_source_token_budget": 16000
+      "dilution_source_token_budget": 16000
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -2059,7 +2059,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 24.5106,
       "trial_index": 1,
-      "poison_source_token_budget": 64000
+      "dilution_source_token_budget": 64000
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -2162,7 +2162,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 6.5812,
       "trial_index": 2,
-      "poison_source_token_budget": null
+      "dilution_source_token_budget": null
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -2268,7 +2268,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 7.8966,
       "trial_index": 2,
-      "poison_source_token_budget": 1000
+      "dilution_source_token_budget": 1000
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -2376,7 +2376,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 16.6375,
       "trial_index": 2,
-      "poison_source_token_budget": 4000
+      "dilution_source_token_budget": 4000
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -2526,7 +2526,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 27.0455,
       "trial_index": 2,
-      "poison_source_token_budget": 16000
+      "dilution_source_token_budget": 16000
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -2702,7 +2702,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 25.2725,
       "trial_index": 2,
-      "poison_source_token_budget": 64000
+      "dilution_source_token_budget": 64000
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -2825,7 +2825,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 36.6291,
       "trial_index": 2,
-      "poison_source_token_budget": null
+      "dilution_source_token_budget": null
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -2932,7 +2932,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 19.5798,
       "trial_index": 2,
-      "poison_source_token_budget": 1000
+      "dilution_source_token_budget": 1000
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -3045,7 +3045,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 12.7758,
       "trial_index": 2,
-      "poison_source_token_budget": 4000
+      "dilution_source_token_budget": 4000
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -3210,7 +3210,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 31.0892,
       "trial_index": 2,
-      "poison_source_token_budget": 16000
+      "dilution_source_token_budget": 16000
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -3397,7 +3397,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 28.535,
       "trial_index": 2,
-      "poison_source_token_budget": 64000
+      "dilution_source_token_budget": 64000
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -3523,7 +3523,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 29.2968,
       "trial_index": 2,
-      "poison_source_token_budget": null
+      "dilution_source_token_budget": null
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -3633,7 +3633,7 @@
       "attempts_to_pass": null,
       "wall_clock_to_pass_s": null,
       "trial_index": 2,
-      "poison_source_token_budget": 1000
+      "dilution_source_token_budget": 1000
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -3747,7 +3747,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 34.7931,
       "trial_index": 2,
-      "poison_source_token_budget": 4000
+      "dilution_source_token_budget": 4000
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -3889,7 +3889,7 @@
       "attempts_to_pass": null,
       "wall_clock_to_pass_s": null,
       "trial_index": 2,
-      "poison_source_token_budget": 16000
+      "dilution_source_token_budget": 16000
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -4119,7 +4119,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 30.2659,
       "trial_index": 2,
-      "poison_source_token_budget": 64000
+      "dilution_source_token_budget": 64000
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -4222,7 +4222,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 9.3066,
       "trial_index": 3,
-      "poison_source_token_budget": null
+      "dilution_source_token_budget": null
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -4328,7 +4328,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 8.2529,
       "trial_index": 3,
-      "poison_source_token_budget": 1000
+      "dilution_source_token_budget": 1000
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -4436,7 +4436,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 23.1033,
       "trial_index": 3,
-      "poison_source_token_budget": 4000
+      "dilution_source_token_budget": 4000
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -4568,7 +4568,7 @@
       "attempts_to_pass": null,
       "wall_clock_to_pass_s": null,
       "trial_index": 3,
-      "poison_source_token_budget": 16000
+      "dilution_source_token_budget": 16000
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -4744,7 +4744,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 16.6418,
       "trial_index": 3,
-      "poison_source_token_budget": 64000
+      "dilution_source_token_budget": 64000
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -4871,7 +4871,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 54.9129,
       "trial_index": 3,
-      "poison_source_token_budget": null
+      "dilution_source_token_budget": null
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -4978,7 +4978,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 25.094,
       "trial_index": 3,
-      "poison_source_token_budget": 1000
+      "dilution_source_token_budget": 1000
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -5091,7 +5091,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 19.5233,
       "trial_index": 3,
-      "poison_source_token_budget": 4000
+      "dilution_source_token_budget": 4000
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -5256,7 +5256,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 25.1662,
       "trial_index": 3,
-      "poison_source_token_budget": 16000
+      "dilution_source_token_budget": 16000
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -5443,7 +5443,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 31.2852,
       "trial_index": 3,
-      "poison_source_token_budget": 64000
+      "dilution_source_token_budget": 64000
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -5569,7 +5569,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 44.5898,
       "trial_index": 3,
-      "poison_source_token_budget": null
+      "dilution_source_token_budget": null
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -5679,7 +5679,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 34.0708,
       "trial_index": 3,
-      "poison_source_token_budget": 1000
+      "dilution_source_token_budget": 1000
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -5793,7 +5793,7 @@
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 21.7599,
       "trial_index": 3,
-      "poison_source_token_budget": 4000
+      "dilution_source_token_budget": 4000
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -5935,7 +5935,7 @@
       "attempts_to_pass": null,
       "wall_clock_to_pass_s": null,
       "trial_index": 3,
-      "poison_source_token_budget": 16000
+      "dilution_source_token_budget": 16000
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -6165,7 +6165,7 @@
       "attempts_to_pass": null,
       "wall_clock_to_pass_s": null,
       "trial_index": 3,
-      "poison_source_token_budget": 64000
+      "dilution_source_token_budget": 64000
     }
   ],
   "summary": {

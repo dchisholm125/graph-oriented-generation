@@ -1,4 +1,4 @@
-"""Context poisoning benchmark for GOG versus progressively larger RAG contexts."""
+"""Context dilution benchmark for GOG versus progressively larger RAG contexts."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ from .reasoner_benchmark import DEFAULT_MODEL
 DEFAULT_RAG_BUDGETS = (1000, 4000, 16000, 64000)
 
 
-def run_context_poisoning_benchmark(
+def run_context_dilution_benchmark(
     repo_path: Path,
     model: str = DEFAULT_MODEL,
     output_dir: Path | None = None,
@@ -46,7 +46,7 @@ def run_context_poisoning_benchmark(
     for trial_index in range(1, trials + 1):
         for task in selected_tasks:
             for mode in ("gog_lite",):
-                print(f"running context_poisoning trial={trial_index} task={task.id} mode={mode}", flush=True)
+                print(f"running context_dilution trial={trial_index} task={task.id} mode={mode}", flush=True)
                 gog_row = run_task_mode(
                     source_repo=repo_root,
                     task=task,
@@ -60,12 +60,12 @@ def run_context_poisoning_benchmark(
                     rag_source_token_budget=None,
                 )
                 gog_row["trial_index"] = trial_index
-                gog_row["poison_source_token_budget"] = None
+                gog_row["dilution_source_token_budget"] = None
                 results.append(gog_row)
 
             for budget in rag_budgets:
                 print(
-                    f"running context_poisoning trial={trial_index} "
+                    f"running context_dilution trial={trial_index} "
                     f"task={task.id} mode=traditional_rag budget={budget}",
                     flush=True,
                 )
@@ -82,12 +82,12 @@ def run_context_poisoning_benchmark(
                     rag_source_token_budget=budget,
                 )
                 rag_row["trial_index"] = trial_index
-                rag_row["poison_source_token_budget"] = budget
+                rag_row["dilution_source_token_budget"] = budget
                 results.append(rag_row)
 
     payload = {
         "generated_at": _now_iso(),
-        "benchmark": "context_poisoning_executable_patch",
+        "benchmark": "context_dilution_executable_patch",
         "model": model,
         "repo": str(repo_root),
         "attempts_per_case": attempts,
@@ -98,20 +98,20 @@ def run_context_poisoning_benchmark(
         "rag_source_token_budgets": list(rag_budgets),
         "failure_taxonomy": failure_taxonomy_table(),
         "results": results,
-        "summary": summarize_poisoning_results(results),
+        "summary": summarize_dilution_results(results),
     }
     write_results(payload, output_dir=output_dir)
     return payload
 
 
-def summarize_poisoning_results(results: list[dict[str, Any]]) -> dict[str, Any]:
+def summarize_dilution_results(results: list[dict[str, Any]]) -> dict[str, Any]:
     gog_lite_summary = _summarize_rows([row for row in results if row["mode"] == "gog_lite"])
     summary: dict[str, Any] = {"gog_lite": gog_lite_summary}
     budgets = sorted(
         {
-            row["poison_source_token_budget"]
+            row["dilution_source_token_budget"]
             for row in results
-            if row["mode"] == "traditional_rag" and row["poison_source_token_budget"] is not None
+            if row["mode"] == "traditional_rag" and row["dilution_source_token_budget"] is not None
         }
     )
     summary["traditional_rag_by_budget"] = {}
@@ -120,7 +120,7 @@ def summarize_poisoning_results(results: list[dict[str, Any]]) -> dict[str, Any]
             [
                 row
                 for row in results
-                if row["mode"] == "traditional_rag" and row["poison_source_token_budget"] == budget
+                if row["mode"] == "traditional_rag" and row["dilution_source_token_budget"] == budget
             ]
         )
         _add_relative_costs(budget_summary, gog_lite_summary)
@@ -132,13 +132,20 @@ def summarize_poisoning_results(results: list[dict[str, Any]]) -> dict[str, Any]
 def _summarize_rows(rows: list[dict[str, Any]]) -> dict[str, Any]:
     if not rows:
         return {}
-    passed = [row for row in rows if row["pass"]]
+    evaluated_rows = [row for row in rows if not row.get("dry_run")]
+    passed = [row for row in evaluated_rows if row["pass"]]
+    dry_run = not evaluated_rows
     return {
         "cases": len(rows),
-        "pass_at_1": sum(int(row["pass"] and row["attempts_to_pass"] == 1) for row in rows),
-        "pass_at_k": len(passed),
-        "pass_at_1_rate": round(
-            sum(int(row["pass"] and row["attempts_to_pass"] == 1) for row in rows) / len(rows),
+        "evaluated_cases": len(evaluated_rows),
+        "dry_run": dry_run,
+        "pass_at_1": None if dry_run else sum(int(row["pass"] and row["attempts_to_pass"] == 1) for row in evaluated_rows),
+        "pass_at_k": None if dry_run else len(passed),
+        "pass_at_1_rate": None
+        if dry_run
+        else round(
+            sum(int(row["pass"] and row["attempts_to_pass"] == 1) for row in evaluated_rows)
+            / len(evaluated_rows),
             4,
         ),
         "avg_context_precision": _avg(rows, lambda row: row["context_metrics"]["context_precision"]),
@@ -146,11 +153,13 @@ def _summarize_rows(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "avg_noise_ratio": _avg(rows, lambda row: row["context_metrics"]["noise_ratio"]),
         "avg_context_tokens_estimate": _avg(rows, lambda row: row["context_tokens_estimate"]),
         "avg_prompt_tokens_estimate": _avg(rows, lambda row: row["prompt_tokens_estimate"]),
-        "total_tokens_spent": round(sum(float(row.get("tokens_spent") or 0) for row in rows), 3),
-        "tokens_spent_per_pass": _tokens_spent_per_pass(rows),
+        "total_tokens_spent": None
+        if dry_run
+        else round(sum(float(row.get("tokens_spent") or 0) for row in evaluated_rows), 3),
+        "tokens_spent_per_pass": None if dry_run else _tokens_spent_per_pass(evaluated_rows),
         "avg_tokens_to_pass": _avg_present(passed, lambda row: row["tokens_to_pass"]),
         "avg_wall_clock_to_pass_s": _avg_present(passed, lambda row: row["wall_clock_to_pass_s"]),
-        "failures": summarize_failure_classes(rows),
+        "failures": None if dry_run else summarize_failure_classes(evaluated_rows),
     }
 
 
@@ -206,7 +215,7 @@ def summary_markdown_table(payload: dict[str, Any]) -> str:
             + " | ".join(
                 [
                     label,
-                    f"{values['pass_at_1']}/{values['cases']}",
+                    _fmt_pass_at_1(values),
                     _fmt_number(values["avg_prompt_tokens_estimate"]),
                     _fmt_multiplier(values["relative_prompt_cost_vs_gog_lite"]),
                     _fmt_number(values["tokens_spent_per_pass"]),
@@ -216,6 +225,24 @@ def summary_markdown_table(payload: dict[str, Any]) -> str:
             )
             + " |"
         )
+    if payload.get("dry_run"):
+        lines.extend(
+            [
+                "",
+                "Failure taxonomy is not available in dry-run mode because no model-backed validation was executed.",
+            ]
+        )
+        return "\n".join(lines) + "\n"
+
+    if not _has_observed_failures(rows):
+        lines.extend(
+            [
+                "",
+                "Failure taxonomy: no failed model-backed validation cases were observed in this run.",
+            ]
+        )
+        return "\n".join(lines) + "\n"
+
     lines.extend(["", "| Mode | Recoverable failures | Unrecoverable failures | High architectural concern | Failure classes |", "| --- | ---: | ---: | ---: | --- |"])
     for label, values in rows:
         failures = values["failures"]
@@ -233,6 +260,19 @@ def summary_markdown_table(payload: dict[str, Any]) -> str:
             + " |"
         )
     return "\n".join(lines) + "\n"
+
+
+def _has_observed_failures(rows: list[tuple[str, dict[str, Any]]]) -> bool:
+    return any(
+        int((values.get("failures") or {}).get("failed_cases", 0)) > 0
+        for _label, values in rows
+    )
+
+
+def _fmt_pass_at_1(values: dict[str, Any]) -> str:
+    if values.get("dry_run"):
+        return "dry-run"
+    return f"{values['pass_at_1']}/{values['evaluated_cases']}"
 
 
 def _fmt_number(value: float | None) -> str:
@@ -256,7 +296,7 @@ def _fmt_failure_counts(counts: dict[str, int]) -> str:
 def write_results(payload: dict[str, Any], output_dir: Path | None = None) -> Path:
     root = output_dir or RESULTS_DIR
     root.mkdir(parents=True, exist_ok=True)
-    filename = f"context_poisoning_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}.json"
+    filename = f"context_dilution_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}.json"
     path = root / filename
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     markdown_path = path.with_suffix(".md")
@@ -269,7 +309,7 @@ def _now_iso() -> str:
 
 
 def main(argv: list[str] | None = None) -> None:
-    parser = argparse.ArgumentParser(description="Run the context poisoning executable patch benchmark.")
+    parser = argparse.ArgumentParser(description="Run the context dilution executable patch benchmark.")
     parser.add_argument("--repo", "-r", default=str(DEFAULT_REPO), help="Repository checkout path.")
     parser.add_argument("--tasks-file", help="JSON file defining PatchTasks for the target repo.")
     parser.add_argument("--model", default=DEFAULT_MODEL, help="Ollama model tag to benchmark.")
@@ -284,7 +324,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--dry-run", action="store_true", help="Build contexts without invoking Ollama or tests.")
     args = parser.parse_args(argv)
 
-    payload = run_context_poisoning_benchmark(
+    payload = run_context_dilution_benchmark(
         repo_path=Path(args.repo),
         model=args.model,
         output_dir=Path(args.output_dir) if args.output_dir else None,

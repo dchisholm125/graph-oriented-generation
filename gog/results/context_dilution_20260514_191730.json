@@ -1,0 +1,917 @@
+{
+  "generated_at": "2026-05-14T19:17:30.541930+00:00",
+  "benchmark": "context_dilution_executable_patch",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/gog-mono-repo/graph-oriented-generation/gog/fixtures/vue3-realworld-example-app",
+  "attempts_per_case": 1,
+  "transient_retries": 1,
+  "retry_delay_s": 15,
+  "dry_run": false,
+  "trials": 1,
+  "rag_source_token_budgets": [
+    1000,
+    4000,
+    16000,
+    64000
+  ],
+  "failure_taxonomy": [
+    {
+      "name": "invalid_json",
+      "label": "Invalid JSON",
+      "recoverable_by_retry": true,
+      "architectural_concern": "low",
+      "description": "The model did not return a parseable JSON patch payload."
+    },
+    {
+      "name": "invalid_syntax",
+      "label": "Invalid syntax",
+      "recoverable_by_retry": true,
+      "architectural_concern": "medium",
+      "description": "The patch applied but produced a syntax or parser error."
+    },
+    {
+      "name": "missing_semantic_behavior",
+      "label": "Missing semantic behavior",
+      "recoverable_by_retry": false,
+      "architectural_concern": "high",
+      "description": "The patch applied and compiled but failed task acceptance behavior."
+    },
+    {
+      "name": "spurious_import",
+      "label": "Spurious import",
+      "recoverable_by_retry": true,
+      "architectural_concern": "medium",
+      "description": "The patch introduced imports outside expected edit files."
+    },
+    {
+      "name": "wrong_file_edited",
+      "label": "Wrong file edited",
+      "recoverable_by_retry": false,
+      "architectural_concern": "high",
+      "description": "The model edited, or attempted to edit, files outside the expected edit surface."
+    },
+    {
+      "name": "patch_rejected",
+      "label": "Patch rejected",
+      "recoverable_by_retry": true,
+      "architectural_concern": "medium",
+      "description": "The model returned JSON, but the benchmark rejected the patch contract."
+    },
+    {
+      "name": "validation_failure",
+      "label": "Validation failure",
+      "recoverable_by_retry": false,
+      "architectural_concern": "high",
+      "description": "The patch failed validation for an unclassified reason."
+    }
+  ],
+  "results": [
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "gog_lite",
+      "gold_context": {
+        "task_id": "debug_query_serialization_easy",
+        "gold_files": [
+          "src/utils/params-to-query.ts",
+          "src/utils/params-to-query.spec.ts"
+        ],
+        "gold_symbols": [
+          "params2query"
+        ],
+        "expected_edit_files": [
+          "src/utils/params-to-query.ts"
+        ],
+        "failure_mode": "query serialization drops falsy values and skips URI encoding"
+      },
+      "retrieved_files": [
+        "src/utils/params-to-query.spec.ts",
+        "src/utils/params-to-query.ts"
+      ],
+      "context_tokens_estimate": 201,
+      "prompt_tokens_estimate": 426,
+      "context_metrics": {
+        "context_precision": 1.0,
+        "context_recall": 1.0,
+        "noise_ratio": 0.0,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 0,
+        "matched_gold_files": [
+          "src/utils/params-to-query.spec.ts",
+          "src/utils/params-to-query.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": []
+      },
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 4.0105,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 56,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/utils/params-to-query.ts"
+            ],
+            "expected_edit_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "failure_class": {
+            "name": "none",
+            "label": "None",
+            "recoverable_by_retry": false,
+            "architectural_concern": "none",
+            "description": "The attempt passed validation."
+          },
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/utils/params-to-query.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 2.576,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-debug_query_serialization_easy-gog_lite-nnykqj4y/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n \u2713 src/utils/params-to-query.spec.ts (2 tests) 4ms\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  15:16:40\n   Duration  398ms (transform 21ms, setup 64ms, import 9ms, tests 4ms, environment 196ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |     100 |      100 |     100 |     100 |                   \n ...ms-to-query.ts |     100 |      100 |     100 |     100 |                   \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/utils/params-to-query.ts\",\"content\":\"export default function params2query(params: Record<string, string | number | boolean | null | undefined>): string {\\n  return Object.entries(params)\\n    .filter(([, value]) => value !== null && value !== undefined)\\n    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)\\n    .join('&')\\n}\\n\"}],\"summary\":\"Fixed params2query to: 1) filter out null/undefined instead of all falsy values, preserving 0 and false; 2) URI-encode both keys and values using encodeURIComponent.\"}",
+          "stderr": ""
+        }
+      ],
+      "tokens_spent": 482,
+      "tokens_to_pass": 482,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 6.588,
+      "trial_index": 1,
+      "dilution_source_token_budget": null
+    },
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_query_serialization_easy",
+        "gold_files": [
+          "src/utils/params-to-query.ts",
+          "src/utils/params-to-query.spec.ts"
+        ],
+        "gold_symbols": [
+          "params2query"
+        ],
+        "expected_edit_files": [
+          "src/utils/params-to-query.ts"
+        ],
+        "failure_mode": "query serialization drops falsy values and skips URI encoding"
+      },
+      "retrieved_files": [
+        "src/services/api.ts",
+        "src/utils/params-to-query.spec.ts",
+        "src/utils/params-to-query.ts"
+      ],
+      "context_tokens_estimate": 795,
+      "prompt_tokens_estimate": 3221,
+      "context_metrics": {
+        "context_precision": 0.6667,
+        "context_recall": 1.0,
+        "noise_ratio": 0.3333,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 1,
+        "matched_gold_files": [
+          "src/utils/params-to-query.spec.ts",
+          "src/utils/params-to-query.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "src/services/api.ts"
+        ]
+      },
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 4.1313,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 68,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/utils/params-to-query.ts"
+            ],
+            "expected_edit_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "failure_class": {
+            "name": "none",
+            "label": "None",
+            "recoverable_by_retry": false,
+            "architectural_concern": "none",
+            "description": "The attempt passed validation."
+          },
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/utils/params-to-query.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 2.6579,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-debug_query_serialization_easy-traditional_rag-2042ocr9/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n \u2713 src/utils/params-to-query.spec.ts (2 tests) 4ms\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  15:16:47\n   Duration  422ms (transform 21ms, setup 66ms, import 10ms, tests 4ms, environment 209ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |     100 |      100 |     100 |     100 |                   \n ...ms-to-query.ts |     100 |      100 |     100 |     100 |                   \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/utils/params-to-query.ts\",\"content\":\"export default function params2query(params: Record<string, string | number | boolean | null | undefined>): string {\\n  return Object.entries(params)\\n    .filter(([, value]) => value !== null && value !== undefined)\\n    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)\\n    .join('&')\\n}\\n\"}],\"summary\":\"Fixed params2query to: 1) Use encodeURIComponent on keys and values, 2) Preserve falsy values like 0 and false by filtering only null/undefined instead of using Boolean(), 3) Properly convert values to strings with String() before encoding.\",\"uncertainty\":[]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_spent": 3289,
+      "tokens_to_pass": 3289,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 6.7907,
+      "trial_index": 1,
+      "dilution_source_token_budget": 1000
+    },
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_query_serialization_easy",
+        "gold_files": [
+          "src/utils/params-to-query.ts",
+          "src/utils/params-to-query.spec.ts"
+        ],
+        "gold_symbols": [
+          "params2query"
+        ],
+        "expected_edit_files": [
+          "src/utils/params-to-query.ts"
+        ],
+        "failure_mode": "query serialization drops falsy values and skips URI encoding"
+      },
+      "retrieved_files": [
+        "src/services/api.ts",
+        "src/utils/params-to-query.spec.ts",
+        "src/components/ArticleDetailMeta.spec.ts",
+        "src/utils/test/test.utils.ts",
+        "src/utils/use-async.spec.ts",
+        "src/utils/test/fixtures.ts",
+        "playwright/page-objects/conduit.page-object.ts",
+        "src/components/ArticlesListNavigation.vue",
+        "playwright/page-objects/edit-article.page-object.ts",
+        "src/composable/use-profile.ts",
+        "src/setup-tests.ts",
+        "src/utils/params-to-query.ts",
+        "playwright/page-objects/register.page-object.ts"
+      ],
+      "context_tokens_estimate": 3880,
+      "prompt_tokens_estimate": 9865,
+      "context_metrics": {
+        "context_precision": 0.1538,
+        "context_recall": 1.0,
+        "noise_ratio": 0.8462,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 11,
+        "matched_gold_files": [
+          "src/utils/params-to-query.spec.ts",
+          "src/utils/params-to-query.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright/page-objects/conduit.page-object.ts",
+          "playwright/page-objects/edit-article.page-object.ts",
+          "playwright/page-objects/register.page-object.ts",
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/components/ArticlesListNavigation.vue",
+          "src/composable/use-profile.ts",
+          "src/services/api.ts",
+          "src/setup-tests.ts",
+          "src/utils/test/fixtures.ts",
+          "src/utils/test/test.utils.ts",
+          "src/utils/use-async.spec.ts"
+        ]
+      },
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 4.0375,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 66,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/utils/params-to-query.ts"
+            ],
+            "expected_edit_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "failure_class": {
+            "name": "none",
+            "label": "None",
+            "recoverable_by_retry": false,
+            "architectural_concern": "none",
+            "description": "The attempt passed validation."
+          },
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/utils/params-to-query.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 2.6163,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-debug_query_serialization_easy-traditional_rag-lvbe8nlc/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n \u2713 src/utils/params-to-query.spec.ts (2 tests) 4ms\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  15:16:54\n   Duration  398ms (transform 21ms, setup 66ms, import 9ms, tests 4ms, environment 195ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |     100 |      100 |     100 |     100 |                   \n ...ms-to-query.ts |     100 |      100 |     100 |     100 |                   \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"summary\":\"Fix params2query to URI-encode keys and values, preserve 0 and false (falsy but valid), and skip null/undefined. The old filter(([, value]) => Boolean(value)) dropped 0 and false; the old template string skipped URI encoding.\",\"files\":[{\"path\":\"src/utils/params-to-query.ts\",\"content\":\"export default function params2query(params: Record<string, string | number | boolean | null | undefined>): string {\\n  return Object.entries(params)\\n    .filter(([, value]) => value !== null && value !== undefined)\\n    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)\\n    .join('&')\\n}\\n\"}]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_spent": 9931,
+      "tokens_to_pass": 9931,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 6.6572,
+      "trial_index": 1,
+      "dilution_source_token_budget": 4000
+    },
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_query_serialization_easy",
+        "gold_files": [
+          "src/utils/params-to-query.ts",
+          "src/utils/params-to-query.spec.ts"
+        ],
+        "gold_symbols": [
+          "params2query"
+        ],
+        "expected_edit_files": [
+          "src/utils/params-to-query.ts"
+        ],
+        "failure_mode": "query serialization drops falsy values and skips URI encoding"
+      },
+      "retrieved_files": [
+        "src/services/api.ts",
+        "src/utils/params-to-query.spec.ts",
+        "src/components/ArticleDetailMeta.spec.ts",
+        "src/utils/test/test.utils.ts",
+        "src/utils/use-async.spec.ts",
+        "src/utils/test/fixtures.ts",
+        "playwright/page-objects/conduit.page-object.ts",
+        "src/components/ArticlesListNavigation.vue",
+        "playwright/page-objects/edit-article.page-object.ts",
+        "src/composable/use-profile.ts",
+        "src/setup-tests.ts",
+        "src/utils/params-to-query.ts",
+        "playwright/page-objects/register.page-object.ts",
+        "src/components/ArticleDetail.spec.ts",
+        "src/composable/use-articles.ts",
+        "src/store/user.ts",
+        "src/utils/use-async.ts",
+        "config/mcr.base.config.ts",
+        "playwright.config.ts",
+        "playwright/extends.ts",
+        "playwright/page-objects/login.page-object.ts",
+        "src/components/ArticleDetailComment.spec.ts",
+        "src/pages/Login.vue",
+        "src/pages/Profile.spec.ts",
+        "src/pages/Register.vue",
+        "src/pages/Settings.spec.ts",
+        "src/pages/Settings.vue",
+        "src/utils/storage.spec.ts",
+        "src/utils/storage.ts",
+        "playwright/specs/auth.spec.ts",
+        "src/components/ArticleDetailComment.vue",
+        "src/components/ArticleDetailComments.spec.ts",
+        "src/components/ArticleDetailCommentsForm.spec.ts",
+        "src/pages/Profile.vue",
+        "src/plugins/marked.ts",
+        "src/plugins/set-authorization-token.ts",
+        "src/router.ts",
+        "vite.config.ts"
+      ],
+      "context_tokens_estimate": 8630,
+      "prompt_tokens_estimate": 19390,
+      "context_metrics": {
+        "context_precision": 0.0526,
+        "context_recall": 1.0,
+        "noise_ratio": 0.9474,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 36,
+        "matched_gold_files": [
+          "src/utils/params-to-query.spec.ts",
+          "src/utils/params-to-query.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "config/mcr.base.config.ts",
+          "playwright.config.ts",
+          "playwright/extends.ts",
+          "playwright/page-objects/conduit.page-object.ts",
+          "playwright/page-objects/edit-article.page-object.ts",
+          "playwright/page-objects/login.page-object.ts",
+          "playwright/page-objects/register.page-object.ts",
+          "playwright/specs/auth.spec.ts",
+          "src/components/ArticleDetail.spec.ts",
+          "src/components/ArticleDetailComment.spec.ts",
+          "src/components/ArticleDetailComment.vue",
+          "src/components/ArticleDetailComments.spec.ts",
+          "src/components/ArticleDetailCommentsForm.spec.ts",
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/components/ArticlesListNavigation.vue",
+          "src/composable/use-articles.ts",
+          "src/composable/use-profile.ts",
+          "src/pages/Login.vue",
+          "src/pages/Profile.spec.ts",
+          "src/pages/Profile.vue",
+          "src/pages/Register.vue",
+          "src/pages/Settings.spec.ts",
+          "src/pages/Settings.vue",
+          "src/plugins/marked.ts",
+          "src/plugins/set-authorization-token.ts",
+          "src/router.ts",
+          "src/services/api.ts",
+          "src/setup-tests.ts",
+          "src/store/user.ts",
+          "src/utils/storage.spec.ts",
+          "src/utils/storage.ts",
+          "src/utils/test/fixtures.ts",
+          "src/utils/test/test.utils.ts",
+          "src/utils/use-async.spec.ts",
+          "src/utils/use-async.ts",
+          "vite.config.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 28.1568,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 65,
+          "json_valid": false,
+          "patch": {
+            "applied": false,
+            "errors": [
+              "response is not a JSON object"
+            ]
+          },
+          "edit_metrics": {
+            "files_edited": [],
+            "expected_edit_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "failure_class": {
+            "name": "invalid_json",
+            "label": "Invalid JSON",
+            "recoverable_by_retry": true,
+            "architectural_concern": "low",
+            "description": "The model did not return a parseable JSON patch payload."
+          },
+          "validation": null,
+          "raw_response": "{\"summary\":\"Fix params2query to URI-encode keys and values, preserve 0/false, and drop null/undefined. The bug was .filter(([, value]) => Boolean(value)) which dropped 0 and false, and the lack of encodeURIComponent on key and value.\",\"files\":[{\"path\":\"src/utils/params-to-query.ts\",\"content\":\"export default function params2query(params: Record<string, string | number | boolean | null | undefined>): string {\\n  return Object.entries(params)\\n    .filter(([, value]) => value !== null && value !== undefined)\\n    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)\\n    .join('&')\\n}\\n\"]}",
+          "stderr": ""
+        }
+      ],
+      "final_failure_class": {
+        "name": "invalid_json",
+        "label": "Invalid JSON",
+        "recoverable_by_retry": true,
+        "architectural_concern": "low",
+        "description": "The model did not return a parseable JSON patch payload."
+      },
+      "tokens_spent": 19455,
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "trial_index": 1,
+      "dilution_source_token_budget": 16000
+    },
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_query_serialization_easy",
+        "gold_files": [
+          "src/utils/params-to-query.ts",
+          "src/utils/params-to-query.spec.ts"
+        ],
+        "gold_symbols": [
+          "params2query"
+        ],
+        "expected_edit_files": [
+          "src/utils/params-to-query.ts"
+        ],
+        "failure_mode": "query serialization drops falsy values and skips URI encoding"
+      },
+      "retrieved_files": [
+        "src/services/api.ts",
+        "src/utils/params-to-query.spec.ts",
+        "src/components/ArticleDetailMeta.spec.ts",
+        "src/utils/test/test.utils.ts",
+        "src/utils/use-async.spec.ts",
+        "src/utils/test/fixtures.ts",
+        "playwright/page-objects/conduit.page-object.ts",
+        "src/components/ArticlesListNavigation.vue",
+        "playwright/page-objects/edit-article.page-object.ts",
+        "src/composable/use-profile.ts",
+        "src/setup-tests.ts",
+        "src/utils/params-to-query.ts",
+        "playwright/page-objects/register.page-object.ts",
+        "src/components/ArticleDetail.spec.ts",
+        "src/composable/use-articles.ts",
+        "src/store/user.ts",
+        "src/utils/use-async.ts",
+        "config/mcr.base.config.ts",
+        "playwright.config.ts",
+        "playwright/extends.ts",
+        "playwright/page-objects/login.page-object.ts",
+        "src/components/ArticleDetailComment.spec.ts",
+        "src/pages/Login.vue",
+        "src/pages/Profile.spec.ts",
+        "src/pages/Register.vue",
+        "src/pages/Settings.spec.ts",
+        "src/pages/Settings.vue",
+        "src/utils/storage.spec.ts",
+        "src/utils/storage.ts",
+        "playwright/specs/auth.spec.ts",
+        "src/components/ArticleDetailComment.vue",
+        "src/components/ArticleDetailComments.spec.ts",
+        "src/components/ArticleDetailCommentsForm.spec.ts",
+        "src/pages/Profile.vue",
+        "src/plugins/marked.ts",
+        "src/plugins/set-authorization-token.ts",
+        "src/router.ts",
+        "vite.config.ts"
+      ],
+      "context_tokens_estimate": 8630,
+      "prompt_tokens_estimate": 19390,
+      "context_metrics": {
+        "context_precision": 0.0526,
+        "context_recall": 1.0,
+        "noise_ratio": 0.9474,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 36,
+        "matched_gold_files": [
+          "src/utils/params-to-query.spec.ts",
+          "src/utils/params-to-query.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "config/mcr.base.config.ts",
+          "playwright.config.ts",
+          "playwright/extends.ts",
+          "playwright/page-objects/conduit.page-object.ts",
+          "playwright/page-objects/edit-article.page-object.ts",
+          "playwright/page-objects/login.page-object.ts",
+          "playwright/page-objects/register.page-object.ts",
+          "playwright/specs/auth.spec.ts",
+          "src/components/ArticleDetail.spec.ts",
+          "src/components/ArticleDetailComment.spec.ts",
+          "src/components/ArticleDetailComment.vue",
+          "src/components/ArticleDetailComments.spec.ts",
+          "src/components/ArticleDetailCommentsForm.spec.ts",
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/components/ArticlesListNavigation.vue",
+          "src/composable/use-articles.ts",
+          "src/composable/use-profile.ts",
+          "src/pages/Login.vue",
+          "src/pages/Profile.spec.ts",
+          "src/pages/Profile.vue",
+          "src/pages/Register.vue",
+          "src/pages/Settings.spec.ts",
+          "src/pages/Settings.vue",
+          "src/plugins/marked.ts",
+          "src/plugins/set-authorization-token.ts",
+          "src/router.ts",
+          "src/services/api.ts",
+          "src/setup-tests.ts",
+          "src/store/user.ts",
+          "src/utils/storage.spec.ts",
+          "src/utils/storage.ts",
+          "src/utils/test/fixtures.ts",
+          "src/utils/test/test.utils.ts",
+          "src/utils/use-async.spec.ts",
+          "src/utils/use-async.ts",
+          "vite.config.ts"
+        ]
+      },
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 4.0781,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 68,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/utils/params-to-query.ts"
+            ],
+            "expected_edit_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "failure_class": {
+            "name": "none",
+            "label": "None",
+            "recoverable_by_retry": false,
+            "architectural_concern": "none",
+            "description": "The attempt passed validation."
+          },
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/utils/params-to-query.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 2.5393,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-debug_query_serialization_easy-traditional_rag-2b0xzsa6/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n \u2713 src/utils/params-to-query.spec.ts (2 tests) 4ms\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  15:17:29\n   Duration  422ms (transform 20ms, setup 63ms, import 9ms, tests 4ms, environment 219ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |     100 |      100 |     100 |     100 |                   \n ...ms-to-query.ts |     100 |      100 |     100 |     100 |                   \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/utils/params-to-query.ts\",\"content\":\"export default function params2query(params: Record<string, string | number | boolean | null | undefined>): string {\\n  return Object.entries(params)\\n    .filter(([, value]) => value !== null && value !== undefined)\\n    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)\\n    .join('&')\\n}\\n\"}],\"summary\":\"Fixed params2query to: 1) preserve 0 and false by filtering out only null/undefined instead of all falsy values, 2) URI-encode both keys and values with encodeURIComponent, 3) keep null and undefined values omitted from the output.\"}",
+          "stderr": ""
+        }
+      ],
+      "tokens_spent": 19458,
+      "tokens_to_pass": 19458,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 6.622,
+      "trial_index": 1,
+      "dilution_source_token_budget": 64000
+    }
+  ],
+  "summary": {
+    "gog_lite": {
+      "cases": 1,
+      "evaluated_cases": 1,
+      "dry_run": false,
+      "pass_at_1": 1,
+      "pass_at_k": 1,
+      "pass_at_1_rate": 1.0,
+      "avg_context_precision": 1.0,
+      "avg_context_recall": 1.0,
+      "avg_noise_ratio": 0.0,
+      "avg_context_tokens_estimate": 201.0,
+      "avg_prompt_tokens_estimate": 426.0,
+      "total_tokens_spent": 482.0,
+      "tokens_spent_per_pass": 482.0,
+      "avg_tokens_to_pass": 482.0,
+      "avg_wall_clock_to_pass_s": 6.588,
+      "failures": {
+        "failed_cases": 0,
+        "failure_class_counts": {},
+        "recoverable_failure_count": 0,
+        "unrecoverable_failure_count": 0,
+        "high_architectural_concern_count": 0
+      },
+      "relative_prompt_cost_vs_gog_lite": 1.0,
+      "relative_cost_to_pass_vs_gog_lite": 1.0
+    },
+    "traditional_rag_by_budget": {
+      "1000": {
+        "cases": 1,
+        "evaluated_cases": 1,
+        "dry_run": false,
+        "pass_at_1": 1,
+        "pass_at_k": 1,
+        "pass_at_1_rate": 1.0,
+        "avg_context_precision": 0.667,
+        "avg_context_recall": 1.0,
+        "avg_noise_ratio": 0.333,
+        "avg_context_tokens_estimate": 795.0,
+        "avg_prompt_tokens_estimate": 3221.0,
+        "total_tokens_spent": 3289.0,
+        "tokens_spent_per_pass": 3289.0,
+        "avg_tokens_to_pass": 3289.0,
+        "avg_wall_clock_to_pass_s": 6.791,
+        "failures": {
+          "failed_cases": 0,
+          "failure_class_counts": {},
+          "recoverable_failure_count": 0,
+          "unrecoverable_failure_count": 0,
+          "high_architectural_concern_count": 0
+        },
+        "relative_prompt_cost_vs_gog_lite": 7.561,
+        "relative_cost_to_pass_vs_gog_lite": 6.824
+      },
+      "4000": {
+        "cases": 1,
+        "evaluated_cases": 1,
+        "dry_run": false,
+        "pass_at_1": 1,
+        "pass_at_k": 1,
+        "pass_at_1_rate": 1.0,
+        "avg_context_precision": 0.154,
+        "avg_context_recall": 1.0,
+        "avg_noise_ratio": 0.846,
+        "avg_context_tokens_estimate": 3880.0,
+        "avg_prompt_tokens_estimate": 9865.0,
+        "total_tokens_spent": 9931.0,
+        "tokens_spent_per_pass": 9931.0,
+        "avg_tokens_to_pass": 9931.0,
+        "avg_wall_clock_to_pass_s": 6.657,
+        "failures": {
+          "failed_cases": 0,
+          "failure_class_counts": {},
+          "recoverable_failure_count": 0,
+          "unrecoverable_failure_count": 0,
+          "high_architectural_concern_count": 0
+        },
+        "relative_prompt_cost_vs_gog_lite": 23.157,
+        "relative_cost_to_pass_vs_gog_lite": 20.604
+      },
+      "16000": {
+        "cases": 1,
+        "evaluated_cases": 1,
+        "dry_run": false,
+        "pass_at_1": 0,
+        "pass_at_k": 0,
+        "pass_at_1_rate": 0.0,
+        "avg_context_precision": 0.053,
+        "avg_context_recall": 1.0,
+        "avg_noise_ratio": 0.947,
+        "avg_context_tokens_estimate": 8630.0,
+        "avg_prompt_tokens_estimate": 19390.0,
+        "total_tokens_spent": 19455.0,
+        "tokens_spent_per_pass": null,
+        "avg_tokens_to_pass": null,
+        "avg_wall_clock_to_pass_s": null,
+        "failures": {
+          "failed_cases": 1,
+          "failure_class_counts": {
+            "invalid_json": 1
+          },
+          "recoverable_failure_count": 1,
+          "unrecoverable_failure_count": 0,
+          "high_architectural_concern_count": 0
+        },
+        "relative_prompt_cost_vs_gog_lite": 45.516,
+        "relative_cost_to_pass_vs_gog_lite": null
+      },
+      "64000": {
+        "cases": 1,
+        "evaluated_cases": 1,
+        "dry_run": false,
+        "pass_at_1": 1,
+        "pass_at_k": 1,
+        "pass_at_1_rate": 1.0,
+        "avg_context_precision": 0.053,
+        "avg_context_recall": 1.0,
+        "avg_noise_ratio": 0.947,
+        "avg_context_tokens_estimate": 8630.0,
+        "avg_prompt_tokens_estimate": 19390.0,
+        "total_tokens_spent": 19458.0,
+        "tokens_spent_per_pass": 19458.0,
+        "avg_tokens_to_pass": 19458.0,
+        "avg_wall_clock_to_pass_s": 6.622,
+        "failures": {
+          "failed_cases": 0,
+          "failure_class_counts": {},
+          "recoverable_failure_count": 0,
+          "unrecoverable_failure_count": 0,
+          "high_architectural_concern_count": 0
+        },
+        "relative_prompt_cost_vs_gog_lite": 45.516,
+        "relative_cost_to_pass_vs_gog_lite": 40.369
+      }
+    }
+  }
+}

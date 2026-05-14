@@ -18,7 +18,7 @@ Links:
 - `gog_cli/gold_context.py`: gold-context precision, recall, and noise scoring.
 - `gog_cli/failure_taxonomy.py`: executable-patch failure classification.
 - `gog_cli/executable_patch_benchmark.py`: public executable-patch benchmark harness.
-- `gog_cli/context_poisoning_benchmark.py`: GOG-Lite versus progressively larger RAG contexts.
+- `gog_cli/context_dilution_benchmark.py`: GOG-Lite versus progressively larger RAG contexts.
 - `gog/fixtures/`: small public fixtures used by dry-run benchmarks.
 - `gog/results/`: curated public result artifacts.
 - `docs/PUBLIC_PRIVATE_BOUNDARY.md`: boundary between this repo, GOG Professional, and SRM research.
@@ -54,8 +54,35 @@ Run the main dry-run checks:
 
 ```bash
 python3 gog/benchmark_executable_patch.py --mode gog_lite --dry-run
-python3 gog/benchmark_context_poisoning.py --dry-run --task debug_query_serialization_easy
+python3 gog/benchmark_context_dilution.py --dry-run --task debug_query_serialization_easy
 ```
+
+Dry-run mode validates retrieval, context construction, context-quality metrics, and prompt-size estimates only. It does not invoke a model or run validation commands, so Pass@1, cost-to-pass, tokens spent per pass, and failure taxonomy are reported as dry-run or `n/a`. Run without `--dry-run` for model-backed pass/fail and failure-class results.
+
+### Public Model-Backed Benchmark
+
+The public model-backed path uses the local Ollama HTTP API and does not require private GOG Professional code. It runs GOG-Lite and `traditional_rag` against an executable patch task, applies the model's JSON patch in a disposable repo copy, and runs the task validation command. The resulting JSON/Markdown artifacts include Pass@1, tokens spent per pass, failure taxonomy, context precision/recall/noise, and prompt-token estimates.
+
+Prerequisites:
+
+```bash
+ollama pull kimi-k2.6:cloud
+cd gog/fixtures/vue3-realworld-example-app
+corepack pnpm install
+cd ../../..
+```
+
+Run a focused local benchmark:
+
+```bash
+PYTHONPATH=. python3 gog/benchmark_context_dilution.py \
+  --task debug_query_serialization_easy \
+  --trials 1 \
+  --attempts 1 \
+  --model kimi-k2.6:cloud
+```
+
+The context-dilution benchmark supports `--model`, `--output-dir`, repeated `--task`, `--attempts`, `--trials`, `--timeout-s`, `--retries`, and repeated `--rag-budget`. Expected runtime depends on the selected model, local hardware, and whether fixture dependencies are already installed.
 
 Run the GOG-Lite regression tests:
 
@@ -67,6 +94,10 @@ PYTHONPATH=. PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 pytest tests/test_gog_lite.py
 
 Early repeated trials show that prompt-scoped graph retrieval can reduce context noise and improve target-file precision on focused code-edit tasks. Some curated historical results were produced with the pre-separation/full GOG engine and should be read as professional-engine results, not as claims about the smaller public GOG-Lite implementation.
 
+## Benchmark Results
+
+- [Full pre-separation GOG benchmark results](docs/FULL_GOG_BENCHMARK_RESULTS.md): curated historical results from the full GOG engine before the public/private separation.
+
 On the debug query serialization dry-run fixture, the public GOG-Lite path currently returns the expected files:
 
 - `src/utils/params-to-query.spec.ts`
@@ -74,7 +105,7 @@ On the debug query serialization dry-run fixture, the public GOG-Lite path curre
 - Context precision: `1.0`
 - Noise ratio: `0.0`
 
-That is a focused debug dry run, not a universal claim that GOG-Lite achieves zero noise. The context-poisoning benchmark compares that focused context against RAG contexts at larger token budgets. Current research focus: when does GOG fail, and what failure modes are recoverable versus structural?
+That is a focused debug dry run, not a universal claim that GOG-Lite achieves zero noise. The context-dilution benchmark compares that focused context against RAG contexts at larger token budgets. Current research focus: when does GOG fail, and what failure modes are recoverable versus structural?
 
 ## Failure Taxonomy
 
@@ -114,5 +145,5 @@ Before opening a public PR, run:
 python3 -m py_compile $(find gog gog_cli gog_engine_lite tests -name '*.py')
 PYTHONPATH=. PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 pytest tests/test_gog_lite.py
 python3 gog/benchmark_executable_patch.py --mode gog_lite --dry-run
-python3 gog/benchmark_context_poisoning.py --dry-run --task debug_query_serialization_easy
+python3 gog/benchmark_context_dilution.py --dry-run --task debug_query_serialization_easy
 ```

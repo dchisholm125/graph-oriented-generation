@@ -1,6 +1,6 @@
 {
   "generated_at": "2026-05-14T13:44:43.958536+00:00",
-  "benchmark": "context_poisoning_executable_patch",
+  "benchmark": "context_dilution_executable_patch",
   "model": "kimi-k2.6:cloud",
   "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app",
   "attempts_per_case": 1,
@@ -113,7 +113,7 @@
       "tokens_to_pass": 1307,
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 6.9266,
-      "poison_source_token_budget": null
+      "dilution_source_token_budget": null
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -217,7 +217,7 @@
       "tokens_to_pass": 8741,
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 9.3767,
-      "poison_source_token_budget": 1000
+      "dilution_source_token_budget": 1000
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -305,7 +305,7 @@
       "tokens_to_pass": null,
       "attempts_to_pass": null,
       "wall_clock_to_pass_s": null,
-      "poison_source_token_budget": 4000
+      "dilution_source_token_budget": 4000
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -453,7 +453,7 @@
       "tokens_to_pass": 48931,
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 8.9711,
-      "poison_source_token_budget": 16000
+      "dilution_source_token_budget": 16000
     },
     {
       "task_id": "debug_query_serialization_easy",
@@ -627,7 +627,7 @@
       "tokens_to_pass": 64420,
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 12.0085,
-      "poison_source_token_budget": 64000
+      "dilution_source_token_budget": 64000
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -748,7 +748,7 @@
       "tokens_to_pass": 13797,
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 23.4811,
-      "poison_source_token_budget": null
+      "dilution_source_token_budget": null
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -853,7 +853,7 @@
       "tokens_to_pass": 4387,
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 14.8149,
-      "poison_source_token_budget": 1000
+      "dilution_source_token_budget": 1000
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -964,7 +964,7 @@
       "tokens_to_pass": null,
       "attempts_to_pass": null,
       "wall_clock_to_pass_s": null,
-      "poison_source_token_budget": 4000
+      "dilution_source_token_budget": 4000
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -1127,7 +1127,7 @@
       "tokens_to_pass": 40274,
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 25.2138,
-      "poison_source_token_budget": 16000
+      "dilution_source_token_budget": 16000
     },
     {
       "task_id": "feature_pagination_edges_medium",
@@ -1312,7 +1312,7 @@
       "tokens_to_pass": 67731,
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 19.1828,
-      "poison_source_token_budget": 64000
+      "dilution_source_token_budget": 64000
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -1436,7 +1436,7 @@
       "tokens_to_pass": 10440,
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 26.0258,
-      "poison_source_token_budget": null
+      "dilution_source_token_budget": null
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -1544,7 +1544,7 @@
       "tokens_to_pass": null,
       "attempts_to_pass": null,
       "wall_clock_to_pass_s": null,
-      "poison_source_token_budget": 1000
+      "dilution_source_token_budget": 1000
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -1656,7 +1656,7 @@
       "tokens_to_pass": 15910,
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 61.3999,
-      "poison_source_token_budget": 4000
+      "dilution_source_token_budget": 4000
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -1796,7 +1796,7 @@
       "tokens_to_pass": 43193,
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 21.9633,
-      "poison_source_token_budget": 16000
+      "dilution_source_token_budget": 16000
     },
     {
       "task_id": "debug_router_auth_hard",
@@ -2024,7 +2024,7 @@
       "tokens_to_pass": 91290,
       "attempts_to_pass": 1,
       "wall_clock_to_pass_s": 46.1685,
-      "poison_source_token_budget": 64000
+      "dilution_source_token_budget": 64000
     }
   ],
   "summary": {

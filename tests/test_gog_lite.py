@@ -133,6 +133,168 @@ def test_benchmark_mode_uses_repo_relative_lite_matching(tmp_path):
     assert result["context_metrics"]["noise_ratio"] == 0.0
 
 
+def test_executable_patch_summary_marks_dry_run_as_not_evaluated():
+    from gog_cli.executable_patch_benchmark import summarize_results
+
+    summary = summarize_results(
+        [
+            {
+                "mode": "gog_lite",
+                "pass": False,
+                "dry_run": True,
+                "attempts": [],
+                "attempts_to_pass": None,
+                "tokens_to_pass": None,
+                "wall_clock_to_pass_s": None,
+                "context_metrics": {
+                    "context_precision": 1.0,
+                    "context_recall": 1.0,
+                    "noise_ratio": 0.0,
+                },
+                "context_tokens_estimate": 120,
+                "prompt_tokens_estimate": 426,
+            }
+        ]
+    )
+
+    gog_lite = summary["gog_lite"]
+    assert gog_lite["dry_run"] is True
+    assert gog_lite["evaluated_cases"] == 0
+    assert gog_lite["pass_at_1"] is None
+    assert gog_lite["pass_at_k"] is None
+    assert gog_lite["tokens_spent_per_pass"] is None
+    assert gog_lite["failures"] is None
+    assert gog_lite["avg_context_precision"] == 1.0
+    assert gog_lite["avg_prompt_tokens_estimate"] == 426
+
+
+def test_context_dilution_markdown_uses_dry_run_labels():
+    from gog_cli.context_dilution_benchmark import (
+        summarize_dilution_results,
+        summary_markdown_table,
+    )
+
+    results = [
+        {
+            "mode": "gog_lite",
+            "pass": False,
+            "dry_run": True,
+            "attempts": [],
+            "attempts_to_pass": None,
+            "tokens_to_pass": None,
+            "wall_clock_to_pass_s": None,
+            "dilution_source_token_budget": None,
+            "context_metrics": {
+                "context_precision": 1.0,
+                "context_recall": 1.0,
+                "noise_ratio": 0.0,
+            },
+            "context_tokens_estimate": 120,
+            "prompt_tokens_estimate": 426,
+        }
+    ]
+    payload = {
+        "dry_run": True,
+        "summary": summarize_dilution_results(results),
+    }
+
+    markdown = summary_markdown_table(payload)
+
+    assert "| GOG-Lite | dry-run | 426 | 1.00x | n/a | n/a | 0.000 |" in markdown
+    assert "0/1" not in markdown
+    assert "Failure taxonomy is not available in dry-run mode" in markdown
+    assert "Recoverable failures" not in markdown
+
+
+def test_context_dilution_markdown_omits_failure_table_when_all_pass():
+    from gog_cli.context_dilution_benchmark import (
+        summarize_dilution_results,
+        summary_markdown_table,
+    )
+
+    results = [
+        {
+            "mode": "gog_lite",
+            "pass": True,
+            "dry_run": False,
+            "attempts": [{"attempt": 1, "failure_class": {"name": "none"}}],
+            "attempts_to_pass": 1,
+            "tokens_spent": 483,
+            "tokens_to_pass": 483,
+            "wall_clock_to_pass_s": 15.764,
+            "dilution_source_token_budget": None,
+            "context_metrics": {
+                "context_precision": 1.0,
+                "context_recall": 1.0,
+                "noise_ratio": 0.0,
+            },
+            "context_tokens_estimate": 201,
+            "prompt_tokens_estimate": 426,
+        }
+    ]
+    payload = {
+        "dry_run": False,
+        "summary": summarize_dilution_results(results),
+    }
+
+    markdown = summary_markdown_table(payload)
+
+    assert "| GOG-Lite | 1/1 | 426 | 1.00x | 483 | 1.00x | 0.000 |" in markdown
+    assert "Failure taxonomy: no failed model-backed validation cases were observed" in markdown
+    assert "Recoverable failures" not in markdown
+
+
+def test_context_dilution_markdown_keeps_failure_table_when_failures_exist():
+    from gog_cli.context_dilution_benchmark import (
+        summarize_dilution_results,
+        summary_markdown_table,
+    )
+
+    results = [
+        {
+            "mode": "gog_lite",
+            "pass": False,
+            "dry_run": False,
+            "attempts": [
+                {
+                    "attempt": 1,
+                    "failure_class": {
+                        "name": "invalid_json",
+                        "recoverable_by_retry": True,
+                        "architectural_concern": "low",
+                    },
+                }
+            ],
+            "final_failure_class": {
+                "name": "invalid_json",
+                "recoverable_by_retry": True,
+                "architectural_concern": "low",
+            },
+            "attempts_to_pass": None,
+            "tokens_spent": 483,
+            "tokens_to_pass": None,
+            "wall_clock_to_pass_s": None,
+            "dilution_source_token_budget": None,
+            "context_metrics": {
+                "context_precision": 1.0,
+                "context_recall": 1.0,
+                "noise_ratio": 0.0,
+            },
+            "context_tokens_estimate": 201,
+            "prompt_tokens_estimate": 426,
+        }
+    ]
+    payload = {
+        "dry_run": False,
+        "summary": summarize_dilution_results(results),
+    }
+
+    markdown = summary_markdown_table(payload)
+
+    assert "Recoverable failures" in markdown
+    assert "| GOG-Lite | 1 | 0 | 0 | invalid_json: 1 |" in markdown
+
+
 def test_file_cap_is_enforced():
     """GOG-Lite must never return more files than max_files."""
     graph = build_import_graph(TARGET_REPO)

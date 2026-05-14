@@ -93,8 +93,8 @@ python -m gog_cli.executable_patch_benchmark \
   --dry-run \
   --task debug_query_serialization_easy
 
-# Full context poisoning benchmark
-python -m gog_cli.context_poisoning_benchmark \
+# Full context dilution benchmark
+python -m gog_cli.context_dilution_benchmark \
   --dry-run \
   --task debug_query_serialization_easy
 ```

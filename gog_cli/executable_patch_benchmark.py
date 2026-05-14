@@ -805,11 +805,17 @@ def summarize_results(results: list[dict[str, Any]]) -> dict[str, Any]:
         rows = [row for row in results if row["mode"] == mode]
         if not rows:
             continue
-        passed = [row for row in rows if row["pass"]]
+        evaluated_rows = [row for row in rows if not row.get("dry_run")]
+        passed = [row for row in evaluated_rows if row["pass"]]
+        dry_run = not evaluated_rows
         summary[mode] = {
             "cases": len(rows),
-            "pass_at_1": sum(int(row["pass"] and row["attempts_to_pass"] == 1) for row in rows),
-            "pass_at_k": len(passed),
+            "evaluated_cases": len(evaluated_rows),
+            "dry_run": dry_run,
+            "pass_at_1": None
+            if dry_run
+            else sum(int(row["pass"] and row["attempts_to_pass"] == 1) for row in evaluated_rows),
+            "pass_at_k": None if dry_run else len(passed),
             "avg_context_precision": _avg_nested(rows, "context_metrics", "context_precision"),
             "avg_context_recall": _avg_nested(rows, "context_metrics", "context_recall"),
             "avg_noise_ratio": _avg_nested(rows, "context_metrics", "noise_ratio"),
@@ -821,12 +827,14 @@ def summarize_results(results: list[dict[str, Any]]) -> dict[str, Any]:
             ),
             "avg_context_tokens_estimate": _avg(rows, "context_tokens_estimate"),
             "avg_prompt_tokens_estimate": _avg(rows, "prompt_tokens_estimate"),
-            "total_tokens_spent": round(sum(float(row.get("tokens_spent") or 0) for row in rows), 3),
-            "tokens_spent_per_pass": _tokens_spent_per_pass(rows),
+            "total_tokens_spent": None
+            if dry_run
+            else round(sum(float(row.get("tokens_spent") or 0) for row in evaluated_rows), 3),
+            "tokens_spent_per_pass": None if dry_run else _tokens_spent_per_pass(evaluated_rows),
             "avg_tokens_to_pass": _avg_present(passed, "tokens_to_pass"),
             "avg_attempts_to_pass": _avg_present(passed, "attempts_to_pass"),
             "avg_wall_clock_to_pass_s": _avg_present(passed, "wall_clock_to_pass_s"),
-            "failures": summarize_failure_classes(rows),
+            "failures": None if dry_run else summarize_failure_classes(evaluated_rows),
         }
     return summary
 

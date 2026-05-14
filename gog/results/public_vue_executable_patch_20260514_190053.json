@@ -1,0 +1,328 @@
+{
+  "generated_at": "2026-05-14T19:00:53.515428+00:00",
+  "benchmark": "public_vue_executable_patch",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/gog-mono-repo/graph-oriented-generation/gog/fixtures/vue3-realworld-example-app",
+  "attempts_per_case": 1,
+  "transient_retries": 1,
+  "retry_delay_s": 15,
+  "dry_run": true,
+  "rag_source_token_budget": null,
+  "tasks": [
+    {
+      "id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "prompt": "Fix the query parameter serialization helper so it URI-encodes keys and values, preserves 0 and false, and omits null or undefined values.",
+      "expected_files": [
+        "src/utils/params-to-query.ts",
+        "src/utils/params-to-query.spec.ts"
+      ],
+      "validation_commands": [
+        [
+          "corepack",
+          "pnpm",
+          "vitest",
+          "run",
+          "src/utils/params-to-query.spec.ts"
+        ]
+      ],
+      "notes": "Small utility bug with focused acceptance test.",
+      "gold_context": {
+        "task_id": "debug_query_serialization_easy",
+        "gold_files": [
+          "src/utils/params-to-query.ts",
+          "src/utils/params-to-query.spec.ts"
+        ],
+        "gold_symbols": [
+          "params2query"
+        ],
+        "expected_edit_files": [
+          "src/utils/params-to-query.ts"
+        ],
+        "failure_mode": "query serialization drops falsy values and skips URI encoding"
+      }
+    },
+    {
+      "id": "feature_pagination_edges_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "prompt": "Add previous and next pagination controls. Previous must emit the prior page unless already on page 1, and next must emit the next page unless already on the final page.",
+      "expected_files": [
+        "src/components/AppPagination.vue",
+        "src/components/AppPagination.spec.ts"
+      ],
+      "validation_commands": [
+        [
+          "corepack",
+          "pnpm",
+          "vitest",
+          "run",
+          "src/components/AppPagination.spec.ts"
+        ]
+      ],
+      "notes": "New component behavior validated through UI-level tests.",
+      "gold_context": {
+        "task_id": "feature_pagination_edges_medium",
+        "gold_files": [
+          "src/components/AppPagination.vue",
+          "src/components/AppPagination.spec.ts"
+        ],
+        "gold_symbols": [
+          "AppPagination",
+          "onPageChange"
+        ],
+        "expected_edit_files": [
+          "src/components/AppPagination.vue"
+        ],
+        "failure_mode": "pagination component lacks bounded previous and next controls"
+      }
+    },
+    {
+      "id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "prompt": "Fix route authentication so unauthenticated users cannot access the authenticated feed, settings page, create article page, or edit article page. They should be redirected to login.",
+      "expected_files": [
+        "src/router.ts",
+        "src/router.spec.ts",
+        "src/store/user.ts"
+      ],
+      "validation_commands": [
+        [
+          "corepack",
+          "pnpm",
+          "vitest",
+          "run",
+          "src/router.spec.ts"
+        ]
+      ],
+      "notes": "Cross-cutting route/auth debugging task.",
+      "gold_context": {
+        "task_id": "debug_router_auth_hard",
+        "gold_files": [
+          "src/router.ts",
+          "src/router.spec.ts",
+          "src/store/user.ts"
+        ],
+        "gold_symbols": [
+          "beforeEach",
+          "userStorage"
+        ],
+        "expected_edit_files": [
+          "src/router.ts"
+        ],
+        "failure_mode": "route guard does not protect all authenticated-only routes"
+      }
+    }
+  ],
+  "results": [
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "gog_lite",
+      "gold_context": {
+        "task_id": "debug_query_serialization_easy",
+        "gold_files": [
+          "src/utils/params-to-query.ts",
+          "src/utils/params-to-query.spec.ts"
+        ],
+        "gold_symbols": [
+          "params2query"
+        ],
+        "expected_edit_files": [
+          "src/utils/params-to-query.ts"
+        ],
+        "failure_mode": "query serialization drops falsy values and skips URI encoding"
+      },
+      "retrieved_files": [
+        "src/utils/params-to-query.spec.ts",
+        "src/utils/params-to-query.ts"
+      ],
+      "context_tokens_estimate": 201,
+      "prompt_tokens_estimate": 426,
+      "context_metrics": {
+        "context_precision": 1.0,
+        "context_recall": 1.0,
+        "noise_ratio": 0.0,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 0,
+        "matched_gold_files": [
+          "src/utils/params-to-query.spec.ts",
+          "src/utils/params-to-query.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": []
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null
+    },
+    {
+      "task_id": "feature_pagination_edges_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "mode": "gog_lite",
+      "gold_context": {
+        "task_id": "feature_pagination_edges_medium",
+        "gold_files": [
+          "src/components/AppPagination.vue",
+          "src/components/AppPagination.spec.ts"
+        ],
+        "gold_symbols": [
+          "AppPagination",
+          "onPageChange"
+        ],
+        "expected_edit_files": [
+          "src/components/AppPagination.vue"
+        ],
+        "failure_mode": "pagination component lacks bounded previous and next controls"
+      },
+      "retrieved_files": [
+        "src/components/AppPagination.spec.ts",
+        "src/components/AppPagination.vue",
+        "src/utils/test/fixtures.ts",
+        "src/pages/Login.spec.ts",
+        "src/pages/Profile.spec.ts",
+        "src/pages/Login.vue",
+        "src/router.ts",
+        "src/store/user.ts",
+        "src/pages/Article.spec.ts",
+        "src/pages/Article.vue",
+        "src/pages/Register.spec.ts",
+        "src/pages/Register.vue"
+      ],
+      "context_tokens_estimate": 2188,
+      "prompt_tokens_estimate": 3418,
+      "context_metrics": {
+        "context_precision": 0.1667,
+        "context_recall": 1.0,
+        "noise_ratio": 0.8333,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 10,
+        "matched_gold_files": [
+          "src/components/AppPagination.spec.ts",
+          "src/components/AppPagination.vue"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "src/pages/Article.spec.ts",
+          "src/pages/Article.vue",
+          "src/pages/Login.spec.ts",
+          "src/pages/Login.vue",
+          "src/pages/Profile.spec.ts",
+          "src/pages/Register.spec.ts",
+          "src/pages/Register.vue",
+          "src/router.ts",
+          "src/store/user.ts",
+          "src/utils/test/fixtures.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null
+    },
+    {
+      "task_id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "gog_lite",
+      "gold_context": {
+        "task_id": "debug_router_auth_hard",
+        "gold_files": [
+          "src/router.ts",
+          "src/router.spec.ts",
+          "src/store/user.ts"
+        ],
+        "gold_symbols": [
+          "beforeEach",
+          "userStorage"
+        ],
+        "expected_edit_files": [
+          "src/router.ts"
+        ],
+        "failure_mode": "route guard does not protect all authenticated-only routes"
+      },
+      "retrieved_files": [
+        "src/pages/Login.vue",
+        "playwright/page-objects/edit-article.page-object.ts",
+        "src/pages/Article.vue",
+        "src/pages/EditArticle.spec.ts",
+        "src/pages/EditArticle.vue",
+        "src/router.ts",
+        "src/services/api.ts",
+        "src/services/index.ts",
+        "src/store/user.ts",
+        "src/utils/test/fixtures.ts",
+        "src/pages/Article.spec.ts",
+        "src/pages/Login.spec.ts",
+        "src/router.spec.ts"
+      ],
+      "context_tokens_estimate": 2815,
+      "prompt_tokens_estimate": 5604,
+      "context_metrics": {
+        "context_precision": 0.2308,
+        "context_recall": 1.0,
+        "noise_ratio": 0.7692,
+        "gold_hit_count": 3,
+        "gold_missing_count": 0,
+        "noise_file_count": 10,
+        "matched_gold_files": [
+          "src/router.spec.ts",
+          "src/router.ts",
+          "src/store/user.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright/page-objects/edit-article.page-object.ts",
+          "src/pages/Article.spec.ts",
+          "src/pages/Article.vue",
+          "src/pages/EditArticle.spec.ts",
+          "src/pages/EditArticle.vue",
+          "src/pages/Login.spec.ts",
+          "src/pages/Login.vue",
+          "src/services/api.ts",
+          "src/services/index.ts",
+          "src/utils/test/fixtures.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": true,
+      "attempts": [],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null
+    }
+  ],
+  "summary": {
+    "gog_lite": {
+      "cases": 3,
+      "evaluated_cases": 0,
+      "dry_run": true,
+      "pass_at_1": null,
+      "pass_at_k": null,
+      "avg_context_precision": 0.466,
+      "avg_context_recall": 1.0,
+      "avg_noise_ratio": 0.534,
+      "avg_first_attempt_spurious_imports": null,
+      "avg_first_attempt_spurious_edit_files": null,
+      "avg_context_tokens_estimate": 1734.667,
+      "avg_prompt_tokens_estimate": 3149.333,
+      "total_tokens_spent": null,
+      "tokens_spent_per_pass": null,
+      "avg_tokens_to_pass": null,
+      "avg_attempts_to_pass": null,
+      "avg_wall_clock_to_pass_s": null,
+      "failures": null
+    }
+  }
+}
