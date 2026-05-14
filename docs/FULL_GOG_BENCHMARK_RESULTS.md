@@ -82,6 +82,6 @@ GOG-Lite exists so the public benchmark path remains inspectable and reproducibl
 
 ## Curated Artifacts
 
-- [Repeated-trial Markdown summary](../gog/results/context_poisoning_20260514_141254.md)
-- [Repeated-trial JSON artifact](../gog/results/context_poisoning_20260514_141254.json)
-- [Earlier full-engine JSON run](../gog/results/context_poisoning_20260514_134443.json)
+- [Repeated-trial Markdown summary](../gog/results/context_dilution_20260514_141254.md)
+- [Repeated-trial JSON artifact](../gog/results/context_dilution_20260514_141254.json)
+- [Earlier full-engine JSON run](../gog/results/context_dilution_20260514_134443.json)
