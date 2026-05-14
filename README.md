@@ -7,9 +7,11 @@
 
 ## The Core Thesis
 
-GOG investigates whether software generation improves when codebases are first transformed into persistent symbolic state, that state is served to a higher-level reasoner, and language models are demoted from architects to renderers.
+GOG is a deterministic graph navigation layer for coding agents. It reduces token waste by replacing flat retrieval with structured context membranes derived from repository topology.
 
 GOG is **not** the reasoner itself. It is the symbolic repository substrate and presentation layer that should make a codebase easier for a reasoner to comprehend, manipulate, and validate.
+
+SRM is the longer-term research direction: replacing language-mediated reasoning with symbolic mutation planning and using language models only as renderers.
 
 The project is now organized around three ideas:
 
@@ -50,7 +52,7 @@ Completed early experiments on AST-derived context selection and benchmark instr
 - Benchmark: `python3 gog/benchmark_local_llm.py`
 
 ### Phase 2: Symbolic Rendering Proof-of-Concept
-The **Symbolic Reasoning Membrane (SRM)** experiments explore whether structure can control language-model output more reliably than raw prompting alone.
+The **Symbolic Reasoning Membrane (SRM)** experiments explore whether structure can control language-model output more reliably than raw prompting alone. SRM is related to GOG, but it is not the near-term product claim: GOG packages task-relevant repository context; SRM investigates symbolic mutation planning.
 - [SRM_PAPER.md](./SRM_PAPER.md)
 - Experiments: `/symbol_distillation`
 
@@ -96,6 +98,8 @@ python3 gog/benchmark_public_vue.py
 python3 gog/benchmark_executable_patch.py --dry-run
 python3 gog/benchmark_executable_patch.py --model kimi-k2.6:cloud --task debug_query_serialization_easy --attempts 1 --retries 2
 python3 gog/benchmark_executable_patch.py --model kimi-k2.6:cloud --attempts 1 --retries 2
+python3 gog/benchmark_context_poisoning.py --dry-run
+python3 gog/benchmark_context_poisoning.py --model kimi-k2.6:cloud --attempts 1 --retries 2 --rag-budget 1000 --rag-budget 4000 --rag-budget 16000 --rag-budget 64000
 ```
 
 The executable patch benchmark validates patches inside disposable copies of the public Vue checkout. Before running it without `--dry-run`, install dependencies in the public repo checkout:
@@ -113,9 +117,58 @@ Both benchmark entry points support retry controls for transient Ollama/provider
 
 `benchmark_public_vue.py` starts the public-repo track. It clones or reuses a Vue repository, runs GOG onboarding, and compares GOG context selection against a reproducible `traditional_rag` keyword-chunk baseline before any LLM mutation is attempted.
 
-`benchmark_executable_patch.py` is the next layer. It copies the public Vue checkout into a disposable temp directory, injects benchmark-only acceptance tests or defects, asks the same model to produce full-file JSON patches from either GOG context or `traditional_rag` context, applies admissible patches, runs targeted validation commands, and records `Pass@1`, `Pass@k`, `TokensToPass`, `AttemptsToPass`, and `WallClockToPass`. It uses the local Ollama HTTP API with JSON mode to avoid CLI prompt-expansion artifacts when source chunks contain strings like `@example`.
+`benchmark_executable_patch.py` is the next layer. It copies the public Vue checkout into a disposable temp directory, injects benchmark-only acceptance tests or defects, asks the same model to produce full-file JSON patches from either GOG context or `traditional_rag` context, applies admissible patches, runs targeted validation commands, and records `Pass@1`, `Pass@k`, `TokensToPass`, `AttemptsToPass`, `WallClockToPass`, context precision/recall, noise ratio, files edited, and spurious imports. It uses the local Ollama HTTP API with JSON mode to avoid CLI prompt-expansion artifacts when source chunks contain strings like `@example`.
+
+Benchmark tasks can include gold-context metadata:
+
+```json
+{
+  "task_id": "debug_http_date_parsing_hard",
+  "gold_files": [
+    "httpx/_compat.py",
+    "tests/test_compat.py"
+  ],
+  "gold_symbols": [
+    "parse_http_date"
+  ],
+  "expected_edit_files": [
+    "httpx/_compat.py"
+  ],
+  "failure_mode": "date parsing edge case"
+}
+```
+
+When explicit gold fields are absent, executable benchmarks derive a conservative default from `expected_files`. Custom task JSON files should prefer explicit `gold_files`, `gold_symbols`, `expected_edit_files`, and `failure_mode` fields so retrieval quality can be evaluated separately from final patch success. See [gog/fixtures/httpx_gold_tasks.example.json](./gog/fixtures/httpx_gold_tasks.example.json) for a tracked custom-task example.
+
+`benchmark_context_poisoning.py` runs the executable patch benchmark with fixed GOG context and progressively larger `traditional_rag` source-token budgets. The purpose is to test whether uncontrolled additional context improves or eventually degrades `Pass@1` while tracking context precision, recall, noise ratio, tokens to pass, and wall-clock time. A strong result is not simply "less context is cheaper"; the claim to test is that uncontrolled context can become actively harmful.
+
+Failed executable attempts are classified separately from pass rates so benchmark reports distinguish recoverable renderer-format noise from semantic/context failures:
+
+| Failure type | Recoverable by retry? | Architectural concern |
+| --- | --- | --- |
+| Invalid JSON | Yes | Low |
+| Invalid syntax | Yes | Medium |
+| Missing semantic behavior | No | High |
+| Spurious import | Yes | Medium |
+| Wrong file edited | No | High |
+| Patch rejected | Yes | Medium |
+| Validation failure | No | High |
+
+This makes cost-to-pass interpretation stricter. For example, a GOG invalid-JSON miss is treated as recoverable renderer noise, while repeated RAG failures to protect a required route are classified as unrecoverable semantic/context failures.
 
 Benchmark repositories should be treated honestly. Current public Vue work is a development benchmark for Vue/Vite/TypeScript conventions. Future holdout repositories should be run before tuning so GOG improvements remain general-purpose rather than fitted to one codebase.
+
+### GOG vs LSP/MCP
+
+LSP/MCP gives an agent tools to inspect code. GOG gives the agent a precomputed task-relevant context membrane. LSP is interactive navigation; GOG is deterministic context packaging.
+
+| System | What it does |
+| --- | --- |
+| LSP | Answers local code intelligence queries |
+| MCP tools | Expose actions to an agent |
+| RAG | Retrieves semantically similar text |
+| RepoGraph-style systems | Navigate repository-level graph structure |
+| GOG | Builds a minimal symbolic context membrane for a specific coding task |
 
 ### 4. Read the System Docs
 

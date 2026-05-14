@@ -1,0 +1,35 @@
+[
+  {
+    "task_id": "debug_http_date_parsing_hard",
+    "domain": "debugging",
+    "difficulty": "hard",
+    "prompt": "Fix the parse_http_date compat helper so it parses RFC 1123 and asctime HTTP date formats and returns ISO 8601 datetime strings.",
+    "expected_files": [
+      "httpx/_compat.py",
+      "tests/test_compat.py"
+    ],
+    "gold_files": [
+      "httpx/_compat.py",
+      "tests/test_compat.py"
+    ],
+    "gold_symbols": [
+      "parse_http_date"
+    ],
+    "expected_edit_files": [
+      "httpx/_compat.py"
+    ],
+    "failure_mode": "date parsing edge case",
+    "validation_commands": [
+      [
+        "python3",
+        "-m",
+        "pytest",
+        "tests/test_compat.py",
+        "-x",
+        "-q"
+      ]
+    ],
+    "setup_patches": [],
+    "notes": "Gold-context task example for non-Vue benchmark repositories."
+  }
+]
