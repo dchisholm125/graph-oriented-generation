@@ -208,6 +208,7 @@ def build_traditional_rag_bundle(
     prompt: str,
     max_files: int = 4,
     max_chars_per_file: int = 4500,
+    max_source_tokens: int | None = None,
 ) -> dict[str, Any]:
     """Build a deliberately simple keyword RAG baseline from unstructured source text."""
     query_terms = _query_terms(prompt)
@@ -231,7 +232,18 @@ def build_traditional_rag_bundle(
             continue
         candidates.append((score, rel_path, text[:max_chars_per_file]))
 
-    ranked = sorted(candidates, key=lambda item: (-item[0], item[1]))[:max_files]
+    ranked_candidates = sorted(candidates, key=lambda item: (-item[0], item[1]))
+    ranked = []
+    source_tokens = 0
+    for score, rel_path, text in ranked_candidates:
+        if len(ranked) >= max_files:
+            break
+        if max_source_tokens is not None and ranked:
+            next_tokens = count_tokens_in_string(text)
+            if source_tokens + next_tokens > max_source_tokens:
+                break
+        ranked.append((score, rel_path, text))
+        source_tokens += count_tokens_in_string(text)
     return {
         "retrieved_files": [rel_path for _, rel_path, _ in ranked],
         "chunks": [
@@ -242,6 +254,8 @@ def build_traditional_rag_bundle(
             }
             for score, rel_path, text in ranked
         ],
+        "max_source_tokens": max_source_tokens,
+        "source_tokens_estimate": source_tokens,
     }
 
 

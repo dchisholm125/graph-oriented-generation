@@ -216,6 +216,7 @@ def score_selection(expected_files: list[str], selected_files: list[str]) -> dic
     precision = len(hits) / len(selected) if selected else 0.0
     recall = len(hits) / len(expected) if expected else 1.0
     f1 = 0.0 if precision + recall == 0 else 2 * precision * recall / (precision + recall)
+    noise_ratio = len(extra) / len(selected) if selected else 0.0
     return {
         "expected_hit_count": len(hits),
         "expected_missing_count": len(missing),
@@ -223,6 +224,7 @@ def score_selection(expected_files: list[str], selected_files: list[str]) -> dic
         "context_precision": round(precision, 4),
         "context_recall": round(recall, 4),
         "context_f1": round(f1, 4),
+        "noise_ratio": round(noise_ratio, 4),
         "pass_at_1_context": len(missing) == 0,
         "matched_expected_files": hits,
         "missing_expected_files": missing,
@@ -247,6 +249,7 @@ def summarize_mode(prompt_results: list[dict[str, Any]], key: str) -> dict[str, 
         "avg_context_precision": round(sum(row["context_precision"] for row in rows) / len(rows), 4),
         "avg_context_recall": round(sum(row["context_recall"] for row in rows) / len(rows), 4),
         "avg_context_f1": round(sum(row["context_f1"] for row in rows) / len(rows), 4),
+        "avg_noise_ratio": round(sum(row["noise_ratio"] for row in rows) / len(rows), 4),
         "avg_selected_file_count": round(sum(row["selected_file_count"] for row in rows) / len(rows), 2),
         "avg_context_tokens_estimate": round(sum(row["context_tokens_estimate"] for row in rows) / len(rows), 1),
         "avg_source_tokens_estimate": round(sum(row["source_tokens_estimate"] for row in rows) / len(rows), 1),

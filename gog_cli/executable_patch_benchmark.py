@@ -19,6 +19,14 @@ from typing import Any
 
 from gog_engine.token_utils import count_tokens_in_string
 
+from .failure_taxonomy import classify_attempt_failure, summarize_failure_classes
+from .gold_context import (
+    count_spurious_import_lines,
+    gold_context_from_task,
+    gold_context_to_dict,
+    score_context_selection,
+    score_edit_surface,
+)
 from .onboarding import onboard_repository
 from .reasoner_benchmark import DEFAULT_MODEL, extract_json_payload, normalize_cli_output
 from .semantic_plan_benchmark import build_traditional_rag_bundle
@@ -58,6 +66,10 @@ class PatchTask:
     validation_commands: tuple[tuple[str, ...], ...]
     setup_patches: tuple[dict[str, str], ...]
     notes: str
+    gold_files: tuple[str, ...] = ()
+    gold_symbols: tuple[str, ...] = ()
+    expected_edit_files: tuple[str, ...] = ()
+    failure_mode: str = ""
 
 
 TASKS = [
@@ -116,6 +128,10 @@ describe('# params2query', () => {
             },
         ),
         notes="Small utility bug with focused acceptance test.",
+        gold_files=("src/utils/params-to-query.ts", "src/utils/params-to-query.spec.ts"),
+        gold_symbols=("params2query",),
+        expected_edit_files=("src/utils/params-to-query.ts",),
+        failure_mode="query serialization drops falsy values and skips URI encoding",
     ),
     PatchTask(
         id="feature_pagination_edges_medium",
@@ -186,6 +202,10 @@ describe('# AppPagination', () => {
             },
         ),
         notes="New component behavior validated through UI-level tests.",
+        gold_files=("src/components/AppPagination.vue", "src/components/AppPagination.spec.ts"),
+        gold_symbols=("AppPagination", "onPageChange"),
+        expected_edit_files=("src/components/AppPagination.vue",),
+        failure_mode="pagination component lacks bounded previous and next controls",
     ),
     PatchTask(
         id="debug_router_auth_hard",
@@ -261,6 +281,10 @@ describe('# Router guards', () => {
             },
         ),
         notes="Cross-cutting route/auth debugging task.",
+        gold_files=("src/router.ts", "src/router.spec.ts", "src/store/user.ts"),
+        gold_symbols=("beforeEach", "userStorage"),
+        expected_edit_files=("src/router.ts",),
+        failure_mode="route guard does not protect all authenticated-only routes",
     ),
 ]
 
@@ -277,6 +301,7 @@ def run_executable_patch_benchmark(
     retry_delay_s: int = 15,
     dry_run: bool = False,
     tasks: list[PatchTask] | None = None,
+    rag_source_token_budget: int | None = None,
 ) -> dict[str, Any]:
     repo_root = repo_path.expanduser().resolve()
     _assert_env_ready(repo_root, dry_run)
@@ -299,6 +324,7 @@ def run_executable_patch_benchmark(
                     retries=retries,
                     retry_delay_s=retry_delay_s,
                     dry_run=dry_run,
+                    rag_source_token_budget=rag_source_token_budget,
                 )
             )
 
@@ -311,6 +337,7 @@ def run_executable_patch_benchmark(
         "transient_retries": retries,
         "retry_delay_s": retry_delay_s,
         "dry_run": dry_run,
+        "rag_source_token_budget": rag_source_token_budget,
         "tasks": [_task_metadata(task) for task in selected_tasks],
         "results": results,
         "summary": summarize_results(results),
@@ -329,6 +356,7 @@ def run_task_mode(
     retries: int,
     retry_delay_s: int,
     dry_run: bool,
+    rag_source_token_budget: int | None = None,
 ) -> dict[str, Any]:
     with tempfile.TemporaryDirectory(prefix=f"gog-{task.id}-{mode}-") as tmp:
         work_repo = Path(tmp) / source_repo.name
@@ -336,16 +364,24 @@ def run_task_mode(
         apply_setup_patches(work_repo, task)
         onboard_repository(work_repo, force=True)
 
-        context = build_patch_context(work_repo, task, mode)
+        context = build_patch_context(
+            work_repo,
+            task,
+            mode,
+            rag_source_token_budget=rag_source_token_budget,
+        )
         prompt = build_patch_prompt(task, mode, context)
+        gold_context = gold_context_from_task(task)
         base_result = {
             "task_id": task.id,
             "domain": task.domain,
             "difficulty": task.difficulty,
             "mode": mode,
+            "gold_context": gold_context_to_dict(gold_context),
             "retrieved_files": context["files"],
             "context_tokens_estimate": context["tokens"],
             "prompt_tokens_estimate": count_tokens_in_string(prompt),
+            "context_metrics": score_context_selection(gold_context, context["files"]),
         }
         if dry_run:
             return {
@@ -373,8 +409,22 @@ def run_task_mode(
             response_tokens = count_tokens_in_string(response["stdout"])
             cumulative_tokens += count_tokens_in_string(prompt) + response_tokens
             patch_result = apply_model_patch(work_repo, parsed, allowed_files=context["files"])
+            edited_files = patch_result.get("applied_files", [])
+            edit_metrics = score_edit_surface(gold_context, edited_files)
+            spurious_imports = count_spurious_import_lines(
+                parsed.get("files", []) if isinstance(parsed, dict) else [],
+                gold_context.expected_edit_files,
+            )
             validation = run_validation(work_repo, task.validation_commands) if patch_result["applied"] else None
             passed = bool(validation and validation["passed"])
+            failure_class = classify_attempt_failure(
+                passed=passed,
+                parsed=parsed,
+                patch_result=patch_result,
+                edit_metrics=edit_metrics,
+                spurious_imports=spurious_imports,
+                validation=validation,
+            )
             attempts_payload.append(
                 {
                     "attempt": attempt_index,
@@ -384,6 +434,9 @@ def run_task_mode(
                     "response_tokens_estimate": response_tokens,
                     "json_valid": isinstance(parsed, dict),
                     "patch": patch_result,
+                    "edit_metrics": edit_metrics,
+                    "spurious_imports": spurious_imports,
+                    "failure_class": failure_class,
                     "validation": validation,
                     "raw_response": response["stdout"],
                     "stderr": response["stderr"],
@@ -395,6 +448,7 @@ def run_task_mode(
                     "pass": True,
                     "dry_run": False,
                     "attempts": attempts_payload,
+                    "tokens_spent": cumulative_tokens,
                     "tokens_to_pass": cumulative_tokens,
                     "attempts_to_pass": attempt_index,
                     "wall_clock_to_pass_s": round(time.time() - benchmark_start, 4),
@@ -405,13 +459,20 @@ def run_task_mode(
             "pass": False,
             "dry_run": False,
             "attempts": attempts_payload,
+            "final_failure_class": attempts_payload[-1]["failure_class"] if attempts_payload else None,
+            "tokens_spent": cumulative_tokens,
             "tokens_to_pass": None,
             "attempts_to_pass": None,
             "wall_clock_to_pass_s": None,
         }
 
 
-def build_patch_context(repo_root: Path, task: PatchTask, mode: str) -> dict[str, Any]:
+def build_patch_context(
+    repo_root: Path,
+    task: PatchTask,
+    mode: str,
+    rag_source_token_budget: int | None = None,
+) -> dict[str, Any]:
     if mode == "gog":
         bundle = build_context_bundle(repo_root, task.prompt)
         files = _merge_expected_hints(bundle["context"]["files"], task.expected_files)
@@ -425,13 +486,20 @@ def build_patch_context(repo_root: Path, task: PatchTask, mode: str) -> dict[str
             "tokens": count_tokens_in_string(json.dumps(bundle)),
         }
     if mode == "traditional_rag":
-        bundle = build_traditional_rag_bundle(repo_root, task.prompt, max_files=6, max_chars_per_file=7000)
+        bundle = build_traditional_rag_bundle(
+            repo_root,
+            task.prompt,
+            max_files=64 if rag_source_token_budget else 6,
+            max_chars_per_file=7000,
+            max_source_tokens=rag_source_token_budget,
+        )
         files = _merge_expected_hints(bundle["retrieved_files"], task.expected_files)
         return {
             "mode": "traditional_rag",
             "files": files,
             "source_files": read_source_files(repo_root, files),
             "chunks": bundle["chunks"],
+            "rag_source_token_budget": rag_source_token_budget,
             "validation_commands": [" ".join(command) for command in task.validation_commands],
             "tokens": count_tokens_in_string(json.dumps(bundle)),
         }
@@ -643,11 +711,23 @@ def summarize_results(results: list[dict[str, Any]]) -> dict[str, Any]:
             "cases": len(rows),
             "pass_at_1": sum(int(row["pass"] and row["attempts_to_pass"] == 1) for row in rows),
             "pass_at_k": len(passed),
+            "avg_context_precision": _avg_nested(rows, "context_metrics", "context_precision"),
+            "avg_context_recall": _avg_nested(rows, "context_metrics", "context_recall"),
+            "avg_noise_ratio": _avg_nested(rows, "context_metrics", "noise_ratio"),
+            "avg_first_attempt_spurious_imports": _avg_first_attempt(rows, "spurious_imports"),
+            "avg_first_attempt_spurious_edit_files": _avg_first_attempt_nested(
+                rows,
+                "edit_metrics",
+                "spurious_edit_file_count",
+            ),
             "avg_context_tokens_estimate": _avg(rows, "context_tokens_estimate"),
             "avg_prompt_tokens_estimate": _avg(rows, "prompt_tokens_estimate"),
+            "total_tokens_spent": round(sum(float(row.get("tokens_spent") or 0) for row in rows), 3),
+            "tokens_spent_per_pass": _tokens_spent_per_pass(rows),
             "avg_tokens_to_pass": _avg_present(passed, "tokens_to_pass"),
             "avg_attempts_to_pass": _avg_present(passed, "attempts_to_pass"),
             "avg_wall_clock_to_pass_s": _avg_present(passed, "wall_clock_to_pass_s"),
+            "failures": summarize_failure_classes(rows),
         }
     return summary
 
@@ -670,6 +750,7 @@ def _task_metadata(task: PatchTask) -> dict[str, Any]:
         "expected_files": list(task.expected_files),
         "validation_commands": [list(command) for command in task.validation_commands],
         "notes": task.notes,
+        "gold_context": gold_context_to_dict(gold_context_from_task(task)),
     }
 
 
@@ -686,6 +767,43 @@ def _avg_present(rows: list[dict[str, Any]], key: str) -> float | None:
     return round(sum(values) / len(values), 3)
 
 
+def _avg_nested(rows: list[dict[str, Any]], parent: str, key: str) -> float:
+    if not rows:
+        return 0.0
+    return round(sum(float(row[parent][key]) for row in rows) / len(rows), 3)
+
+
+def _avg_first_attempt(rows: list[dict[str, Any]], key: str) -> float | None:
+    values = [
+        float(row["attempts"][0][key])
+        for row in rows
+        if row.get("attempts") and row["attempts"][0].get(key) is not None
+    ]
+    if not values:
+        return None
+    return round(sum(values) / len(values), 3)
+
+
+def _avg_first_attempt_nested(rows: list[dict[str, Any]], parent: str, key: str) -> float | None:
+    values = [
+        float(row["attempts"][0][parent][key])
+        for row in rows
+        if row.get("attempts")
+        and row["attempts"][0].get(parent)
+        and row["attempts"][0][parent].get(key) is not None
+    ]
+    if not values:
+        return None
+    return round(sum(values) / len(values), 3)
+
+
+def _tokens_spent_per_pass(rows: list[dict[str, Any]]) -> float | None:
+    pass_count = sum(int(row["pass"]) for row in rows)
+    if pass_count == 0:
+        return None
+    return round(sum(float(row.get("tokens_spent") or 0) for row in rows) / pass_count, 3)
+
+
 def _tail(text: str, max_chars: int = 5000) -> str:
     normalized = re.sub(r"\x1B\[[0-?]*[ -/]*[@-~]", "", text)
     return normalized[-max_chars:]
@@ -697,6 +815,9 @@ def load_tasks(tasks_file: str | None) -> list[PatchTask] | None:
     data = json.loads(Path(tasks_file).read_text(encoding="utf-8"))
     loaded = []
     for raw in data if isinstance(data, list) else [data]:
+        task_id = raw.get("id", raw.get("task_id"))
+        if not isinstance(task_id, str) or not task_id:
+            raise ValueError("Task entries must include a non-empty id or task_id.")
         commands = tuple(tuple(cmd) for cmd in raw["validation_commands"])
         patches = tuple(
             {"path": p["path"], "content": p["content"]}
@@ -704,7 +825,7 @@ def load_tasks(tasks_file: str | None) -> list[PatchTask] | None:
         )
         loaded.append(
             PatchTask(
-                id=raw["id"],
+                id=task_id,
                 domain=raw["domain"],
                 difficulty=raw["difficulty"],
                 prompt=raw["prompt"],
@@ -712,6 +833,10 @@ def load_tasks(tasks_file: str | None) -> list[PatchTask] | None:
                 validation_commands=commands,
                 setup_patches=patches,
                 notes=raw.get("notes", ""),
+                gold_files=tuple(raw.get("gold_files", ())),
+                gold_symbols=tuple(raw.get("gold_symbols", ())),
+                expected_edit_files=tuple(raw.get("expected_edit_files", ())),
+                failure_mode=raw.get("failure_mode", ""),
             )
         )
     return loaded
@@ -734,6 +859,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--retries", type=int, default=1, help="Retry transient Ollama/provider failures per attempt.")
     parser.add_argument("--retry-delay-s", type=int, default=15, help="Delay between transient retries.")
     parser.add_argument("--dry-run", action="store_true", help="Build contexts without invoking Ollama or tests.")
+    parser.add_argument("--rag-source-token-budget", type=int, help="Limit traditional_rag source chunks to an approximate token budget.")
     args = parser.parse_args(argv)
 
     tasks = load_tasks(args.tasks_file)
@@ -750,6 +876,7 @@ def main(argv: list[str] | None = None) -> None:
         retry_delay_s=args.retry_delay_s,
         dry_run=args.dry_run,
         tasks=tasks,
+        rag_source_token_budget=args.rag_source_token_budget,
     )
     print(json.dumps(payload["summary"], indent=2))
 

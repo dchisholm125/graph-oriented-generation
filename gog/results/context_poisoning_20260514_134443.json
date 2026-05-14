@@ -1,0 +1,2094 @@
+{
+  "generated_at": "2026-05-14T13:44:43.958536+00:00",
+  "benchmark": "context_poisoning_executable_patch",
+  "model": "kimi-k2.6:cloud",
+  "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/graph-oriented-generation/gog/public-repos/vue3-realworld-example-app",
+  "attempts_per_case": 1,
+  "transient_retries": 2,
+  "retry_delay_s": 15,
+  "dry_run": false,
+  "rag_source_token_budgets": [
+    1000,
+    4000,
+    16000,
+    64000
+  ],
+  "results": [
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "gog",
+      "gold_context": {
+        "task_id": "debug_query_serialization_easy",
+        "gold_files": [
+          "src/utils/params-to-query.ts",
+          "src/utils/params-to-query.spec.ts"
+        ],
+        "gold_symbols": [
+          "params2query"
+        ],
+        "expected_edit_files": [
+          "src/utils/params-to-query.ts"
+        ],
+        "failure_mode": "query serialization drops falsy values and skips URI encoding"
+      },
+      "retrieved_files": [
+        "src/utils/params-to-query.ts",
+        "src/utils/params-to-query.spec.ts"
+      ],
+      "context_tokens_estimate": 471,
+      "prompt_tokens_estimate": 1166,
+      "context_metrics": {
+        "context_precision": 1.0,
+        "context_recall": 1.0,
+        "noise_ratio": 0.0,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 0,
+        "matched_gold_files": [
+          "src/utils/params-to-query.spec.ts",
+          "src/utils/params-to-query.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": []
+      },
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 4.2911,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 141,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/utils/params-to-query.ts"
+            ],
+            "expected_edit_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/utils/params-to-query.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 2.6307,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-debug_query_serialization_easy-gog-976q4_2v/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  09:39:12\n   Duration  415ms (transform 21ms, setup 67ms, import 10ms, tests 4ms, environment 204ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |     100 |      100 |     100 |     100 |                   \n ...ms-to-query.ts |     100 |      100 |     100 |     100 |                   \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/utils/params-to-query.ts\",\"content\":\"export default function params2query(params: Record<string, string | number | boolean | null | undefined>): string {\\n  return Object.entries(params)\\n    .filter(([, value]) => value !== null && value !== undefined)\\n    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)\\n    .join('&')\\n}\\n\"}],\"summary\":\"Fixed params2query to: 1) preserve 0 and false by filtering only null/undefined instead of all falsy values, 2) URI-encode both keys and values using encodeURIComponent\",\"uncertainty\":[]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 1307,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 6.9266,
+      "poison_source_token_budget": null
+    },
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_query_serialization_easy",
+        "gold_files": [
+          "src/utils/params-to-query.ts",
+          "src/utils/params-to-query.spec.ts"
+        ],
+        "gold_symbols": [
+          "params2query"
+        ],
+        "expected_edit_files": [
+          "src/utils/params-to-query.ts"
+        ],
+        "failure_mode": "query serialization drops falsy values and skips URI encoding"
+      },
+      "retrieved_files": [
+        "src/services/api.ts",
+        "src/utils/params-to-query.ts",
+        "src/utils/params-to-query.spec.ts"
+      ],
+      "context_tokens_estimate": 1980,
+      "prompt_tokens_estimate": 8603,
+      "context_metrics": {
+        "context_precision": 0.6667,
+        "context_recall": 1.0,
+        "noise_ratio": 0.3333,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 1,
+        "matched_gold_files": [
+          "src/utils/params-to-query.spec.ts",
+          "src/utils/params-to-query.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "src/services/api.ts"
+        ]
+      },
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 6.7815,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 138,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/utils/params-to-query.ts"
+            ],
+            "expected_edit_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/utils/params-to-query.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 2.5711,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-debug_query_serialization_easy-traditional_rag-eb8ayd9a/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  09:39:22\n   Duration  426ms (transform 21ms, setup 62ms, import 9ms, tests 4ms, environment 191ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |     100 |      100 |     100 |     100 |                   \n ...ms-to-query.ts |     100 |      100 |     100 |     100 |                   \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/utils/params-to-query.ts\",\"content\":\"export default function params2query(params: Record<string, string | number | boolean | null | undefined>): string {\\n  return Object.entries(params)\\n    .filter(([, value]) => value !== null && value !== undefined)\\n    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)\\n    .join('&')\\n}\\n\"}],\"summary\":\"Fixed params2query to URI-encode keys and values, preserve 0 and false by filtering only null/undefined instead of all falsy values, and omit null/undefined values from the output.\"}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 8741,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 9.3767,
+      "poison_source_token_budget": 1000
+    },
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_query_serialization_easy",
+        "gold_files": [
+          "src/utils/params-to-query.ts",
+          "src/utils/params-to-query.spec.ts"
+        ],
+        "gold_symbols": [
+          "params2query"
+        ],
+        "expected_edit_files": [
+          "src/utils/params-to-query.ts"
+        ],
+        "failure_mode": "query serialization drops falsy values and skips URI encoding"
+      },
+      "retrieved_files": [
+        "src/services/api.ts",
+        "src/utils/params-to-query.spec.ts",
+        "src/components/ArticleDetailMeta.spec.ts",
+        "src/utils/params-to-query.ts"
+      ],
+      "context_tokens_estimate": 3608,
+      "prompt_tokens_estimate": 11592,
+      "context_metrics": {
+        "context_precision": 0.5,
+        "context_recall": 1.0,
+        "noise_ratio": 0.5,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 2,
+        "matched_gold_files": [
+          "src/utils/params-to-query.spec.ts",
+          "src/utils/params-to-query.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/services/api.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 28.5416,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 134,
+          "json_valid": false,
+          "patch": {
+            "applied": false,
+            "errors": [
+              "response is not a JSON object"
+            ]
+          },
+          "edit_metrics": {
+            "files_edited": [],
+            "expected_edit_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "validation": null,
+          "raw_response": "{\"summary\":\"Fix params2query to URI-encode keys and values, preserve 0 and false by checking value !== null && value !== undefined instead of Boolean(value), and omit null/undefined values.\",\"files\":[{\"path\":\"src/utils/params-to-query.ts\",\"content\":\"export default function params2query(params: Record<string, string | number | boolean | null | undefined>): string {\\n  return Object.entries(params)\\n    .filter(([, value]) => value !== null && value !== undefined)\\n    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)\\n    .join('&')\\n}\\n\"]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "poison_source_token_budget": 4000
+    },
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_query_serialization_easy",
+        "gold_files": [
+          "src/utils/params-to-query.ts",
+          "src/utils/params-to-query.spec.ts"
+        ],
+        "gold_symbols": [
+          "params2query"
+        ],
+        "expected_edit_files": [
+          "src/utils/params-to-query.ts"
+        ],
+        "failure_mode": "query serialization drops falsy values and skips URI encoding"
+      },
+      "retrieved_files": [
+        "src/services/api.ts",
+        "src/utils/params-to-query.spec.ts",
+        "src/components/ArticleDetailMeta.spec.ts",
+        "src/utils/test/test.utils.ts",
+        "src/utils/use-async.spec.ts",
+        "src/utils/test/fixtures.ts",
+        "playwright/page-objects/conduit.page-object.ts",
+        "src/components/ArticlesListNavigation.vue",
+        "playwright/page-objects/edit-article.page-object.ts",
+        "src/composable/use-profile.ts",
+        "src/setup-tests.ts",
+        "src/utils/params-to-query.ts",
+        "playwright/page-objects/register.page-object.ts",
+        "src/components/ArticleDetail.spec.ts",
+        "src/composable/use-articles.ts",
+        "src/store/user.ts",
+        "src/utils/use-async.ts",
+        "config/mcr.base.config.ts",
+        "playwright.config.ts",
+        "playwright/extends.ts",
+        "playwright/page-objects/login.page-object.ts",
+        "src/components/ArticleDetailComment.spec.ts",
+        "src/pages/Login.vue",
+        "src/pages/Profile.spec.ts",
+        "src/pages/Register.vue"
+      ],
+      "context_tokens_estimate": 19324,
+      "prompt_tokens_estimate": 48801,
+      "context_metrics": {
+        "context_precision": 0.08,
+        "context_recall": 1.0,
+        "noise_ratio": 0.92,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 23,
+        "matched_gold_files": [
+          "src/utils/params-to-query.spec.ts",
+          "src/utils/params-to-query.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "config/mcr.base.config.ts",
+          "playwright.config.ts",
+          "playwright/extends.ts",
+          "playwright/page-objects/conduit.page-object.ts",
+          "playwright/page-objects/edit-article.page-object.ts",
+          "playwright/page-objects/login.page-object.ts",
+          "playwright/page-objects/register.page-object.ts",
+          "src/components/ArticleDetail.spec.ts",
+          "src/components/ArticleDetailComment.spec.ts",
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/components/ArticlesListNavigation.vue",
+          "src/composable/use-articles.ts",
+          "src/composable/use-profile.ts",
+          "src/pages/Login.vue",
+          "src/pages/Profile.spec.ts",
+          "src/pages/Register.vue",
+          "src/services/api.ts",
+          "src/setup-tests.ts",
+          "src/store/user.ts",
+          "src/utils/test/fixtures.ts",
+          "src/utils/test/test.utils.ts",
+          "src/utils/use-async.spec.ts",
+          "src/utils/use-async.ts"
+        ]
+      },
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 6.4054,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 130,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/utils/params-to-query.ts"
+            ],
+            "expected_edit_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/utils/params-to-query.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 2.508,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-debug_query_serialization_easy-traditional_rag-cwtpnqvc/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  09:39:59\n   Duration  405ms (transform 20ms, setup 66ms, import 9ms, tests 4ms, environment 198ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |     100 |      100 |     100 |     100 |                   \n ...ms-to-query.ts |     100 |      100 |     100 |     100 |                   \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/utils/params-to-query.ts\",\"content\":\"export default function params2query(params: Record<string, string | number | boolean | null | undefined>): string {\\n  return Object.entries(params)\\n    .filter(([, value]) => value !== null && value !== undefined)\\n    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)\\n    .join('&')\\n}\\n\"}],\"summary\":\"Fixed params2query to URI-encode keys and values, preserve falsy values like 0 and false, and omit null or undefined values.\",\"uncertainty\":[]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 48931,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 8.9711,
+      "poison_source_token_budget": 16000
+    },
+    {
+      "task_id": "debug_query_serialization_easy",
+      "domain": "debugging",
+      "difficulty": "easy",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_query_serialization_easy",
+        "gold_files": [
+          "src/utils/params-to-query.ts",
+          "src/utils/params-to-query.spec.ts"
+        ],
+        "gold_symbols": [
+          "params2query"
+        ],
+        "expected_edit_files": [
+          "src/utils/params-to-query.ts"
+        ],
+        "failure_mode": "query serialization drops falsy values and skips URI encoding"
+      },
+      "retrieved_files": [
+        "src/services/api.ts",
+        "src/utils/params-to-query.spec.ts",
+        "src/components/ArticleDetailMeta.spec.ts",
+        "src/utils/test/test.utils.ts",
+        "src/utils/use-async.spec.ts",
+        "src/utils/test/fixtures.ts",
+        "playwright/page-objects/conduit.page-object.ts",
+        "src/components/ArticlesListNavigation.vue",
+        "playwright/page-objects/edit-article.page-object.ts",
+        "src/composable/use-profile.ts",
+        "src/setup-tests.ts",
+        "src/utils/params-to-query.ts",
+        "playwright/page-objects/register.page-object.ts",
+        "src/components/ArticleDetail.spec.ts",
+        "src/composable/use-articles.ts",
+        "src/store/user.ts",
+        "src/utils/use-async.ts",
+        "config/mcr.base.config.ts",
+        "playwright.config.ts",
+        "playwright/extends.ts",
+        "playwright/page-objects/login.page-object.ts",
+        "src/components/ArticleDetailComment.spec.ts",
+        "src/pages/Login.vue",
+        "src/pages/Profile.spec.ts",
+        "src/pages/Register.vue",
+        "src/pages/Settings.spec.ts",
+        "src/pages/Settings.vue",
+        "src/utils/storage.spec.ts",
+        "src/utils/storage.ts",
+        "playwright/specs/auth.spec.ts",
+        "src/components/ArticleDetailComment.vue",
+        "src/components/ArticleDetailComments.spec.ts",
+        "src/components/ArticleDetailCommentsForm.spec.ts",
+        "src/pages/Profile.vue",
+        "src/plugins/marked.ts",
+        "src/plugins/set-authorization-token.ts",
+        "src/router.ts",
+        "vite.config.ts"
+      ],
+      "context_tokens_estimate": 27050,
+      "prompt_tokens_estimate": 64256,
+      "context_metrics": {
+        "context_precision": 0.0526,
+        "context_recall": 1.0,
+        "noise_ratio": 0.9474,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 36,
+        "matched_gold_files": [
+          "src/utils/params-to-query.spec.ts",
+          "src/utils/params-to-query.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "config/mcr.base.config.ts",
+          "playwright.config.ts",
+          "playwright/extends.ts",
+          "playwright/page-objects/conduit.page-object.ts",
+          "playwright/page-objects/edit-article.page-object.ts",
+          "playwright/page-objects/login.page-object.ts",
+          "playwright/page-objects/register.page-object.ts",
+          "playwright/specs/auth.spec.ts",
+          "src/components/ArticleDetail.spec.ts",
+          "src/components/ArticleDetailComment.spec.ts",
+          "src/components/ArticleDetailComment.vue",
+          "src/components/ArticleDetailComments.spec.ts",
+          "src/components/ArticleDetailCommentsForm.spec.ts",
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/components/ArticlesListNavigation.vue",
+          "src/composable/use-articles.ts",
+          "src/composable/use-profile.ts",
+          "src/pages/Login.vue",
+          "src/pages/Profile.spec.ts",
+          "src/pages/Profile.vue",
+          "src/pages/Register.vue",
+          "src/pages/Settings.spec.ts",
+          "src/pages/Settings.vue",
+          "src/plugins/marked.ts",
+          "src/plugins/set-authorization-token.ts",
+          "src/router.ts",
+          "src/services/api.ts",
+          "src/setup-tests.ts",
+          "src/store/user.ts",
+          "src/utils/storage.spec.ts",
+          "src/utils/storage.ts",
+          "src/utils/test/fixtures.ts",
+          "src/utils/test/test.utils.ts",
+          "src/utils/use-async.spec.ts",
+          "src/utils/use-async.ts",
+          "vite.config.ts"
+        ]
+      },
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 9.3807,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 164,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/utils/params-to-query.ts"
+            ],
+            "expected_edit_files": [
+              "src/utils/params-to-query.ts"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/utils/params-to-query.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 2.561,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-debug_query_serialization_easy-traditional_rag-sr4kr1nx/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  09:40:12\n   Duration  397ms (transform 21ms, setup 62ms, import 10ms, tests 4ms, environment 194ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |     100 |      100 |     100 |     100 |                   \n ...ms-to-query.ts |     100 |      100 |     100 |     100 |                   \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "```json\n{\n  \"summary\": \"Fix params2query to URI-encode keys and values, preserve 0 and false, and omit null/undefined values. The current implementation uses Boolean(value) which drops 0 and false, and doesn't use encodeURIComponent.\",\n  \"files\": [\n    {\n      \"path\": \"src/utils/params-to-query.ts\",\n      \"content\": \"export default function params2query(params: Record<string, string | number | boolean | null | undefined>): string {\\n  return Object.entries(params)\\n    .filter(([, value]) => value !== null && value !== undefined)\\n    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)\\n    .join('&')\\n}\\n\"\n    }\n  ]\n}\n```",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 64420,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 12.0085,
+      "poison_source_token_budget": 64000
+    },
+    {
+      "task_id": "feature_pagination_edges_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "mode": "gog",
+      "gold_context": {
+        "task_id": "feature_pagination_edges_medium",
+        "gold_files": [
+          "src/components/AppPagination.vue",
+          "src/components/AppPagination.spec.ts"
+        ],
+        "gold_symbols": [
+          "AppPagination",
+          "onPageChange"
+        ],
+        "expected_edit_files": [
+          "src/components/AppPagination.vue"
+        ],
+        "failure_mode": "pagination component lacks bounded previous and next controls"
+      },
+      "retrieved_files": [
+        "src/components/AppPagination.vue",
+        "src/components/ArticlesList.vue",
+        "src/components/ArticlesListArticlePreview.vue",
+        "src/components/ArticlesListNavigation.vue",
+        "src/composable/use-articles.ts",
+        "src/composable/use-favorite-article.ts",
+        "src/router.ts",
+        "src/services/api.ts",
+        "src/services/index.ts",
+        "src/store/user.ts",
+        "src/components/AppPagination.spec.ts"
+      ],
+      "context_tokens_estimate": 1659,
+      "prompt_tokens_estimate": 13258,
+      "context_metrics": {
+        "context_precision": 0.1818,
+        "context_recall": 1.0,
+        "noise_ratio": 0.8182,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 9,
+        "matched_gold_files": [
+          "src/components/AppPagination.spec.ts",
+          "src/components/AppPagination.vue"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "src/components/ArticlesList.vue",
+          "src/components/ArticlesListArticlePreview.vue",
+          "src/components/ArticlesListNavigation.vue",
+          "src/composable/use-articles.ts",
+          "src/composable/use-favorite-article.ts",
+          "src/router.ts",
+          "src/services/api.ts",
+          "src/services/index.ts",
+          "src/store/user.ts"
+        ]
+      },
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 20.2155,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 539,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/components/AppPagination.vue"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/components/AppPagination.vue"
+            ],
+            "expected_edit_files": [
+              "src/components/AppPagination.vue"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/components/AppPagination.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 3.2555,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-feature_pagination_edges_medium-gog-r_xze7xo/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n\n Test Files  1 passed (1)\n      Tests  4 passed (4)\n   Start at  09:40:34\n   Duration  1.10s (transform 271ms, setup 66ms, import 500ms, tests 53ms, environment 209ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |   56.89 |    37.93 |    30.3 |   56.14 |                   \n components        |   93.33 |      100 |   88.88 |   92.85 |                   \n  AppLink.vue      |       0 |      100 |       0 |       0 | 19                \n  ...agination.vue |     100 |      100 |     100 |     100 |                   \n config.ts         |     100 |       50 |     100 |     100 | 2                 \n router.ts         |      80 |        0 |    7.14 |      80 | 89                \n services          |      50 |        0 |       0 |      50 |                   \n  index.ts         |      50 |        0 |       0 |      50 | 18-24             \n store             |   38.88 |        0 |       0 |   38.88 |                   \n  user.ts          |   38.88 |        0 |       0 |   38.88 | 12-28             \n utils             |      20 |    33.33 |      25 |      20 |                   \n  storage.ts       |      20 |    33.33 |      25 |      20 | 13-32             \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/components/AppPagination.vue\",\"content\":\"<template>\\n  <ul class=\\\"pagination\\\" data-testid=\\\"pagination\\\">\\n    <li\\n      class=\\\"page-item\\\"\\n      :class=\\\"[{ disabled: page === 1 }]\\\"\\n    >\\n      <a\\n        class=\\\"page-link\\\"\\n        :aria-label=\\\"`Go to previous page`\\\"\\n        href=\\\"javascript:\\\"\\n        @click=\\\"onPageChange(page - 1)\\\"\\n      >Previous</a>\\n    </li>\\n    <li\\n      v-for=\\\"pageNumber in pagesCount\\\"\\n      :key=\\\"pageNumber\\\"\\n      class=\\\"page-item\\\"\\n      :class=\\\"[{ active: isActive(pageNumber) }]\\\"\\n    >\\n      <a\\n        class=\\\"page-link\\\"\\n        :aria-label=\\\"`Go to page ${pageNumber}`\\\"\\n        href=\\\"javascript:\\\"\\n        @click=\\\"onPageChange(pageNumber)\\\"\\n      >{{ pageNumber }}</a>\\n    </li>\\n    <li\\n      class=\\\"page-item\\\"\\n      :class=\\\"[{ disabled: page === pagesCount }]\\\"\\n    >\\n      <a\\n        class=\\\"page-link\\\"\\n        :aria-label=\\\"`Go to next page`\\\"\\n        href=\\\"javascript:\\\"\\n        @click=\\\"onPageChange(page + 1)\\\"\\n      >Next</a>\\n    </li>\\n  </ul>\\n</template>\\n\\n<script setup lang=\\\"ts\\\">\\nimport { computed, toRefs } from 'vue'\\nimport { limit } from 'src/services'\\n\\ninterface Props {\\n  page: number\\n  count: number\\n}\\n\\nconst props = defineProps<Props>()\\n\\nconst emit = defineEmits<{\\n  (e: 'page-change', index: number): void\\n}>()\\n\\nconst { count, page } = toRefs(props)\\nconst pagesCount = computed(() => Math.ceil(count.value / limit))\\nconst isActive = (index: number) => page.value === index\\nconst onPageChange = (index: number) => {\\n  if (index < 1 || index > pagesCount.value) return\\n  emit('page-change', index)\\n}\\n</script>\\n\"}],\"summary\":\"Added previous and next pagination controls to AppPagination.vue. Previous emits prior page unless on page 1, next emits next page unless on final page. Added disabled styling for boundary states and guard in onPageChange to prevent out-of-bounds page changes.\"}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 13797,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 23.4811,
+      "poison_source_token_budget": null
+    },
+    {
+      "task_id": "feature_pagination_edges_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "feature_pagination_edges_medium",
+        "gold_files": [
+          "src/components/AppPagination.vue",
+          "src/components/AppPagination.spec.ts"
+        ],
+        "gold_symbols": [
+          "AppPagination",
+          "onPageChange"
+        ],
+        "expected_edit_files": [
+          "src/components/AppPagination.vue"
+        ],
+        "failure_mode": "pagination component lacks bounded previous and next controls"
+      },
+      "retrieved_files": [
+        "playwright/specs/auth.spec.ts",
+        "src/components/AppPagination.vue",
+        "src/components/AppPagination.spec.ts"
+      ],
+      "context_tokens_estimate": 1198,
+      "prompt_tokens_estimate": 3825,
+      "context_metrics": {
+        "context_precision": 0.6667,
+        "context_recall": 1.0,
+        "noise_ratio": 0.3333,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 1,
+        "matched_gold_files": [
+          "src/components/AppPagination.spec.ts",
+          "src/components/AppPagination.vue"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright/specs/auth.spec.ts"
+        ]
+      },
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 11.5889,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 562,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/components/AppPagination.vue"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/components/AppPagination.vue"
+            ],
+            "expected_edit_files": [
+              "src/components/AppPagination.vue"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/components/AppPagination.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 3.2177,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-feature_pagination_edges_medium-traditional_rag-qim00ar9/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n\n Test Files  1 passed (1)\n      Tests  4 passed (4)\n   Start at  09:40:49\n   Duration  995ms (transform 273ms, setup 66ms, import 514ms, tests 53ms, environment 198ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |   59.01 |       28 |    30.3 |   59.01 |                   \n components        |   94.44 |      100 |   88.88 |   94.44 |                   \n  AppLink.vue      |       0 |      100 |       0 |       0 | 19                \n  ...agination.vue |     100 |      100 |     100 |     100 |                   \n config.ts         |     100 |       50 |     100 |     100 | 2                 \n router.ts         |      80 |        0 |    7.14 |      80 | 89                \n services          |      50 |        0 |       0 |      50 |                   \n  index.ts         |      50 |        0 |       0 |      50 | 18-24             \n store             |   38.88 |        0 |       0 |   38.88 |                   \n  user.ts          |   38.88 |        0 |       0 |   38.88 | 12-28             \n utils             |      20 |    33.33 |      25 |      20 |                   \n  storage.ts       |      20 |    33.33 |      25 |      20 | 13-32             \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/components/AppPagination.vue\",\"content\":\"<template>\\n  <ul class=\\\"pagination\\\" data-testid=\\\"pagination\\\">\\n    <li class=\\\"page-item\\\" :class=\\\"[{ disabled: page <= 1 }]\\\">\\n      <a\\n        class=\\\"page-link\\\"\\n        :aria-label=\\\"`Go to previous page`\\\"\\n        href=\\\"javascript:\\\"\\n        @click=\\\"onPrevious\\\"\\n      >&lt;</a>\\n    </li>\\n    <li\\n      v-for=\\\"pageNumber in pagesCount\\\"\\n      :key=\\\"pageNumber\\\"\\n      class=\\\"page-item\\\"\\n      :class=\\\"[{ active: isActive(pageNumber) }]\\\"\\n    >\\n      <a\\n        class=\\\"page-link\\\"\\n        :aria-label=\\\"`Go to page ${pageNumber}`\\\"\\n        href=\\\"javascript:\\\"\\n        @click=\\\"onPageChange(pageNumber)\\\"\\n      >{{ pageNumber }}</a>\\n    </li>\\n    <li class=\\\"page-item\\\" :class=\\\"[{ disabled: page >= pagesCount }]\\\">\\n      <a\\n        class=\\\"page-link\\\"\\n        :aria-label=\\\"`Go to next page`\\\"\\n        href=\\\"javascript:\\\"\\n        @click=\\\"onNext\\\"\\n      >&gt;</a>\\n    </li>\\n  </ul>\\n</template>\\n\\n<script setup lang=\\\"ts\\\">\\nimport { computed, toRefs } from 'vue'\\nimport { limit } from 'src/services'\\n\\ninterface Props {\\n  page: number\\n  count: number\\n}\\n\\nconst props = defineProps<Props>()\\n\\nconst emit = defineEmits<{\\n  (e: 'page-change', index: number): void\\n}>()\\n\\nconst { count, page } = toRefs(props)\\nconst pagesCount = computed(() => Math.ceil(count.value / limit))\\nconst isActive = (index: number) => page.value === index\\nconst onPageChange = (index: number) => emit('page-change', index)\\nconst onPrevious = () => {\\n  if (page.value > 1) {\\n    emit('page-change', page.value - 1)\\n  }\\n}\\nconst onNext = () => {\\n  if (page.value < pagesCount.value) {\\n    emit('page-change', page.value + 1)\\n  }\\n}\\n</script>\\n\"}],\"summary\":\"Add previous and next pagination controls to AppPagination. Previous emits prior page unless on page 1, next emits next page unless on final page. Controls are disabled visually at boundaries and do not emit events when clicked at boundaries.\",\"uncertainty\":[]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 4387,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 14.8149,
+      "poison_source_token_budget": 1000
+    },
+    {
+      "task_id": "feature_pagination_edges_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "feature_pagination_edges_medium",
+        "gold_files": [
+          "src/components/AppPagination.vue",
+          "src/components/AppPagination.spec.ts"
+        ],
+        "gold_symbols": [
+          "AppPagination",
+          "onPageChange"
+        ],
+        "expected_edit_files": [
+          "src/components/AppPagination.vue"
+        ],
+        "failure_mode": "pagination component lacks bounded previous and next controls"
+      },
+      "retrieved_files": [
+        "playwright/specs/auth.spec.ts",
+        "src/components/AppPagination.spec.ts",
+        "playwright/specs/article.spec.ts",
+        "playwright/extends.ts",
+        "src/components/AppPagination.vue",
+        "playwright/specs/home.spec.ts"
+      ],
+      "context_tokens_estimate": 4805,
+      "prompt_tokens_estimate": 10103,
+      "context_metrics": {
+        "context_precision": 0.3333,
+        "context_recall": 1.0,
+        "noise_ratio": 0.6667,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 4,
+        "matched_gold_files": [
+          "src/components/AppPagination.spec.ts",
+          "src/components/AppPagination.vue"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright/extends.ts",
+          "playwright/specs/article.spec.ts",
+          "playwright/specs/auth.spec.ts",
+          "playwright/specs/home.spec.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 9.9949,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 546,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/components/AppPagination.vue"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/components/AppPagination.vue"
+            ],
+            "expected_edit_files": [
+              "src/components/AppPagination.vue"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "validation": {
+            "passed": false,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/components/AppPagination.spec.ts"
+                ],
+                "returncode": 1,
+                "wall_clock_s": 2.0123,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-feature_pagination_edges_medium-traditional_rag-b_xzq413/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n \u276f src/components/AppPagination.spec.ts (0 test)\n\n Test Files  1 failed (1)\n      Tests  no tests\n   Start at  09:41:03\n   Duration  921ms (transform 239ms, setup 66ms, import 0ms, tests 0ms, environment 195ms)\n\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n\n\u23af\u23af\u23af\u23af\u23af\u23af Failed Suites 1 \u23af\u23af\u23af\u23af\u23af\u23af\u23af\n\n FAIL  src/components/AppPagination.spec.ts [ src/components/AppPagination.spec.ts ]\nSyntaxError: Error parsing JavaScript expression: Unexpected token (1:22)\n1  |  <template>\n2  |    <ul class=\"pagination\" data-testid=\"pagination\">\n3  |      <li class=\"page-item\" :class=\"[{ disabled: page <= }]\">\n   |                                     ^\n4  |        <a class=\"page-link\" aria-label=\"Go to previous page\" href=\"javascript:\" @click=\"onPreviousPage\">\u00ab</a>\n5  |      </li>\n\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/1]\u23af\n\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/components/AppPagination.vue\",\"content\":\"<template>\\n  <ul class=\\\"pagination\\\" data-testid=\\\"pagination\\\">\\n    <li class=\\\"page-item\\\" :class=\\\"[{ disabled: page <= }]\\\">\\n      <a class=\\\"page-link\\\" aria-label=\\\"Go to previous page\\\" href=\\\"javascript:\\\" @click=\\\"onPreviousPage\\\">\u00ab</a>\\n    </li>\\n    <li\\n      v-for=\\\"pageNumber in pagesCount\\\"\\n      :key=\\\"pageNumber\\\"\\n      class=\\\"page-item\\\"\\n      :class=\\\"[{ active: isActive(pageNumber) }]\\\"\\n    >\\n      <a\\n        class=\\\"page-link\\\"\\n        :aria-label=\\\"`Go to page ${pageNumber}`\\\"\\n        href=\\\"javascript:\\\"\\n        @click=\\\"onPageChange(pageNumber)\\\"\\n      >{{ pageNumber }}</a>\\n    </li>\\n    <li class=\\\"page-item\\\" :class=\\\"[{ disabled: page >= pagesCount }]\\\">\\n      <a class=\\\"page-link\\\" aria-label=\\\"Go to next page\\\" href=\\\"javascript:\\\" @click=\\\"onNextPage\\\">\u00bb</a>\\n    </li>\\n  </ul>\\n</template>\\n\\n<script setup lang=\\\"ts\\\">\\nimport { computed, toRefs } from 'vue'\\nimport { limit } from 'src/services'\\n\\ninterface Props {\\n  page: number\\n  count: number\\n}\\n\\nconst props = defineProps<Props>()\\n\\nconst emit = defineEmits<{\\n  (e: 'page-change', index: number): void\\n}>()\\n\\nconst { count, page } = toRefs(props)\\nconst pagesCount = computed(() => Math.ceil(count.value / limit))\\nconst isActive = (index: number) => page.value === index\\nconst onPageChange = (index: number) => emit('page-change', index)\\nconst onPreviousPage = () => {\\n  if (page.value > 1) {\\n    emit('page-change', page.value - 1)\\n  }\\n}\\nconst onNextPage = () => {\\n  if (page.value < pagesCount.value) {\\n    emit('page-change', page.value + 1)\\n  }\\n}\\n</script>\\n\"}],\"summary\":\"Added previous and next pagination controls to AppPagination.vue. Previous emits page-1 when clicked and not on page 1, otherwise disabled. Next emits page+1 when clicked and not on the final page, otherwise disabled. Updated test file already expects these controls via aria-labels.\",\"uncertainty\":[]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "poison_source_token_budget": 4000
+    },
+    {
+      "task_id": "feature_pagination_edges_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "feature_pagination_edges_medium",
+        "gold_files": [
+          "src/components/AppPagination.vue",
+          "src/components/AppPagination.spec.ts"
+        ],
+        "gold_symbols": [
+          "AppPagination",
+          "onPageChange"
+        ],
+        "expected_edit_files": [
+          "src/components/AppPagination.vue"
+        ],
+        "failure_mode": "pagination component lacks bounded previous and next controls"
+      },
+      "retrieved_files": [
+        "playwright/specs/auth.spec.ts",
+        "src/components/AppPagination.spec.ts",
+        "playwright/specs/article.spec.ts",
+        "playwright/extends.ts",
+        "src/components/AppPagination.vue",
+        "playwright/specs/home.spec.ts",
+        "src/composable/use-articles.ts",
+        "playwright/page-objects/edit-article.page-object.ts",
+        "playwright/page-objects/article-detail.page-object.ts",
+        "playwright/page-objects/conduit.page-object.ts",
+        "playwright/page-objects/register.page-object.ts",
+        "playwright/page-objects/login.page-object.ts",
+        "playwright/specs/user.spec.ts",
+        "src/router.ts",
+        "src/components/ArticlesList.vue",
+        "src/components/ArticleDetailMeta.vue",
+        "src/pages/Settings.spec.ts",
+        "src/components/ArticlesListArticlePreview.vue",
+        "src/components/ArticleDetailComment.vue",
+        "src/pages/Article.vue",
+        "src/pages/NotFound.vue",
+        "src/pages/Profile.spec.ts",
+        "src/pages/Settings.vue",
+        "src/components/ArticleDetailCommentsForm.vue",
+        "src/pages/EditArticle.vue",
+        "src/pages/Home.vue",
+        "src/pages/Login.vue",
+        "src/pages/NotFound.spec.ts",
+        "src/pages/Register.spec.ts",
+        "src/pages/Register.vue",
+        "src/services/index.ts",
+        "playwright/utils/test-decorators.ts"
+      ],
+      "context_tokens_estimate": 19601,
+      "prompt_tokens_estimate": 39683,
+      "context_metrics": {
+        "context_precision": 0.0625,
+        "context_recall": 1.0,
+        "noise_ratio": 0.9375,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 30,
+        "matched_gold_files": [
+          "src/components/AppPagination.spec.ts",
+          "src/components/AppPagination.vue"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright/extends.ts",
+          "playwright/page-objects/article-detail.page-object.ts",
+          "playwright/page-objects/conduit.page-object.ts",
+          "playwright/page-objects/edit-article.page-object.ts",
+          "playwright/page-objects/login.page-object.ts",
+          "playwright/page-objects/register.page-object.ts",
+          "playwright/specs/article.spec.ts",
+          "playwright/specs/auth.spec.ts",
+          "playwright/specs/home.spec.ts",
+          "playwright/specs/user.spec.ts",
+          "playwright/utils/test-decorators.ts",
+          "src/components/ArticleDetailComment.vue",
+          "src/components/ArticleDetailCommentsForm.vue",
+          "src/components/ArticleDetailMeta.vue",
+          "src/components/ArticlesList.vue",
+          "src/components/ArticlesListArticlePreview.vue",
+          "src/composable/use-articles.ts",
+          "src/pages/Article.vue",
+          "src/pages/EditArticle.vue",
+          "src/pages/Home.vue",
+          "src/pages/Login.vue",
+          "src/pages/NotFound.spec.ts",
+          "src/pages/NotFound.vue",
+          "src/pages/Profile.spec.ts",
+          "src/pages/Register.spec.ts",
+          "src/pages/Register.vue",
+          "src/pages/Settings.spec.ts",
+          "src/pages/Settings.vue",
+          "src/router.ts",
+          "src/services/index.ts"
+        ]
+      },
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 22.0247,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 591,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/components/AppPagination.vue"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/components/AppPagination.vue"
+            ],
+            "expected_edit_files": [
+              "src/components/AppPagination.vue"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/components/AppPagination.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 3.1404,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-feature_pagination_edges_medium-traditional_rag-ibxbrdle/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n\n Test Files  1 passed (1)\n      Tests  4 passed (4)\n   Start at  09:41:27\n   Duration  977ms (transform 266ms, setup 65ms, import 502ms, tests 54ms, environment 195ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |   59.01 |       28 |    30.3 |   59.01 |                   \n components        |   94.44 |      100 |   88.88 |   94.44 |                   \n  AppLink.vue      |       0 |      100 |       0 |       0 | 19                \n  ...agination.vue |     100 |      100 |     100 |     100 |                   \n config.ts         |     100 |       50 |     100 |     100 | 2                 \n router.ts         |      80 |        0 |    7.14 |      80 | 89                \n services          |      50 |        0 |       0 |      50 |                   \n  index.ts         |      50 |        0 |       0 |      50 | 18-24             \n store             |   38.88 |        0 |       0 |   38.88 |                   \n  user.ts          |   38.88 |        0 |       0 |   38.88 | 12-28             \n utils             |      20 |    33.33 |      25 |      20 |                   \n  storage.ts       |      20 |    33.33 |      25 |      20 | 13-32             \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/components/AppPagination.vue\",\"content\":\"<template>\\n  <ul class=\\\"pagination\\\" data-testid=\\\"pagination\\\">\\n    <li\\n      class=\\\"page-item\\\"\\n      :class=\\\"[{ disabled: page <= 1 }]\\\"\\n    >\\n      <a\\n        class=\\\"page-link\\\"\\n        :aria-label=\\\"'Go to previous page'\\\"\\n        href=\\\"javascript:\\\"\\n        @click=\\\"onPreviousPage\\\"\\n      >&lt;</a>\\n    </li>\\n    <li\\n      v-for=\\\"pageNumber in pagesCount\\\"\\n      :key=\\\"pageNumber\\\"\\n      class=\\\"page-item\\\"\\n      :class=\\\"[{ active: isActive(pageNumber) }]\\\"\\n    >\\n      <a\\n        class=\\\"page-link\\\"\\n        :aria-label=\\\"`Go to page ${pageNumber}`\\\"\\n        href=\\\"javascript:\\\"\\n        @click=\\\"onPageChange(pageNumber)\\\"\\n      >{{ pageNumber }}</a>\\n    </li>\\n    <li\\n      class=\\\"page-item\\\"\\n      :class=\\\"[{ disabled: page >= pagesCount }]\\\"\\n    >\\n      <a\\n        class=\\\"page-link\\\"\\n        :aria-label=\\\"'Go to next page'\\\"\\n        href=\\\"javascript:\\\"\\n        @click=\\\"onNextPage\\\"\\n      >&gt;</a>\\n    </li>\\n  </ul>\\n</template>\\n\\n<script setup lang=\\\"ts\\\">\\nimport { computed, toRefs } from 'vue'\\nimport { limit } from 'src/services'\\n\\ninterface Props {\\n  page: number\\n  count: number\\n}\\n\\nconst props = defineProps<Props>()\\n\\nconst emit = defineEmits<{\\n  (e: 'page-change', index: number): void\\n}>()\\n\\nconst { count, page } = toRefs(props)\\nconst pagesCount = computed(() => Math.ceil(count.value / limit))\\nconst isActive = (index: number) => page.value === index\\nconst onPageChange = (index: number) => emit('page-change', index)\\nconst onPreviousPage = () => {\\n  if (page.value > 1)\\n    emit('page-change', page.value - 1)\\n}\\nconst onNextPage = () => {\\n  if (page.value < pagesCount.value)\\n    emit('page-change', page.value + 1)\\n}\\n</script>\\n\"}],\"summary\":\"Add previous and next pagination controls to AppPagination.vue. Previous emits page-1 when current page > 1, otherwise it's disabled and does nothing. Next emits page+1 when current page < total pages, otherwise it's disabled and does nothing. The controls use standard Bootstrap pagination styling with disabled state when at boundaries.\"}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 40274,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 25.2138,
+      "poison_source_token_budget": 16000
+    },
+    {
+      "task_id": "feature_pagination_edges_medium",
+      "domain": "new_feature",
+      "difficulty": "medium",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "feature_pagination_edges_medium",
+        "gold_files": [
+          "src/components/AppPagination.vue",
+          "src/components/AppPagination.spec.ts"
+        ],
+        "gold_symbols": [
+          "AppPagination",
+          "onPageChange"
+        ],
+        "expected_edit_files": [
+          "src/components/AppPagination.vue"
+        ],
+        "failure_mode": "pagination component lacks bounded previous and next controls"
+      },
+      "retrieved_files": [
+        "playwright/specs/auth.spec.ts",
+        "src/components/AppPagination.spec.ts",
+        "playwright/specs/article.spec.ts",
+        "playwright/extends.ts",
+        "src/components/AppPagination.vue",
+        "playwright/specs/home.spec.ts",
+        "src/composable/use-articles.ts",
+        "playwright/page-objects/edit-article.page-object.ts",
+        "playwright/page-objects/article-detail.page-object.ts",
+        "playwright/page-objects/conduit.page-object.ts",
+        "playwright/page-objects/register.page-object.ts",
+        "playwright/page-objects/login.page-object.ts",
+        "playwright/specs/user.spec.ts",
+        "src/router.ts",
+        "src/components/ArticlesList.vue",
+        "src/components/ArticleDetailMeta.vue",
+        "src/pages/Settings.spec.ts",
+        "src/components/ArticlesListArticlePreview.vue",
+        "src/components/ArticleDetailComment.vue",
+        "src/pages/Article.vue",
+        "src/pages/NotFound.vue",
+        "src/pages/Profile.spec.ts",
+        "src/pages/Settings.vue",
+        "src/components/ArticleDetailCommentsForm.vue",
+        "src/pages/EditArticle.vue",
+        "src/pages/Home.vue",
+        "src/pages/Login.vue",
+        "src/pages/NotFound.spec.ts",
+        "src/pages/Register.spec.ts",
+        "src/pages/Register.vue",
+        "src/services/index.ts",
+        "playwright/utils/test-decorators.ts",
+        "src/pages/EditArticle.spec.ts",
+        "src/pages/Login.spec.ts",
+        "src/pages/Profile.vue",
+        "playwright.config.ts",
+        "src/components/AppLink.spec.ts",
+        "src/components/ArticleDetail.vue",
+        "src/components/ArticleDetailComment.spec.ts",
+        "src/pages/Article.spec.ts",
+        "src/utils/test/fixtures.ts",
+        "src/utils/test/test.utils.ts",
+        "src/utils/use-async.ts"
+      ],
+      "context_tokens_estimate": 30413,
+      "prompt_tokens_estimate": 67201,
+      "context_metrics": {
+        "context_precision": 0.0465,
+        "context_recall": 1.0,
+        "noise_ratio": 0.9535,
+        "gold_hit_count": 2,
+        "gold_missing_count": 0,
+        "noise_file_count": 41,
+        "matched_gold_files": [
+          "src/components/AppPagination.spec.ts",
+          "src/components/AppPagination.vue"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright.config.ts",
+          "playwright/extends.ts",
+          "playwright/page-objects/article-detail.page-object.ts",
+          "playwright/page-objects/conduit.page-object.ts",
+          "playwright/page-objects/edit-article.page-object.ts",
+          "playwright/page-objects/login.page-object.ts",
+          "playwright/page-objects/register.page-object.ts",
+          "playwright/specs/article.spec.ts",
+          "playwright/specs/auth.spec.ts",
+          "playwright/specs/home.spec.ts",
+          "playwright/specs/user.spec.ts",
+          "playwright/utils/test-decorators.ts",
+          "src/components/AppLink.spec.ts",
+          "src/components/ArticleDetail.vue",
+          "src/components/ArticleDetailComment.spec.ts",
+          "src/components/ArticleDetailComment.vue",
+          "src/components/ArticleDetailCommentsForm.vue",
+          "src/components/ArticleDetailMeta.vue",
+          "src/components/ArticlesList.vue",
+          "src/components/ArticlesListArticlePreview.vue",
+          "src/composable/use-articles.ts",
+          "src/pages/Article.spec.ts",
+          "src/pages/Article.vue",
+          "src/pages/EditArticle.spec.ts",
+          "src/pages/EditArticle.vue",
+          "src/pages/Home.vue",
+          "src/pages/Login.spec.ts",
+          "src/pages/Login.vue",
+          "src/pages/NotFound.spec.ts",
+          "src/pages/NotFound.vue",
+          "src/pages/Profile.spec.ts",
+          "src/pages/Profile.vue",
+          "src/pages/Register.spec.ts",
+          "src/pages/Register.vue",
+          "src/pages/Settings.spec.ts",
+          "src/pages/Settings.vue",
+          "src/router.ts",
+          "src/services/index.ts",
+          "src/utils/test/fixtures.ts",
+          "src/utils/test/test.utils.ts",
+          "src/utils/use-async.ts"
+        ]
+      },
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 15.9711,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 530,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/components/AppPagination.vue"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/components/AppPagination.vue"
+            ],
+            "expected_edit_files": [
+              "src/components/AppPagination.vue"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/components/AppPagination.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 3.1823,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-feature_pagination_edges_medium-traditional_rag-y9hbx4ci/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n\n Test Files  1 passed (1)\n      Tests  4 passed (4)\n   Start at  09:41:46\n   Duration  1.01s (transform 272ms, setup 66ms, import 537ms, tests 53ms, environment 194ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |   54.54 |    37.93 |    30.3 |   54.54 |                   \n components        |   91.66 |      100 |   88.88 |   91.66 |                   \n  AppLink.vue      |       0 |      100 |       0 |       0 | 19                \n  ...agination.vue |     100 |      100 |     100 |     100 |                   \n config.ts         |     100 |       50 |     100 |     100 | 2                 \n router.ts         |      80 |        0 |    7.14 |      80 | 89                \n services          |      50 |        0 |       0 |      50 |                   \n  index.ts         |      50 |        0 |       0 |      50 | 18-24             \n store             |   38.88 |        0 |       0 |   38.88 |                   \n  user.ts          |   38.88 |        0 |       0 |   38.88 | 12-28             \n utils             |      20 |    33.33 |      25 |      20 |                   \n  storage.ts       |      20 |    33.33 |      25 |      20 | 13-32             \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"summary\":\"Add previous and next pagination controls to AppPagination.vue with boundary checks: previous emits prior page unless on page 1, next emits next page unless on final page. The spec file already contains passing tests that expect these controls with aria-labels 'Go to previous page' and 'Go to next page', and with disabled behavior at boundaries. Only AppPagination.vue needs changes.\",\"files\":[{\"path\":\"src/components/AppPagination.vue\",\"content\":\"<template>\\n  <ul class=\\\"pagination\\\" data-testid=\\\"pagination\\\">\\n    <li class=\\\"page-item\\\" :class=\\\"[{ disabled: page <= 1 }]\\\">\\n      <a\\n        class=\\\"page-link\\\"\\n        aria-label=\\\"Go to previous page\\\"\\n        href=\\\"javascript:\\\"\\n        @click=\\\"page > 1 && onPageChange(page - 1)\\\"\\n      >\u00ab</a>\\n    </li>\\n\\n    <li\\n      v-for=\\\"pageNumber in pagesCount\\\"\\n      :key=\\\"pageNumber\\\"\\n      class=\\\"page-item\\\"\\n      :class=\\\"[{ active: isActive(pageNumber) }]\\\"\\n    >\\n      <a\\n        class=\\\"page-link\\\"\\n        :aria-label=\\\"`Go to page ${pageNumber}`\\\"\\n        href=\\\"javascript:\\\"\\n        @click=\\\"onPageChange(pageNumber)\\\"\\n      >{{ pageNumber }}</a>\\n    </li>\\n\\n    <li class=\\\"page-item\\\" :class=\\\"[{ disabled: page >= pagesCount }]\\\">\\n      <a\\n        class=\\\"page-link\\\"\\n        aria-label=\\\"Go to next page\\\"\\n        href=\\\"javascript:\\\"\\n        @click=\\\"page < pagesCount && onPageChange(page + 1)\\\"\\n      >\u00bb</a>\\n    </li>\\n  </ul>\\n</template>\\n\\n<script setup lang=\\\"ts\\\">\\nimport { computed, toRefs } from 'vue'\\nimport { limit } from 'src/services'\\n\\ninterface Props {\\n  page: number\\n  count: number\\n}\\n\\nconst props = defineProps<Props>()\\n\\nconst emit = defineEmits<{\\n  (e: 'page-change', index: number): void\\n}>()\\n\\nconst { count, page } = toRefs(props)\\nconst pagesCount = computed(() => Math.ceil(count.value / limit))\\nconst isActive = (index: number) => page.value === index\\nconst onPageChange = (index: number) => emit('page-change', index)\\n</script>\\n\"}]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 67731,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 19.1828,
+      "poison_source_token_budget": 64000
+    },
+    {
+      "task_id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "gog",
+      "gold_context": {
+        "task_id": "debug_router_auth_hard",
+        "gold_files": [
+          "src/router.ts",
+          "src/router.spec.ts",
+          "src/store/user.ts"
+        ],
+        "gold_symbols": [
+          "beforeEach",
+          "userStorage"
+        ],
+        "expected_edit_files": [
+          "src/router.ts"
+        ],
+        "failure_mode": "route guard does not protect all authenticated-only routes"
+      },
+      "retrieved_files": [
+        "src/pages/EditArticle.vue",
+        "src/pages/Article.vue",
+        "src/pages/Login.vue",
+        "src/pages/Settings.vue",
+        "src/components/ArticleDetail.vue",
+        "src/components/ArticleDetailComments.vue",
+        "src/store/user.ts",
+        "src/components/ArticleDetailComment.vue",
+        "src/components/ArticleDetailCommentsForm.vue",
+        "src/components/ArticleDetailMeta.vue",
+        "src/router.ts",
+        "src/router.spec.ts"
+      ],
+      "context_tokens_estimate": 1813,
+      "prompt_tokens_estimate": 9565,
+      "context_metrics": {
+        "context_precision": 0.25,
+        "context_recall": 1.0,
+        "noise_ratio": 0.75,
+        "gold_hit_count": 3,
+        "gold_missing_count": 0,
+        "noise_file_count": 9,
+        "matched_gold_files": [
+          "src/router.spec.ts",
+          "src/router.ts",
+          "src/store/user.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "src/components/ArticleDetail.vue",
+          "src/components/ArticleDetailComment.vue",
+          "src/components/ArticleDetailComments.vue",
+          "src/components/ArticleDetailCommentsForm.vue",
+          "src/components/ArticleDetailMeta.vue",
+          "src/pages/Article.vue",
+          "src/pages/EditArticle.vue",
+          "src/pages/Login.vue",
+          "src/pages/Settings.vue"
+        ]
+      },
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 22.9272,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 875,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/router.ts"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/router.ts"
+            ],
+            "expected_edit_files": [
+              "src/router.ts"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/router.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 3.069,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-debug_router_auth_hard-gog-72u6ncy3/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n\n Test Files  1 passed (1)\n      Tests  8 passed (8)\n   Start at  09:42:12\n   Duration  912ms (transform 324ms, setup 66ms, import 417ms, tests 88ms, environment 195ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |   40.55 |     12.9 |    15.9 |   40.55 |                   \n components        |   54.34 |        0 |       0 |   54.34 |                   \n  AppLink.vue      |       0 |      100 |       0 |       0 | 19                \n  ...agination.vue |      40 |      100 |       0 |      40 | 28-37             \n  ArticlesList.vue |   66.66 |      100 |       0 |   66.66 | 24,44-56          \n  ...lePreview.vue |   66.66 |        0 |       0 |   66.66 | 41,64-67          \n  ...avigation.vue |      50 |        0 |       0 |      50 | 51-101            \n  PopularTags.vue  |      50 |      100 |       0 |      50 | 21-23             \n composable        |   15.06 |        0 |       0 |   15.06 |                   \n  use-articles.ts  |   12.06 |        0 |       0 |   12.06 | 9-70,104-140      \n  ...te-article.ts |      25 |        0 |       0 |      25 | 13-21             \n  use-tags.ts      |   28.57 |      100 |       0 |   28.57 | 5-12              \n config.ts         |     100 |       50 |     100 |     100 | 2                 \n pages             |   55.26 |        0 |       0 |   55.26 |                   \n  Home.vue         |     100 |        0 |       0 |     100 | 23-33             \n  Login.vue        |   41.37 |        0 |       0 |   41.37 | 16,71-97          \n  NotFound.vue     |     100 |      100 |     100 |     100 |                   \n router.ts         |      80 |       50 |      50 |      80 | 93                \n services          |      50 |        0 |       0 |      50 |                   \n  index.ts         |      50 |        0 |       0 |      50 | 18-24             \n store             |   38.88 |        0 |      25 |   38.88 |                   \n  user.ts          |   38.88 |        0 |      25 |   38.88 | 12-28             \n utils             |   51.85 |    42.85 |      80 |   51.85 |                   \n  storage.ts       |     100 |      100 |     100 |     100 |                   \n  use-async.ts     |   23.52 |        0 |       0 |   23.52 | 13-34             \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/router.ts\",\"content\":\"import type { RouteParams, RouteRecordRaw } from 'vue-router'\\nimport { createRouter, createWebHashHistory } from 'vue-router'\\nimport { isAuthorized } from './store/user'\\n\\nexport type AppRouteNames\\n  = | 'global-feed'\\n    | 'my-feed'\\n    | 'tag'\\n    | 'article'\\n    | 'create-article'\\n    | 'edit-article'\\n    | 'login'\\n    | 'register'\\n    | 'profile'\\n    | 'profile-favorites'\\n    | 'settings'\\n    | 'not-found'\\n\\nexport const routes: RouteRecordRaw[] = [\\n  {\\n    name: 'global-feed',\\n    path: '/',\\n    component: () => import('./pages/Home.vue'),\\n  },\\n  {\\n    name: 'my-feed',\\n    path: '/my-feeds',\\n    component: () => import('./pages/Home.vue'),\\n    beforeEnter: () => isAuthorized() ? true : { name: 'login' as const },\\n  },\\n  {\\n    name: 'tag',\\n    path: '/tag/:tag',\\n    component: () => import('./pages/Home.vue'),\\n  },\\n  {\\n    name: 'article',\\n    path: '/article/:slug',\\n    component: () => import('./pages/Article.vue'),\\n  },\\n  {\\n    name: 'edit-article',\\n    path: '/article/:slug/edit',\\n    component: () => import('./pages/EditArticle.vue'),\\n    beforeEnter: () => isAuthorized() ? true : { name: 'login' as const },\\n  },\\n  {\\n    name: 'create-article',\\n    path: '/article/create',\\n    component: () => import('./pages/EditArticle.vue'),\\n    beforeEnter: () => isAuthorized() ? true : { name: 'login' as const },\\n  },\\n  {\\n    name: 'login',\\n    path: '/login',\\n    component: () => import('./pages/Login.vue'),\\n    beforeEnter: () => isAuthorized() ? { name: 'global-feed' as const } : true,\\n  },\\n  {\\n    name: 'register',\\n    path: '/register',\\n    component: () => import('./pages/Register.vue'),\\n    beforeEnter: () => isAuthorized() ? { name: 'global-feed' as const } : true,\\n  },\\n  {\\n    name: 'profile',\\n    path: '/profile/:username',\\n    component: () => import('./pages/Profile.vue'),\\n  },\\n  {\\n    name: 'profile-favorites',\\n    path: '/profile/:username/favorites',\\n    component: () => import('./pages/Profile.vue'),\\n  },\\n  {\\n    name: 'settings',\\n    path: '/settings',\\n    component: () => import('./pages/Settings.vue'),\\n    beforeEnter: () => isAuthorized() ? true : { name: 'login' as const },\\n  },\\n  {\\n    name: 'not-found',\\n    path: '/:pathMatch(.*)*',\\n    component: () => import('./pages/NotFound.vue'),\\n  },\\n]\\nexport const router = createRouter({\\n  history: createWebHashHistory(),\\n  routes,\\n})\\n\\nexport async function routerPush(name: AppRouteNames, params?: RouteParams): ReturnType<typeof router.push> {\\n  return params === undefined\\n    ? await router.push({ name })\\n    : await router.push({ name, params })\\n}\\n\"}],\"summary\":\"Add beforeEnter route guards to my-feed, settings, create-article, and edit-article routes to redirect unauthenticated users to the login page.\",\"uncertainty\":[]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 10440,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 26.0258,
+      "poison_source_token_budget": null
+    },
+    {
+      "task_id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_router_auth_hard",
+        "gold_files": [
+          "src/router.ts",
+          "src/router.spec.ts",
+          "src/store/user.ts"
+        ],
+        "gold_symbols": [
+          "beforeEach",
+          "userStorage"
+        ],
+        "expected_edit_files": [
+          "src/router.ts"
+        ],
+        "failure_mode": "route guard does not protect all authenticated-only routes"
+      },
+      "retrieved_files": [
+        "playwright/specs/article.spec.ts",
+        "src/router.ts",
+        "src/router.spec.ts",
+        "src/store/user.ts"
+      ],
+      "context_tokens_estimate": 1428,
+      "prompt_tokens_estimate": 4849,
+      "context_metrics": {
+        "context_precision": 0.75,
+        "context_recall": 1.0,
+        "noise_ratio": 0.25,
+        "gold_hit_count": 3,
+        "gold_missing_count": 0,
+        "noise_file_count": 1,
+        "matched_gold_files": [
+          "src/router.spec.ts",
+          "src/router.ts",
+          "src/store/user.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright/specs/article.spec.ts"
+        ]
+      },
+      "pass": false,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 17.0061,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 878,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/router.ts"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/router.ts"
+            ],
+            "expected_edit_files": [
+              "src/router.ts"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "validation": {
+            "passed": false,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/router.spec.ts"
+                ],
+                "returncode": 1,
+                "wall_clock_s": 2.0429,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-debug_router_auth_hard-traditional_rag-vlxap6r0/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n \u276f src/router.spec.ts (8 tests | 4 failed) 113ms\n     \u00d7 should redirect unauthenticated users away from /my-feeds 6ms\n     \u00d7 should redirect unauthenticated users away from /settings 10ms\n     \u00d7 should redirect unauthenticated users away from /article/create 12ms\n     \u00d7 should redirect unauthenticated users away from /article/example/edit 1ms\n\n Test Files  1 failed (1)\n      Tests  4 failed | 4 passed (8)\n   Start at  09:42:33\n   Duration  930ms (transform 338ms, setup 63ms, import 415ms, tests 113ms, environment 195ms)\n\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n\n\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 4 \u23af\u23af\u23af\u23af\u23af\u23af\u23af\n\n FAIL  src/router.spec.ts > # Router guards > should redirect unauthenticated users away from /my-feeds\nAssertionError: expected 'my-feed' to be 'login' // Object.is equality\n\nExpected: \"login\"\nReceived: \"my-feed\"\n\n \u276f src/router.spec.ts:46:46\n     44|       await router.isReady()\n     45|\n     46|       expect(router.currentRoute.value.name).toBe('login')\n       |                                              ^\n     47|     },\n     48|   )\n\n\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/4]\u23af\n\n FAIL  src/router.spec.ts > # Router guards > should redirect unauthenticated users away from /settings\nAssertionError: expected 'settings' to be 'login' // Object.is equality\n\nExpected: \"login\"\nReceived: \"settings\"\n\n \u276f src/router.spec.ts:46:46\n     44|       await router.isReady()\n     45|\n     46|       expect(router.currentRoute.value.name).toBe('login')\n       |                                              ^\n     47|     },\n     48|   )\n\n\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[2/4]\u23af\n\n FAIL  src/router.spec.ts > # Router guards > should redirect unauthenticated users away from /article/create\nAssertionError: expected 'create-article' to be 'login' // Object.is equality\n\nExpected: \"login\"\nReceived: \"create-article\"\n\n \u276f src/router.spec.ts:46:46\n     44|       await router.isReady()\n     45|\n     46|       expect(router.currentRoute.value.name).toBe('login')\n       |                                              ^\n     47|     },\n     48|   )\n\n\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[3/4]\u23af\n\n FAIL  src/router.spec.ts > # Router guards > should redirect unauthenticated users away from /article/example/edit\nAssertionError: expected 'edit-article' to be 'login' // Object.is equality\n\nExpected: \"login\"\nReceived: \"edit-article\"\n\n \u276f src/router.spec.ts:46:46\n     44|       await router.isReady()\n     45|\n     46|       expect(router.currentRoute.value.name).toBe('login')\n       |                                              ^\n     47|     },\n     48|   )\n\n\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[4/4]\u23af\n\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/router.ts\",\"content\":\"import type { RouteParams, RouteRecordRaw } from 'vue-router'\\nimport { createRouter, createWebHashHistory } from 'vue-router'\\nimport { isAuthorized } from './store/user'\\n\\nexport type AppRouteNames\\n  = | 'global-feed'\\n    | 'my-feed'\\n    | 'tag'\\n    | 'article'\\n    | 'create-article'\\n    | 'edit-article'\\n    | 'login'\\n    | 'register'\\n    | 'profile'\\n    | 'profile-favorites'\\n    | 'settings'\\n    | 'not-found'\\n\\nexport const routes: RouteRecordRaw[] = [\\n  {\\n    name: 'global-feed',\\n    path: '/',\\n    component: () => import('./pages/Home.vue'),\\n  },\\n  {\\n    name: 'my-feed',\\n    path: '/my-feeds',\\n    component: () => import('./pages/Home.vue'),\\n    meta: { requiresAuth: true },\\n  },\\n  {\\n    name: 'tag',\\n    path: '/tag/:tag',\\n    component: () => import('./pages/Home.vue'),\\n  },\\n  {\\n    name: 'article',\\n    path: '/article/:slug',\\n    component: () => import('./pages/Article.vue'),\\n  },\\n  {\\n    name: 'edit-article',\\n    path: '/article/:slug/edit',\\n    component: () => import('./pages/EditArticle.vue'),\\n    meta: { requiresAuth: true },\\n  },\\n  {\\n    name: 'create-article',\\n    path: '/article/create',\\n    component: () => import('./pages/EditArticle.vue'),\\n    meta: { requiresAuth: true },\\n  },\\n  {\\n    name: 'login',\\n    path: '/login',\\n    component: () => import('./pages/Login.vue'),\\n    beforeEnter: () => isAuthorized() ? { name: 'global-feed' as const } : true,\\n  },\\n  {\\n    name: 'register',\\n    path: '/register',\\n    component: () => import('./pages/Register.vue'),\\n    beforeEnter: () => isAuthorized() ? { name: 'global-feed' as const } : true,\\n  },\\n  {\\n    name: 'profile',\\n    path: '/profile/:username',\\n    component: () => import('./pages/Profile.vue'),\\n  },\\n  {\\n    name: 'profile-favorites',\\n    path: '/profile/:username/favorites',\\n    component: () => import('./pages/Profile.vue'),\\n  },\\n  {\\n    name: 'settings',\\n    path: '/settings',\\n    component: () => import('./pages/Settings.vue'),\\n    meta: { requiresAuth: true },\\n  },\\n  {\\n    name: 'not-found',\\n    path: '/:pathMatch(.*)*',\\n    component: () => import('./pages/NotFound.vue'),\\n  },\\n]\\nexport const router = createRouter({\\n  history: createWebHashHistory(),\\n  routes,\\n})\\n\\nrouter.beforeEach((to) => {\\n  if (to.meta.requiresAuth && !isAuthorized()) {\\n    return { name: 'login' as const }\\n  }\\n})\\n\\nexport async function routerPush(name: AppRouteNames, params?: RouteParams): ReturnType<typeof router.push> {\\n  return params === undefined\\n    ? await router.push({ name })\\n    : await router.push({ name, params })\\n}\\n\"}],\"summary\":\"Added global beforeEach route guard to redirect unauthenticated users to login for protected routes (my-feed, edit-article, create-article, settings) by marking them with meta: { requiresAuth: true }.\"}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": null,
+      "attempts_to_pass": null,
+      "wall_clock_to_pass_s": null,
+      "poison_source_token_budget": 1000
+    },
+    {
+      "task_id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_router_auth_hard",
+        "gold_files": [
+          "src/router.ts",
+          "src/router.spec.ts",
+          "src/store/user.ts"
+        ],
+        "gold_symbols": [
+          "beforeEach",
+          "userStorage"
+        ],
+        "expected_edit_files": [
+          "src/router.ts"
+        ],
+        "failure_mode": "route guard does not protect all authenticated-only routes"
+      },
+      "retrieved_files": [
+        "playwright/specs/article.spec.ts",
+        "src/services/api.ts",
+        "src/composable/use-articles.ts",
+        "src/router.ts",
+        "src/router.spec.ts",
+        "src/store/user.ts"
+      ],
+      "context_tokens_estimate": 4642,
+      "prompt_tokens_estimate": 15049,
+      "context_metrics": {
+        "context_precision": 0.5,
+        "context_recall": 1.0,
+        "noise_ratio": 0.5,
+        "gold_hit_count": 3,
+        "gold_missing_count": 0,
+        "noise_file_count": 3,
+        "matched_gold_files": [
+          "src/router.spec.ts",
+          "src/router.ts",
+          "src/store/user.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright/specs/article.spec.ts",
+          "src/composable/use-articles.ts",
+          "src/services/api.ts"
+        ]
+      },
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 58.2735,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 861,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/router.ts"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/router.ts"
+            ],
+            "expected_edit_files": [
+              "src/router.ts"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/router.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 3.1119,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-debug_router_auth_hard-traditional_rag-vv0aixlh/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n\n Test Files  1 passed (1)\n      Tests  8 passed (8)\n   Start at  09:43:33\n   Duration  967ms (transform 341ms, setup 75ms, import 427ms, tests 100ms, environment 212ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |   40.82 |    11.49 |   12.94 |   40.82 |                   \n components        |   54.34 |        0 |       0 |   54.34 |                   \n  AppLink.vue      |       0 |      100 |       0 |       0 | 19                \n  ...agination.vue |      40 |      100 |       0 |      40 | 28-37             \n  ArticlesList.vue |   66.66 |      100 |       0 |   66.66 | 24,44-56          \n  ...lePreview.vue |   66.66 |        0 |       0 |   66.66 | 41,64-67          \n  ...avigation.vue |      50 |        0 |       0 |      50 | 51-101            \n  PopularTags.vue  |      50 |      100 |       0 |      50 | 21-23             \n composable        |   15.06 |        0 |       0 |   15.06 |                   \n  use-articles.ts  |   12.06 |        0 |       0 |   12.06 | 9-70,104-140      \n  ...te-article.ts |      25 |        0 |       0 |      25 | 13-21             \n  use-tags.ts      |   28.57 |      100 |       0 |   28.57 | 5-12              \n config.ts         |     100 |       50 |     100 |     100 | 2                 \n pages             |   55.26 |        0 |       0 |   55.26 |                   \n  Home.vue         |     100 |        0 |       0 |     100 | 23-33             \n  Login.vue        |   41.37 |        0 |       0 |   41.37 | 16,71-97          \n  NotFound.vue     |     100 |      100 |     100 |     100 |                   \n router.ts         |   83.33 |     62.5 |      40 |   83.33 | 95                \n services          |      50 |        0 |       0 |      50 |                   \n  index.ts         |      50 |        0 |       0 |      50 | 18-24             \n store             |   38.88 |        0 |      25 |   38.88 |                   \n  user.ts          |   38.88 |        0 |      25 |   38.88 | 12-28             \n utils             |   51.85 |    42.85 |      80 |   51.85 |                   \n  storage.ts       |     100 |      100 |     100 |     100 |                   \n  use-async.ts     |   23.52 |        0 |       0 |   23.52 | 13-34             \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/router.ts\",\"content\":\"import type { RouteParams, RouteRecordRaw } from 'vue-router'\\nimport { createRouter, createWebHashHistory } from 'vue-router'\\nimport { isAuthorized } from './store/user'\\n\\nexport type AppRouteNames\\n  = | 'global-feed'\\n    | 'my-feed'\\n    | 'tag'\\n    | 'article'\\n    | 'create-article'\\n    | 'edit-article'\\n    | 'login'\\n    | 'register'\\n    | 'profile'\\n    | 'profile-favorites'\\n    | 'settings'\\n    | 'not-found'\\n\\nconst authGuard = () => isAuthorized() || { name: 'login' as const }\\n\\nexport const routes: RouteRecordRaw[] = [\\n  {\\n    name: 'global-feed',\\n    path: '/',\\n    component: () => import('./pages/Home.vue'),\\n  },\\n  {\\n    name: 'my-feed',\\n    path: '/my-feeds',\\n    component: () => import('./pages/Home.vue'),\\n    beforeEnter: authGuard,\\n  },\\n  {\\n    name: 'tag',\\n    path: '/tag/:tag',\\n    component: () => import('./pages/Home.vue'),\\n  },\\n  {\\n    name: 'article',\\n    path: '/article/:slug',\\n    component: () => import('./pages/Article.vue'),\\n  },\\n  {\\n    name: 'edit-article',\\n    path: '/article/:slug/edit',\\n    component: () => import('./pages/EditArticle.vue'),\\n    beforeEnter: authGuard,\\n  },\\n  {\\n    name: 'create-article',\\n    path: '/article/create',\\n    component: () => import('./pages/EditArticle.vue'),\\n    beforeEnter: authGuard,\\n  },\\n  {\\n    name: 'login',\\n    path: '/login',\\n    component: () => import('./pages/Login.vue'),\\n    beforeEnter: () => isAuthorized() ? { name: 'global-feed' as const } : true,\\n  },\\n  {\\n    name: 'register',\\n    path: '/register',\\n    component: () => import('./pages/Register.vue'),\\n    beforeEnter: () => isAuthorized() ? { name: 'global-feed' as const } : true,\\n  },\\n  {\\n    name: 'profile',\\n    path: '/profile/:username',\\n    component: () => import('./pages/Profile.vue'),\\n  },\\n  {\\n    name: 'profile-favorites',\\n    path: '/profile/:username/favorites',\\n    component: () => import('./pages/Profile.vue'),\\n  },\\n  {\\n    name: 'settings',\\n    path: '/settings',\\n    component: () => import('./pages/Settings.vue'),\\n    beforeEnter: authGuard,\\n  },\\n  {\\n    name: 'not-found',\\n    path: '/:pathMatch(.*)*',\\n    component: () => import('./pages/NotFound.vue'),\\n  },\\n]\\nexport const router = createRouter({\\n  history: createWebHashHistory(),\\n  routes,\\n})\\n\\nexport async function routerPush(name: AppRouteNames, params?: RouteParams): ReturnType<typeof router.push> {\\n  return params === undefined\\n    ? await router.push({ name })\\n    : await router.push({ name, params })\\n}\\n\"}],\"summary\":\"Added a reusable authGuard function that redirects unauthenticated users to login, and applied beforeEnter: authGuard to the my-feed, create-article, edit-article, and settings routes. This ensures unauthenticated users cannot access authenticated-only pages and are redirected to login instead.\",\"uncertainty\":[]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 15910,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 61.3999,
+      "poison_source_token_budget": 4000
+    },
+    {
+      "task_id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_router_auth_hard",
+        "gold_files": [
+          "src/router.ts",
+          "src/router.spec.ts",
+          "src/store/user.ts"
+        ],
+        "gold_symbols": [
+          "beforeEach",
+          "userStorage"
+        ],
+        "expected_edit_files": [
+          "src/router.ts"
+        ],
+        "failure_mode": "route guard does not protect all authenticated-only routes"
+      },
+      "retrieved_files": [
+        "playwright/specs/article.spec.ts",
+        "src/services/api.ts",
+        "src/composable/use-articles.ts",
+        "playwright/specs/auth.spec.ts",
+        "src/pages/EditArticle.spec.ts",
+        "src/router.spec.ts",
+        "src/router.ts",
+        "src/components/ArticleDetailMeta.vue",
+        "src/components/ArticleDetailMeta.spec.ts",
+        "src/components/ArticlesListNavigation.vue",
+        "playwright/specs/home.spec.ts",
+        "src/pages/Settings.spec.ts",
+        "src/utils/test/test.utils.ts",
+        "src/pages/EditArticle.vue",
+        "src/components/ArticleDetail.vue",
+        "src/components/ArticlesList.vue",
+        "src/components/ArticlesListArticlePreview.vue",
+        "playwright/specs/user.spec.ts",
+        "playwright/page-objects/conduit.page-object.ts",
+        "src/store/user.ts"
+      ],
+      "context_tokens_estimate": 18908,
+      "prompt_tokens_estimate": 42342,
+      "context_metrics": {
+        "context_precision": 0.15,
+        "context_recall": 1.0,
+        "noise_ratio": 0.85,
+        "gold_hit_count": 3,
+        "gold_missing_count": 0,
+        "noise_file_count": 17,
+        "matched_gold_files": [
+          "src/router.spec.ts",
+          "src/router.ts",
+          "src/store/user.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright/page-objects/conduit.page-object.ts",
+          "playwright/specs/article.spec.ts",
+          "playwright/specs/auth.spec.ts",
+          "playwright/specs/home.spec.ts",
+          "playwright/specs/user.spec.ts",
+          "src/components/ArticleDetail.vue",
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/components/ArticleDetailMeta.vue",
+          "src/components/ArticlesList.vue",
+          "src/components/ArticlesListArticlePreview.vue",
+          "src/components/ArticlesListNavigation.vue",
+          "src/composable/use-articles.ts",
+          "src/pages/EditArticle.spec.ts",
+          "src/pages/EditArticle.vue",
+          "src/pages/Settings.spec.ts",
+          "src/services/api.ts",
+          "src/utils/test/test.utils.ts"
+        ]
+      },
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 18.6854,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 851,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/router.ts"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/router.ts"
+            ],
+            "expected_edit_files": [
+              "src/router.ts"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/router.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 3.2268,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-debug_router_auth_hard-traditional_rag-bcmmi4pl/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n\n Test Files  1 passed (1)\n      Tests  8 passed (8)\n   Start at  09:43:55\n   Duration  967ms (transform 359ms, setup 69ms, import 449ms, tests 103ms, environment 196ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |   41.09 |     9.41 |    11.9 |   41.09 |                   \n components        |   54.34 |        0 |       0 |   54.34 |                   \n  AppLink.vue      |       0 |      100 |       0 |       0 | 19                \n  ...agination.vue |      40 |      100 |       0 |      40 | 28-37             \n  ArticlesList.vue |   66.66 |      100 |       0 |   66.66 | 24,44-56          \n  ...lePreview.vue |   66.66 |        0 |       0 |   66.66 | 41,64-67          \n  ...avigation.vue |      50 |        0 |       0 |      50 | 51-101            \n  PopularTags.vue  |      50 |      100 |       0 |      50 | 21-23             \n composable        |   15.06 |        0 |       0 |   15.06 |                   \n  use-articles.ts  |   12.06 |        0 |       0 |   12.06 | 9-70,104-140      \n  ...te-article.ts |      25 |        0 |       0 |      25 | 13-21             \n  use-tags.ts      |   28.57 |      100 |       0 |   28.57 | 5-12              \n config.ts         |     100 |       50 |     100 |     100 | 2                 \n pages             |   55.26 |        0 |       0 |   55.26 |                   \n  Home.vue         |     100 |        0 |       0 |     100 | 23-33             \n  Login.vue        |   41.37 |        0 |       0 |   41.37 | 16,71-97          \n  NotFound.vue     |     100 |      100 |     100 |     100 |                   \n router.ts         |   85.71 |       50 |   35.71 |   85.71 | 96                \n services          |      50 |        0 |       0 |      50 |                   \n  index.ts         |      50 |        0 |       0 |      50 | 18-24             \n store             |   38.88 |        0 |      25 |   38.88 |                   \n  user.ts          |   38.88 |        0 |      25 |   38.88 | 12-28             \n utils             |   51.85 |    42.85 |      80 |   51.85 |                   \n  storage.ts       |     100 |      100 |     100 |     100 |                   \n  use-async.ts     |   23.52 |        0 |       0 |   23.52 | 13-34             \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/router.ts\",\"content\":\"import type { RouteParams, RouteRecordRaw } from 'vue-router'\\nimport { createRouter, createWebHashHistory } from 'vue-router'\\nimport { isAuthorized } from './store/user'\\n\\nexport type AppRouteNames\\n  = | 'global-feed'\\n    | 'my-feed'\\n    | 'tag'\\n    | 'article'\\n    | 'create-article'\\n    | 'edit-article'\\n    | 'login'\\n    | 'register'\\n    | 'profile'\\n    | 'profile-favorites'\\n    | 'settings'\\n    | 'not-found'\\n\\nconst requireAuth = () => isAuthorized() ? true : { name: 'login' as const }\\nconst requireGuest = () => isAuthorized() ? { name: 'global-feed' as const } : true\\n\\nexport const routes: RouteRecordRaw[] = [\\n  {\\n    name: 'global-feed',\\n    path: '/',\\n    component: () => import('./pages/Home.vue'),\\n  },\\n  {\\n    name: 'my-feed',\\n    path: '/my-feeds',\\n    component: () => import('./pages/Home.vue'),\\n    beforeEnter: requireAuth,\\n  },\\n  {\\n    name: 'tag',\\n    path: '/tag/:tag',\\n    component: () => import('./pages/Home.vue'),\\n  },\\n  {\\n    name: 'article',\\n    path: '/article/:slug',\\n    component: () => import('./pages/Article.vue'),\\n  },\\n  {\\n    name: 'edit-article',\\n    path: '/article/:slug/edit',\\n    component: () => import('./pages/EditArticle.vue'),\\n    beforeEnter: requireAuth,\\n  },\\n  {\\n    name: 'create-article',\\n    path: '/article/create',\\n    component: () => import('./pages/EditArticle.vue'),\\n    beforeEnter: requireAuth,\\n  },\\n  {\\n    name: 'login',\\n    path: '/login',\\n    component: () => import('./pages/Login.vue'),\\n    beforeEnter: requireGuest,\\n  },\\n  {\\n    name: 'register',\\n    path: '/register',\\n    component: () => import('./pages/Register.vue'),\\n    beforeEnter: requireGuest,\\n  },\\n  {\\n    name: 'profile',\\n    path: '/profile/:username',\\n    component: () => import('./pages/Profile.vue'),\\n  },\\n  {\\n    name: 'profile-favorites',\\n    path: '/profile/:username/favorites',\\n    component: () => import('./pages/Profile.vue'),\\n  },\\n  {\\n    name: 'settings',\\n    path: '/settings',\\n    component: () => import('./pages/Settings.vue'),\\n    beforeEnter: requireAuth,\\n  },\\n  {\\n    name: 'not-found',\\n    path: '/:pathMatch(.*)*',\\n    component: () => import('./pages/NotFound.vue'),\\n  },\\n]\\nexport const router = createRouter({\\n  history: createWebHashHistory(),\\n  routes,\\n})\\n\\nexport async function routerPush(name: AppRouteNames, params?: RouteParams): ReturnType<typeof router.push> {\\n  return params === undefined\\n    ? await router.push({ name })\\n    : await router.push({ name, params })\\n}\\n\"}],\"summary\":\"Added route guards to protect authenticated-only routes. Added requireAuth guard to my-feed, edit-article, create-article, and settings routes to redirect unauthenticated users to login. Added requireGuest guard to login and register routes to redirect authenticated users to home.\",\"uncertainty\":[]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 43193,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 21.9633,
+      "poison_source_token_budget": 16000
+    },
+    {
+      "task_id": "debug_router_auth_hard",
+      "domain": "debugging",
+      "difficulty": "hard",
+      "mode": "traditional_rag",
+      "gold_context": {
+        "task_id": "debug_router_auth_hard",
+        "gold_files": [
+          "src/router.ts",
+          "src/router.spec.ts",
+          "src/store/user.ts"
+        ],
+        "gold_symbols": [
+          "beforeEach",
+          "userStorage"
+        ],
+        "expected_edit_files": [
+          "src/router.ts"
+        ],
+        "failure_mode": "route guard does not protect all authenticated-only routes"
+      },
+      "retrieved_files": [
+        "playwright/specs/article.spec.ts",
+        "src/services/api.ts",
+        "src/composable/use-articles.ts",
+        "playwright/specs/auth.spec.ts",
+        "src/pages/EditArticle.spec.ts",
+        "src/router.spec.ts",
+        "src/router.ts",
+        "src/components/ArticleDetailMeta.vue",
+        "src/components/ArticleDetailMeta.spec.ts",
+        "src/components/ArticlesListNavigation.vue",
+        "playwright/specs/home.spec.ts",
+        "src/pages/Settings.spec.ts",
+        "src/utils/test/test.utils.ts",
+        "src/pages/EditArticle.vue",
+        "src/components/ArticleDetail.vue",
+        "src/components/ArticlesList.vue",
+        "src/components/ArticlesListArticlePreview.vue",
+        "playwright/specs/user.spec.ts",
+        "playwright/page-objects/conduit.page-object.ts",
+        "src/pages/Login.spec.ts",
+        "src/pages/Profile.spec.ts",
+        "src/components/ArticleDetail.spec.ts",
+        "src/components/ArticleDetailComments.spec.ts",
+        "src/pages/Settings.vue",
+        "playwright/extends.ts",
+        "playwright/page-objects/article-detail.page-object.ts",
+        "playwright/page-objects/edit-article.page-object.ts",
+        "src/pages/Article.spec.ts",
+        "src/composable/use-favorite-article.ts",
+        "src/pages/Profile.vue",
+        "src/components/ArticleDetailComments.vue",
+        "src/components/AppPagination.vue",
+        "src/components/ArticlesListArticlePreview.spec.ts",
+        "src/components/ArticlesListNavigation.spec.ts",
+        "src/pages/Login.vue",
+        "src/pages/Register.spec.ts",
+        "playwright/page-objects/login.page-object.ts",
+        "src/components/AppNavigation.vue",
+        "src/components/ArticleDetailCommentsForm.spec.ts",
+        "src/utils/test/fixtures.ts",
+        "playwright/page-objects/register.page-object.ts",
+        "src/components/ArticlesList.spec.ts",
+        "src/components/AppPagination.spec.ts",
+        "src/pages/Article.vue",
+        "playwright/constant.ts",
+        "src/pages/Register.vue",
+        "src/components/ArticleDetailComment.spec.ts",
+        "src/components/ArticleDetailCommentsForm.vue",
+        "src/pages/Home.vue",
+        "src/components/AppLink.vue",
+        "src/main.ts",
+        "src/store/user.ts",
+        "src/types/global-component.d.ts",
+        "src/utils/use-async.ts",
+        "src/pages/NotFound.vue",
+        "src/utils/use-async.spec.ts",
+        "src/components/AppNavigation.spec.ts",
+        "src/pages/NotFound.spec.ts",
+        "src/components/AppLink.spec.ts",
+        "src/services/index.ts",
+        "src/utils/storage.spec.ts",
+        "playwright.config.ts",
+        "playwright/utils/test-decorators.ts",
+        "src/components/ArticleDetailComment.vue"
+      ],
+      "context_tokens_estimate": 40141,
+      "prompt_tokens_estimate": 90419,
+      "context_metrics": {
+        "context_precision": 0.0469,
+        "context_recall": 1.0,
+        "noise_ratio": 0.9531,
+        "gold_hit_count": 3,
+        "gold_missing_count": 0,
+        "noise_file_count": 61,
+        "matched_gold_files": [
+          "src/router.spec.ts",
+          "src/router.ts",
+          "src/store/user.ts"
+        ],
+        "missing_gold_files": [],
+        "noise_files": [
+          "playwright.config.ts",
+          "playwright/constant.ts",
+          "playwright/extends.ts",
+          "playwright/page-objects/article-detail.page-object.ts",
+          "playwright/page-objects/conduit.page-object.ts",
+          "playwright/page-objects/edit-article.page-object.ts",
+          "playwright/page-objects/login.page-object.ts",
+          "playwright/page-objects/register.page-object.ts",
+          "playwright/specs/article.spec.ts",
+          "playwright/specs/auth.spec.ts",
+          "playwright/specs/home.spec.ts",
+          "playwright/specs/user.spec.ts",
+          "playwright/utils/test-decorators.ts",
+          "src/components/AppLink.spec.ts",
+          "src/components/AppLink.vue",
+          "src/components/AppNavigation.spec.ts",
+          "src/components/AppNavigation.vue",
+          "src/components/AppPagination.spec.ts",
+          "src/components/AppPagination.vue",
+          "src/components/ArticleDetail.spec.ts",
+          "src/components/ArticleDetail.vue",
+          "src/components/ArticleDetailComment.spec.ts",
+          "src/components/ArticleDetailComment.vue",
+          "src/components/ArticleDetailComments.spec.ts",
+          "src/components/ArticleDetailComments.vue",
+          "src/components/ArticleDetailCommentsForm.spec.ts",
+          "src/components/ArticleDetailCommentsForm.vue",
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/components/ArticleDetailMeta.vue",
+          "src/components/ArticlesList.spec.ts",
+          "src/components/ArticlesList.vue",
+          "src/components/ArticlesListArticlePreview.spec.ts",
+          "src/components/ArticlesListArticlePreview.vue",
+          "src/components/ArticlesListNavigation.spec.ts",
+          "src/components/ArticlesListNavigation.vue",
+          "src/composable/use-articles.ts",
+          "src/composable/use-favorite-article.ts",
+          "src/main.ts",
+          "src/pages/Article.spec.ts",
+          "src/pages/Article.vue",
+          "src/pages/EditArticle.spec.ts",
+          "src/pages/EditArticle.vue",
+          "src/pages/Home.vue",
+          "src/pages/Login.spec.ts",
+          "src/pages/Login.vue",
+          "src/pages/NotFound.spec.ts",
+          "src/pages/NotFound.vue",
+          "src/pages/Profile.spec.ts",
+          "src/pages/Profile.vue",
+          "src/pages/Register.spec.ts",
+          "src/pages/Register.vue",
+          "src/pages/Settings.spec.ts",
+          "src/pages/Settings.vue",
+          "src/services/api.ts",
+          "src/services/index.ts",
+          "src/types/global-component.d.ts",
+          "src/utils/storage.spec.ts",
+          "src/utils/test/fixtures.ts",
+          "src/utils/test/test.utils.ts",
+          "src/utils/use-async.spec.ts",
+          "src/utils/use-async.ts"
+        ]
+      },
+      "pass": true,
+      "dry_run": false,
+      "attempts": [
+        {
+          "attempt": 1,
+          "returncode": 0,
+          "latency_s": 42.9617,
+          "transient_attempts": [
+            {
+              "attempt": 1,
+              "returncode": 0,
+              "stderr": ""
+            }
+          ],
+          "response_tokens_estimate": 871,
+          "json_valid": true,
+          "patch": {
+            "applied": true,
+            "applied_files": [
+              "src/router.ts"
+            ],
+            "errors": []
+          },
+          "edit_metrics": {
+            "files_edited": [
+              "src/router.ts"
+            ],
+            "expected_edit_files": [
+              "src/router.ts"
+            ],
+            "unexpected_edit_files": [],
+            "missing_expected_edit_files": [],
+            "spurious_edit_file_count": 0
+          },
+          "spurious_imports": 0,
+          "validation": {
+            "passed": true,
+            "commands": [
+              {
+                "command": [
+                  "corepack",
+                  "pnpm",
+                  "vitest",
+                  "run",
+                  "src/router.spec.ts"
+                ],
+                "returncode": 0,
+                "wall_clock_s": 3.168,
+                "stdout_tail": "\n RUN  v4.1.4 /tmp/gog-debug_router_auth_hard-traditional_rag-gzw9iuc0/vue3-realworld-example-app\n      Coverage enabled with monocart\n\n\n Test Files  1 passed (1)\n      Tests  8 passed (8)\n   Start at  09:44:41\n   Duration  947ms (transform 327ms, setup 66ms, import 434ms, tests 90ms, environment 200ms)\n\n-------------------|---------|----------|---------|---------|-------------------\nFile               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s \n-------------------|---------|----------|---------|---------|-------------------\nAll files          |   40.82 |    10.34 |   12.94 |   40.82 |                   \n components        |   54.34 |        0 |       0 |   54.34 |                   \n  AppLink.vue      |       0 |      100 |       0 |       0 | 19                \n  ...agination.vue |      40 |      100 |       0 |      40 | 28-37             \n  ArticlesList.vue |   66.66 |      100 |       0 |   66.66 | 24,44-56          \n  ...lePreview.vue |   66.66 |        0 |       0 |   66.66 | 41,64-67          \n  ...avigation.vue |      50 |        0 |       0 |      50 | 51-101            \n  PopularTags.vue  |      50 |      100 |       0 |      50 | 21-23             \n composable        |   15.06 |        0 |       0 |   15.06 |                   \n  use-articles.ts  |   12.06 |        0 |       0 |   12.06 | 9-70,104-140      \n  ...te-article.ts |      25 |        0 |       0 |      25 | 13-21             \n  use-tags.ts      |   28.57 |      100 |       0 |   28.57 | 5-12              \n config.ts         |     100 |       50 |     100 |     100 | 2                 \n pages             |   55.26 |        0 |       0 |   55.26 |                   \n  Home.vue         |     100 |        0 |       0 |     100 | 23-33             \n  Login.vue        |   41.37 |        0 |       0 |   41.37 | 16,71-97          \n  NotFound.vue     |     100 |      100 |     100 |     100 |                   \n router.ts         |   83.33 |       50 |      40 |   83.33 | 95                \n services          |      50 |        0 |       0 |      50 |                   \n  index.ts         |      50 |        0 |       0 |      50 | 18-24             \n store             |   38.88 |        0 |      25 |   38.88 |                   \n  user.ts          |   38.88 |        0 |      25 |   38.88 | 12-28             \n utils             |   51.85 |    42.85 |      80 |   51.85 |                   \n  storage.ts       |     100 |      100 |     100 |     100 |                   \n  use-async.ts     |   23.52 |        0 |       0 |   23.52 | 13-34             \n-------------------|---------|----------|---------|---------|-------------------\n",
+                "stderr_tail": "Importing from \"vitest/coverage\" is deprecated since Vitest 4.1. Please use \"vitest/node\" instead.\n"
+              }
+            ]
+          },
+          "raw_response": "{\"files\":[{\"path\":\"src/router.ts\",\"content\":\"import type { RouteParams, RouteRecordRaw } from 'vue-router'\\nimport { createRouter, createWebHashHistory } from 'vue-router'\\nimport { isAuthorized } from './store/user'\\n\\nexport type AppRouteNames\\n  = | 'global-feed'\\n    | 'my-feed'\\n    | 'tag'\\n    | 'article'\\n    | 'create-article'\\n    | 'edit-article'\\n    | 'login'\\n    | 'register'\\n    | 'profile'\\n    | 'profile-favorites'\\n    | 'settings'\\n    | 'not-found'\\n\\nconst authGuard = () => isAuthorized() ? true : { name: 'login' as const }\\n\\nexport const routes: RouteRecordRaw[] = [\\n  {\\n    name: 'global-feed',\\n    path: '/',\\n    component: () => import('./pages/Home.vue'),\\n  },\\n  {\\n    name: 'my-feed',\\n    path: '/my-feeds',\\n    component: () => import('./pages/Home.vue'),\\n    beforeEnter: authGuard,\\n  },\\n  {\\n    name: 'tag',\\n    path: '/tag/:tag',\\n    component: () => import('./pages/Home.vue'),\\n  },\\n  {\\n    name: 'article',\\n    path: '/article/:slug',\\n    component: () => import('./pages/Article.vue'),\\n  },\\n  {\\n    name: 'edit-article',\\n    path: '/article/:slug/edit',\\n    component: () => import('./pages/EditArticle.vue'),\\n    beforeEnter: authGuard,\\n  },\\n  {\\n    name: 'create-article',\\n    path: '/article/create',\\n    component: () => import('./pages/EditArticle.vue'),\\n    beforeEnter: authGuard,\\n  },\\n  {\\n    name: 'login',\\n    path: '/login',\\n    component: () => import('./pages/Login.vue'),\\n    beforeEnter: () => isAuthorized() ? { name: 'global-feed' as const } : true,\\n  },\\n  {\\n    name: 'register',\\n    path: '/register',\\n    component: () => import('./pages/Register.vue'),\\n    beforeEnter: () => isAuthorized() ? { name: 'global-feed' as const } : true,\\n  },\\n  {\\n    name: 'profile',\\n    path: '/profile/:username',\\n    component: () => import('./pages/Profile.vue'),\\n  },\\n  {\\n    name: 'profile-favorites',\\n    path: '/profile/:username/favorites',\\n    component: () => import('./pages/Profile.vue'),\\n  },\\n  {\\n    name: 'settings',\\n    path: '/settings',\\n    component: () => import('./pages/Settings.vue'),\\n    beforeEnter: authGuard,\\n  },\\n  {\\n    name: 'not-found',\\n    path: '/:pathMatch(.*)*',\\n    component: () => import('./pages/NotFound.vue'),\\n  },\\n]\\nexport const router = createRouter({\\n  history: createWebHashHistory(),\\n  routes,\\n})\\n\\nexport async function routerPush(name: AppRouteNames, params?: RouteParams): ReturnType<typeof router.push> {\\n  return params === undefined\\n    ? await router.push({ name })\\n    : await router.push({ name, params })\\n}\\n\"}],\"summary\":\"Added route guards to protect authenticated-only routes. The authGuard function redirects unauthenticated users to login for: /my-feeds, /settings, /article/create, and /article/:slug/edit. The existing beforeEnter guards on /login and /register that redirect logged-in users to home were preserved.\",\"uncertainty\":[]}",
+          "stderr": ""
+        }
+      ],
+      "tokens_to_pass": 91290,
+      "attempts_to_pass": 1,
+      "wall_clock_to_pass_s": 46.1685,
+      "poison_source_token_budget": 64000
+    }
+  ],
+  "summary": {
+    "gog": {
+      "cases": 3,
+      "pass_at_1": 3,
+      "pass_at_k": 3,
+      "avg_context_precision": 0.477,
+      "avg_context_recall": 1.0,
+      "avg_noise_ratio": 0.523,
+      "avg_context_tokens_estimate": 1314.333,
+      "avg_prompt_tokens_estimate": 7996.333,
+      "avg_tokens_to_pass": 8514.667,
+      "avg_wall_clock_to_pass_s": 18.811
+    },
+    "traditional_rag_by_budget": {
+      "1000": {
+        "cases": 3,
+        "pass_at_1": 2,
+        "pass_at_k": 2,
+        "avg_context_precision": 0.694,
+        "avg_context_recall": 1.0,
+        "avg_noise_ratio": 0.306,
+        "avg_context_tokens_estimate": 1535.333,
+        "avg_prompt_tokens_estimate": 5759.0,
+        "avg_tokens_to_pass": 6564.0,
+        "avg_wall_clock_to_pass_s": 12.096
+      },
+      "4000": {
+        "cases": 3,
+        "pass_at_1": 1,
+        "pass_at_k": 1,
+        "avg_context_precision": 0.444,
+        "avg_context_recall": 1.0,
+        "avg_noise_ratio": 0.556,
+        "avg_context_tokens_estimate": 4351.667,
+        "avg_prompt_tokens_estimate": 12248.0,
+        "avg_tokens_to_pass": 15910.0,
+        "avg_wall_clock_to_pass_s": 61.4
+      },
+      "16000": {
+        "cases": 3,
+        "pass_at_1": 3,
+        "pass_at_k": 3,
+        "avg_context_precision": 0.097,
+        "avg_context_recall": 1.0,
+        "avg_noise_ratio": 0.902,
+        "avg_context_tokens_estimate": 19277.667,
+        "avg_prompt_tokens_estimate": 43608.667,
+        "avg_tokens_to_pass": 44132.667,
+        "avg_wall_clock_to_pass_s": 18.716
+      },
+      "64000": {
+        "cases": 3,
+        "pass_at_1": 3,
+        "pass_at_k": 3,
+        "avg_context_precision": 0.049,
+        "avg_context_recall": 1.0,
+        "avg_noise_ratio": 0.951,
+        "avg_context_tokens_estimate": 32534.667,
+        "avg_prompt_tokens_estimate": 73958.667,
+        "avg_tokens_to_pass": 74480.333,
+        "avg_wall_clock_to_pass_s": 25.787
+      }
+    }
+  }
+}
