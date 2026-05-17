@@ -12,6 +12,11 @@ It does **not** include:
 - Persistent `.gog/` artifact onboarding
 - Production-grade context membranes
 - Graph fusion, runtime graphs, or change graphs
+- Production repo-strata discovery
+- Compact surgical prompt construction
+- Structural anchor extraction
+- Symbol capability reports
+- Mutation-safety APIs or assistant integration contracts
 
 ### What GOG-Lite does
 
@@ -29,6 +34,12 @@ It does **not** include:
 - Advanced test-file / config-file penalties
 - Task-specific graph seeding or runtime graph fusion
 - Production integrations (e.g., OpenClaw, enterprise agents)
+- Professional repo-strata discovery
+- Context membrane scoring
+- Compact surgical prompt rendering
+- Structural anchor extraction
+- Symbol capability checks
+- Safe mutation application
 
 ### Running a GOG-Lite benchmark
 
@@ -66,11 +77,12 @@ This repository is the **GOG-Lite reference implementation and benchmark lab** f
 
 - **GOG-Lite** (`gog_engine_lite/`, `gog_cli/lite_*.py`) is a simplified graph-native context layer that demonstrates the core GOG thesis: graph-routed context can compete with flat keyword retrieval for coding tasks.
 - **Benchmarks** (`gog/`, `gog_cli/gold_context.py`, `gog_cli/failure_taxonomy.py`) allow reproducibility of results against public repositories.
+- **Curated professional summaries** (`docs/GOG_PROFESSIONAL_RESULTS.md`) publish selected GOG Professional outcomes without exposing the private production engine.
 - **Research artifacts** (`docs/`, `GOG_PAPER.pdf`) document the methodology and failure analysis.
 
 ## What This Repository Does Not Contain
 
-- **Production GOG Professional**: A separate private implementation with advanced context membranes, scalable onboarding, graph fusion, and enterprise integrations.
+- **Production GOG Professional**: A separate private implementation with advanced repo strata, context membranes, compact task-specific prompts, structural anchors, symbol capability checks, mutation-safety contracts, scalable onboarding, graph fusion, and enterprise integrations.
 - **SRM Lab**: The long-term Symbolic Reasoning Model research direction is maintained in a separate repository to keep this one focused on GOG as a practical context layer for today's coding assistants.
 
 ## Reproducibility
@@ -81,9 +93,18 @@ Anyone should be able to run the benchmarks in this repository to verify the cor
 |-------|----------|---------|
 | GOG-Lite Reference | `gog_engine_lite/`, `gog_cli/lite_*.py` | Apache 2.0 |
 | Benchmarks & Metrics | `gog/`, `gog_cli/gold_context.py`, `gog_cli/failure_taxonomy.py` | Apache 2.0 |
+| Curated GOG Professional Summaries | `docs/GOG_PROFESSIONAL_RESULTS.md` | CC BY 4.0 |
 | System Docs | `docs/GOG_SYSTEM_MODEL.md`, `docs/REASONER_INTERFACE.md` | CC BY 4.0 |
 | Production GOG | Private repo | Proprietary |
 | SRM Lab | Separate repo | TBD |
+
+## Public Messaging Rule
+
+Public material should say:
+
+> GOG Lite is the reference lab. GOG Professional is the production research engine.
+
+It should not publish the mechanisms that make the professional engine commercially valuable. Public summaries may report benchmark setup, validation status, prompt-token totals, context precision, recall, noise, dominant package, and high-level product concepts. They should not include implementation-level ranking formulas, renderer internals, mutation APIs, private artifacts, or assistant integration contracts.
 
 ## Moving the Boundary
 

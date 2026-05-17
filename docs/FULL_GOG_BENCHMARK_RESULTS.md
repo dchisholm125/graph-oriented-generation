@@ -6,6 +6,8 @@ The public repository now includes **GOG-Lite**, a transparent reference impleme
 
 These results are preserved here as curated historical evidence for the stronger pre-separation engine. They should not be read as claims about the smaller public GOG-Lite implementation.
 
+For current curated summaries from the private production research engine, see [GOG Professional Results Summary](GOG_PROFESSIONAL_RESULTS.md).
+
 ## Headline
 
 In repeated early trials, the full GOG engine remained competitive with the best RAG settings while avoiding the extreme context noise and cost-to-pass seen at larger RAG budgets.

@@ -4,7 +4,7 @@ Graph-Oriented Generation (GOG) is a research direction for making software repo
 
 This public repository contains the GOG reference implementation and benchmark lab. It is meant to be runnable, inspectable, and scientifically useful. It contains GOG-Lite, public benchmark harnesses, gold-context scoring, failure taxonomy, curated result artifacts, and methodology notes.
 
-The production-grade engine is developed separately for commercial use. SRM and SEL research are maintained separately as moonshot research. This public repo focuses on reproducible evidence: when graph-oriented retrieval helps, when it fails, and how to compare it honestly against RAG-style baselines.
+GOG Professional, the production research engine, is developed privately for commercial use. Selected GOG Professional benchmark summaries are published here for transparency, but the production engine is not included in this repository. SRM and SEL research are maintained separately as moonshot research. This public repo focuses on reproducible evidence: when graph-oriented retrieval helps, when it fails, and how to compare it honestly against RAG-style baselines.
 
 Links:
 - Project page: https://derekchisholm.com/gog
@@ -22,8 +22,17 @@ Links:
 - `gog/fixtures/`: small public fixtures used by dry-run benchmarks.
 - `gog/results/`: curated public result artifacts.
 - `docs/PUBLIC_PRIVATE_BOUNDARY.md`: boundary between this repo, GOG Professional, and SRM research.
+- `docs/GOG_PROFESSIONAL_RESULTS.md`: curated public summaries from the private GOG Professional engine.
 - `docs/GOG_LITE_DESIGN.md`: public reference design notes.
 - `docs/GOG_SYSTEM_MODEL.md`: system-level research framing.
+
+## GOG Lite and GOG Professional
+
+This repository contains **GOG Lite**, the public reference implementation for Graph-Oriented Generation. It demonstrates the core thesis: codebases are structured symbolic systems, and coding agents can benefit from graph-routed context instead of flat retrieved text.
+
+**GOG Professional** is the private production research implementation. It extends the public thesis with repo strata discovery, compact task-specific context, structural anchors, symbol capability checks, and mutation-safety contracts for coding-assistant integrations.
+
+Selected GOG Professional benchmark summaries are published here for transparency, but the production engine is not included in this repository.
 
 ## GOG-Lite
 
@@ -94,8 +103,23 @@ PYTHONPATH=. PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 pytest tests/test_gog_lite.py
 
 Early repeated trials show that prompt-scoped graph retrieval can reduce context noise and improve target-file precision on focused code-edit tasks. Some curated historical results were produced with the pre-separation/full GOG engine and should be read as professional-engine results, not as claims about the smaller public GOG-Lite implementation.
 
+The current lead professional result is an Orca Whirlpools case study where GOG Professional selected the correct SDK package, produced a validated Rust patch, and used 2,406 prompt tokens with 0.833 context precision and 0.167 noise. Comparable RAG runs either failed at low budgets or passed only with substantially worse context precision and higher structural noise.
+
+### Lead GOG Professional Case Study
+
+| Mode | Pass? | Prompt tokens | Precision | Recall | Noise | Dominant package |
+| --- | :---: | ---: | ---: | ---: | ---: | --- |
+| **GOG Professional** | **yes** | **2,406** | **0.833** | **1.0** | **0.167** | **`rust-sdk/core`** |
+| RAG hybrid 1k | no | 578 | 0.0 | 0.0 | 1.0 | `programs/whirlpool` |
+| RAG hybrid 4k | no | 578 | 0.0 | 0.0 | 1.0 | `programs/whirlpool` |
+| RAG hybrid 16k | yes | 2,494 | 0.143 | 0.2 | 0.857 | `programs/whirlpool` |
+| RAG hybrid 64k | yes | 4,831 | 0.2 | 0.6 | 0.8 | `programs/whirlpool` |
+
+GOG Professional is being developed as a repo-intelligence and mutation-safety layer for coding assistants. It does not replace coding assistants; it gives them better repo context and safer mutation surfaces. For technical walkthroughs or pilot integrations, use the contact path on the project page.
+
 ## Benchmark Results
 
+- [GOG Professional results summary](docs/GOG_PROFESSIONAL_RESULTS.md): selected public summaries from the private production research engine.
 - [Full pre-separation GOG benchmark results](docs/FULL_GOG_BENCHMARK_RESULTS.md): curated historical results from the full GOG engine before the public/private separation.
 
 On the debug query serialization dry-run fixture, the public GOG-Lite path currently returns the expected files:
@@ -125,7 +149,7 @@ The public goal is not to claim universal superiority. The goal is to make these
 
 This repo keeps the public benchmark surface and GOG-Lite reference implementation.
 
-GOG Professional contains the production graph engine, advanced context membrane, onboarding and fingerprinting pipeline, production CLI, context serving, and commercial integration surfaces.
+GOG Professional contains the production graph engine, advanced repo-strata discovery, compact task-specific context, structural anchors, symbol capability checks, mutation-safety contracts, onboarding and fingerprinting pipeline, production CLI, context serving, and commercial integration surfaces.
 
 SRM Lab contains SEL, SRM engine work, symbolic distillation, distilled datasets, SRM papers, and symbolic mutation-planning research.
 
