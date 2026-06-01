@@ -6,7 +6,7 @@
 
 ## Philosophy
 
-The GOG thesis is that **graph-routed context can compete with or exceed flat retrieved context** for coding tasks. GOG-Lite proves this with the smallest possible surface area:
+The GOG thesis is that **graph-routed context can improve context efficiency and locality** for coding tasks. GOG Lite tests this with the smallest possible surface area:
 
 1. **Regex-based import graphs** — no AST parser, no tree-sitter.
 2. **Keyword seeding + bounded BFS** — no semantic embeddings.
@@ -70,7 +70,7 @@ All constants live at the top of `gog_engine_lite/graph_search.py` and are docum
 
 ---
 
-## Relationship to Production GOG
+## Relationship to GOG Professional
 
 | | GOG-Lite | Production GOG |
 |---|---|---|
@@ -78,9 +78,11 @@ All constants live at the top of `gog_engine_lite/graph_search.py` and are docum
 | Scoring | Integer constants | Multi-factor ranking + learned weights |
 | Membrane | Distance + token cap | ContextMembrane with multi-objective optimization |
 | Snippets | Keyword radius | Semantic chunking |
-| Target | Public reference, reproducibility | Maximum benchmark performance |
+| Target | Public reference, reproducibility | Private research/product engine |
 
-GOG-Lite is the **control group**. If GOG-Lite already beats RAG, the production system is icing on the cake.
+GOG Lite is the public control surface. It should remain simple enough for
+readers to inspect and run, while GOG Professional explores stronger private
+context strategy, assistant guidance, and mutation/evaluation workflows.
 
 ---
 
@@ -110,4 +112,4 @@ All tunables are module-level constants. To experiment:
 3. Re-run the dry-run benchmark.
 4. Compare precision, recall, noise, and tokens.
 
-No hidden config files, no onboarding artifacts, no magic.
+No hidden config files and no onboarding artifacts.

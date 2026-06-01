@@ -1,71 +1,122 @@
-# GOG Professional Results Summary
+# GOG Professional Results
 
-This document publishes selected benchmark summaries from **GOG Professional**, the private production research implementation of Graph-Oriented Generation.
+This document summarizes selected GOG Professional benchmark results in a
+public-safe form. GOG Professional remains private; this repository contains GOG
+Lite, the public reference implementation.
 
-This repository contains **GOG Lite**: the public reference implementation for the core graph-routed context thesis. GOG Lite is intentionally transparent, small, and reproducible. GOG Professional is developed privately as a production repo-intelligence and mutation-safety layer for coding assistants.
+The summaries below are task-local evidence. They do not claim that GOG always
+beats RAG, that RAG cannot solve these tasks, or that GOG guarantees better
+patches.
 
-The summaries below show what the professional engine can do without publishing the production implementation.
+## Result A: Orca Rust Surgical Task
 
-## Public / Private Boundary
+**Repo:** real Orca Whirlpools SDK
 
-Published here:
+**Task shape:** localized Rust SDK change with executable validation
 
-- Curated benchmark summaries
-- Task setup, validation outcome, and high-level methodology
-- Context-quality metrics such as prompt tokens, precision, recall, noise, and dominant package
-- Public comparison framing against RAG-style baselines
+**Public-safe result:** GOG compact/surgical context produced a validated Rust
+patch.
 
-Not published here:
+In this benchmark, GOG Professional served a compact, surgical context for a
+Rust task in the Orca Whirlpools SDK. The patch applied cleanly and validation
+passed with the relevant Rust tests. The important public result is not a
+private implementation detail; it is that a small, targeted context bundle plus
+explicit mutation boundaries was sufficient to produce a validated patch in a
+real SDK.
 
-- Production repo-strata discovery implementation
-- Context membrane scoring internals
-- Compact surgical prompt construction
-- Structural anchor extraction details
-- Symbol capability implementation
-- Mutation-safety APIs and assistant integration contracts
-- Full private benchmark artifacts
+In the published comparison run, the low-budget hybrid RAG variants selected
+the wrong structural region and failed validation. Higher-budget RAG eventually
+passed, but with substantially more structural noise.
 
-In short: the public repo shows the thesis and selected evidence; GOG Professional keeps the production engine private.
+| Mode | Validation | Prompt tokens | Total tokens | Context precision | Context recall | Noise ratio | Dominant package |
+| --- | :---: | ---: | ---: | ---: | ---: | ---: | --- |
+| GOG Professional | pass | 2,406 | 3,004 | 0.8333 | 1.0 | 0.1667 | `rust-sdk/core` |
+| RAG hybrid 1K | fail | 578 | 1,131 | 0.0 | 0.0 | 1.0 | `programs/whirlpool` |
+| RAG hybrid 4K | fail | 578 | 1,329 | 0.0 | 0.0 | 1.0 | `programs/whirlpool` |
+| RAG hybrid 16K | pass | 2,494 | 3,219 | 0.1429 | 0.2 | 0.8571 | `programs/whirlpool` |
+| RAG hybrid 64K | pass | 4,831 | 5,434 | 0.2 | 0.6 | 0.8 | `programs/whirlpool` |
 
-## Lead Case Study: Orca Whirlpools
+Conservative reading:
 
-**Repository:** Orca Whirlpools  
-**Task:** add and test Rust tick-array containment behavior in the SDK math package  
-**Model:** `kimi-k2.6:cloud`  
-**Validation:** Rust library tests passed for the tick-array target  
-**Comparison:** GOG Professional versus deterministic hybrid RAG budgets
+- GOG selected the right package and edit surface.
+- The resulting patch was validated by tests.
+- The result supports surgical-context and mutation-boundary claims.
+- It does not prove that every localized Rust task will pass or that broad
+  retrieval cannot pass.
 
-This benchmark is useful because the target file is small but easy to miss inside a mixed repository. The repo contains multiple plausible Rust regions, including an Anchor program package and an SDK math package. A retrieval system can find Rust code and still land in the wrong structural region.
+## Result B: Orca Cross-Language Deployment Parity
 
-| Mode | Pass? | Prompt tokens | Total tokens | Context precision | Context recall | Noise ratio | Dominant package |
-|------|:-----:|--------------:|-------------:|------------------:|---------------:|------------:|------------------|
-| **GOG Professional** | **yes** | **2,406** | **3,004** | **0.8333** | **1.0** | **0.1667** | **`rust-sdk/core`** |
-| RAG hybrid 1k | no | 578 | 1,131 | 0.0 | 0.0 | 1.0 | `programs/whirlpool` |
-| RAG hybrid 4k | no | 578 | 1,329 | 0.0 | 0.0 | 1.0 | `programs/whirlpool` |
-| RAG hybrid 16k | yes | 2,494 | 3,219 | 0.1429 | 0.2 | 0.8571 | `programs/whirlpool` |
-| RAG hybrid 64k | yes | 4,831 | 5,434 | 0.2 | 0.6 | 0.8 | `programs/whirlpool` |
+**Repo:** real Orca Whirlpools SDK
 
-## Interpretation
+**Task shape:** offline parity tests across TypeScript and Rust deployment
+constants
 
-The result is not simply that one mode used fewer tokens. The stronger signal is structural locality.
+**Public-safe result:** GOG and hybrid RAG all passed in the fair comparison;
+GOG used substantially smaller context.
 
-GOG Professional selected context from the correct package, served a compact edit surface, and produced a validated patch. Low-budget RAG centered on the wrong package and failed. Higher-budget RAG eventually passed, but only with substantially worse precision, recall, noise, and package locality.
+| Metric | GOG | RAG hybrid 16K | RAG hybrid 64K |
+| --- | ---: | ---: | ---: |
+| Validation | pass | pass | pass |
+| Retrieved files | 6 | 27 | 34 |
+| Prompt tokens | 3,768 | 11,461 | 16,187 |
+| Total tokens | 6,500 | 14,132 | 18,714 |
 
-That is the commercial direction for GOG Professional:
+RAG hybrid 64K produced a more exhaustive patch in one run. That nuance matters:
+the fair conclusion is not that RAG failed. The conclusion is that all three
+approaches reached a validated outcome, while GOG did so with fewer retrieved
+files and fewer tokens.
 
-> GOG does not replace coding assistants. It gives them better repo context and safer mutation surfaces.
+Conservative reading:
 
-## Product Direction
+- Same validated outcome across GOG and hybrid RAG.
+- GOG's observed advantage was context size and repo locality.
+- RAG hybrid remained competitive and, at 64K, produced a more exhaustive patch
+  in one run.
+- This benchmark supports context-efficiency claims, not universal superiority
+  claims.
 
-GOG Professional is being developed as a private repo-intelligence layer for coding assistants. The system focuses on:
+## Result C: OpenCode Orca TypeScript Type-Guard Bakeoff
 
-- Repo strata and package locality
-- Compact task-specific context
-- Structural anchors for constrained edits
-- Symbol capability checks
-- Mutation-safety contracts around assistant-generated patches
-- Cost-per-validated-patch measurement
+**Repo:** real Orca Whirlpools SDK
 
-Those capabilities are described publicly at a product level, but their production implementation is not included in GOG Lite.
+**Task shape:** TypeScript helper type guards over generated and handwritten
+surfaces
 
-For technical walkthroughs or pilot integrations, use the contact path on the project page: <https://derekchisholm.com/gog>.
+**Public-safe result:** semantic-hazard guidance changed the outcome for GOG.
+
+| Metric | Baseline OpenCode | GOG semantic hazards | RAG hybrid 16K |
+| --- | ---: | ---: | ---: |
+| Validation | fail | pass | pass |
+| Typecheck | fail | pass | pass |
+| Files read | 37 | 9 | 17 |
+| Wrong-stratum reads | 18 | 2 | 3 |
+| Transcript-token estimate | ~914,473 | ~444,430 | ~726,962 |
+
+Baseline OpenCode failed validation and TypeScript typecheck. GOG v1 also
+failed because it selected the right files and edit boundaries but did not warn
+about the generated-vs-consolidated type trap. RAG hybrid passed. GOG v2 added
+a compact semantic-hazards / bad-path brief and passed.
+
+RAG was faster wall-clock in the semantic-hazards rerun. The conservative GOG
+result is locality and reduced repo archaeology: fewer files read, fewer
+wrong-stratum reads, and a lower transcript-token estimate than both baseline
+and RAG in that run.
+
+Conservative reading:
+
+- Selected files alone were not enough.
+- Bad-path guidance mattered for the TypeScript type predicate failure mode.
+- RAG hybrid also passed and was faster wall-clock.
+- GOG v2's advantage in this run was semantic-hazard guidance, file locality,
+  and transcript-token estimate.
+
+## Overall Interpretation
+
+The current professional evidence supports a practical product thesis:
+
+> GOG is useful when it helps a coding assistant spend less effort discovering
+> repository structure and more effort applying a bounded, validated change.
+
+The current evidence does not support broad replacement claims. GOG should be
+compared against strong assistants and strong retrieval baselines, including
+hybrid RAG systems that can also pass.
