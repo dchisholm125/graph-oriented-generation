@@ -24,6 +24,18 @@ private implementation detail; it is that a small, targeted context bundle plus
 explicit mutation boundaries was sufficient to produce a validated patch in a
 real SDK.
 
+In the published comparison run, the low-budget hybrid RAG variants selected
+the wrong structural region and failed validation. Higher-budget RAG eventually
+passed, but with substantially more structural noise.
+
+| Mode | Validation | Prompt tokens | Total tokens | Context precision | Context recall | Noise ratio | Dominant package |
+| --- | :---: | ---: | ---: | ---: | ---: | ---: | --- |
+| GOG Professional | pass | 2,406 | 3,004 | 0.8333 | 1.0 | 0.1667 | `rust-sdk/core` |
+| RAG hybrid 1K | fail | 578 | 1,131 | 0.0 | 0.0 | 1.0 | `programs/whirlpool` |
+| RAG hybrid 4K | fail | 578 | 1,329 | 0.0 | 0.0 | 1.0 | `programs/whirlpool` |
+| RAG hybrid 16K | pass | 2,494 | 3,219 | 0.1429 | 0.2 | 0.8571 | `programs/whirlpool` |
+| RAG hybrid 64K | pass | 4,831 | 5,434 | 0.2 | 0.6 | 0.8 | `programs/whirlpool` |
+
 Conservative reading:
 
 - GOG selected the right package and edit surface.
