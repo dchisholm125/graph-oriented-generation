@@ -1,0 +1,3 @@
+[submodule "gog/gog/fixtures/vue3-realworld-example-app"]
+	path = gog/gog/fixtures/vue3-realworld-example-app
+	url = https://github.com/mutoe/vue3-realworld-example-app.git

@@ -1,0 +1,388 @@
+{
+  "generated_at": "2026-05-14T19:43:04.113927+00:00",
+  "benchmark": "public_vue_context_selection",
+  "repo_url": "https://github.com/mutoe/vue3-realworld-example-app",
+  "repo_path": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/gog-mono-repo/graph-oriented-generation/gog/gog/fixtures/vue3-realworld-example-app",
+  "total_wall_clock_s": 2.2833,
+  "repository_summary": {
+    "mode": "gog_lite",
+    "repo": "/media/dchisholm125/c6810a53-89e3-4ea7-a9d2-d24369408120/repos-local/gog-mono-repo/graph-oriented-generation/gog/gog/fixtures/vue3-realworld-example-app"
+  },
+  "prompts": [
+    {
+      "prompt_id": "auth_token_flow",
+      "prompt": "Find the files responsible for attaching the authentication token to API requests.",
+      "notes": "Cross-cutting auth/API request flow.",
+      "expected_files": [
+        "src/plugins/set-authorization-token.ts",
+        "src/services/index.ts",
+        "src/services/api.ts",
+        "src/store/user.ts"
+      ],
+      "gog_lite": {
+        "retrieval_mode": "gog_lite",
+        "selection_strategy": "gog_lite_keyword_graph",
+        "selected_files": [
+          "src/services/api.ts",
+          "src/plugins/set-authorization-token.ts",
+          "src/services/index.ts",
+          "src/store/user.ts"
+        ],
+        "selected_file_count": 4,
+        "relations": [],
+        "relation_count": 0,
+        "context_tokens_estimate": 962,
+        "source_tokens_estimate": 892,
+        "wall_clock_s": 0.0717,
+        "expected_hit_count": 4,
+        "expected_missing_count": 0,
+        "extra_file_count": 0,
+        "context_precision": 1.0,
+        "context_recall": 1.0,
+        "context_f1": 1.0,
+        "noise_ratio": 0.0,
+        "pass_at_1_context": true,
+        "matched_expected_files": [
+          "src/plugins/set-authorization-token.ts",
+          "src/services/api.ts",
+          "src/services/index.ts",
+          "src/store/user.ts"
+        ],
+        "missing_expected_files": [],
+        "extra_files": []
+      },
+      "traditional_rag": {
+        "retrieval_mode": "traditional_rag_keyword_chunks",
+        "selected_files": [
+          "src/services/api.ts",
+          "src/plugins/set-authorization-token.ts",
+          "src/utils/test/fixtures.ts",
+          "src/components/ArticleDetailMeta.spec.ts"
+        ],
+        "selected_file_count": 4,
+        "chunk_count": 4,
+        "context_tokens_estimate": 1498,
+        "source_tokens_estimate": 1536,
+        "wall_clock_s": 0.0064,
+        "expected_hit_count": 2,
+        "expected_missing_count": 2,
+        "extra_file_count": 2,
+        "context_precision": 0.5,
+        "context_recall": 0.5,
+        "context_f1": 0.5,
+        "noise_ratio": 0.5,
+        "pass_at_1_context": false,
+        "matched_expected_files": [
+          "src/plugins/set-authorization-token.ts",
+          "src/services/api.ts"
+        ],
+        "missing_expected_files": [
+          "src/services/index.ts",
+          "src/store/user.ts"
+        ],
+        "extra_files": [
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/utils/test/fixtures.ts"
+        ]
+      }
+    },
+    {
+      "prompt_id": "article_favorite_flow",
+      "prompt": "Find the files involved when a user favorites or unfavorites an article from the article preview UI.",
+      "notes": "Vue component to store/service flow.",
+      "expected_files": [
+        "src/components/ArticlesListArticlePreview.vue",
+        "src/composable/use-favorite-article.ts",
+        "src/services/index.ts",
+        "src/services/api.ts"
+      ],
+      "gog_lite": {
+        "retrieval_mode": "gog_lite",
+        "selection_strategy": "gog_lite_keyword_graph",
+        "selected_files": [
+          "src/components/ArticlesListArticlePreview.vue",
+          "src/components/ArticlesListArticlePreview.spec.ts",
+          "playwright/specs/user.spec.ts",
+          "src/utils/test/fixtures.ts",
+          "playwright/page-objects/article-detail.page-object.ts",
+          "playwright/constant.ts",
+          "playwright/extends.ts",
+          "src/composable/use-favorite-article.ts",
+          "src/services/api.ts",
+          "playwright/page-objects/edit-article.page-object.ts"
+        ],
+        "selected_file_count": 10,
+        "relations": [],
+        "relation_count": 0,
+        "context_tokens_estimate": 2986,
+        "source_tokens_estimate": 2925,
+        "wall_clock_s": 0.0478,
+        "expected_hit_count": 3,
+        "expected_missing_count": 1,
+        "extra_file_count": 7,
+        "context_precision": 0.3,
+        "context_recall": 0.75,
+        "context_f1": 0.4286,
+        "noise_ratio": 0.7,
+        "pass_at_1_context": false,
+        "matched_expected_files": [
+          "src/components/ArticlesListArticlePreview.vue",
+          "src/composable/use-favorite-article.ts",
+          "src/services/api.ts"
+        ],
+        "missing_expected_files": [
+          "src/services/index.ts"
+        ],
+        "extra_files": [
+          "playwright/constant.ts",
+          "playwright/extends.ts",
+          "playwright/page-objects/article-detail.page-object.ts",
+          "playwright/page-objects/edit-article.page-object.ts",
+          "playwright/specs/user.spec.ts",
+          "src/components/ArticlesListArticlePreview.spec.ts",
+          "src/utils/test/fixtures.ts"
+        ]
+      },
+      "traditional_rag": {
+        "retrieval_mode": "traditional_rag_keyword_chunks",
+        "selected_files": [
+          "src/services/api.ts",
+          "src/composable/use-articles.ts",
+          "src/components/ArticleDetailMeta.spec.ts",
+          "playwright/specs/article.spec.ts"
+        ],
+        "selected_file_count": 4,
+        "chunk_count": 4,
+        "context_tokens_estimate": 1799,
+        "source_tokens_estimate": 1850,
+        "wall_clock_s": 0.0064,
+        "expected_hit_count": 1,
+        "expected_missing_count": 3,
+        "extra_file_count": 3,
+        "context_precision": 0.25,
+        "context_recall": 0.25,
+        "context_f1": 0.25,
+        "noise_ratio": 0.75,
+        "pass_at_1_context": false,
+        "matched_expected_files": [
+          "src/services/api.ts"
+        ],
+        "missing_expected_files": [
+          "src/components/ArticlesListArticlePreview.vue",
+          "src/composable/use-favorite-article.ts",
+          "src/services/index.ts"
+        ],
+        "extra_files": [
+          "playwright/specs/article.spec.ts",
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/composable/use-articles.ts"
+        ]
+      }
+    },
+    {
+      "prompt_id": "router_guard_auth",
+      "prompt": "Find the files that decide whether a route requires authentication before navigation.",
+      "notes": "Routing and auth state flow.",
+      "expected_files": [
+        "src/router.ts",
+        "src/store/user.ts"
+      ],
+      "gog_lite": {
+        "retrieval_mode": "gog_lite",
+        "selection_strategy": "gog_lite_keyword_graph",
+        "selected_files": [
+          "src/router.ts",
+          "src/components/AppNavigation.spec.ts",
+          "src/components/ArticlesListNavigation.spec.ts",
+          "src/router.spec.ts",
+          "src/utils/test/fixtures.ts",
+          "src/components/AppNavigation.vue",
+          "src/store/user.ts"
+        ],
+        "selected_file_count": 7,
+        "relations": [],
+        "relation_count": 0,
+        "context_tokens_estimate": 1817,
+        "source_tokens_estimate": 1728,
+        "wall_clock_s": 0.0464,
+        "expected_hit_count": 2,
+        "expected_missing_count": 0,
+        "extra_file_count": 5,
+        "context_precision": 0.2857,
+        "context_recall": 1.0,
+        "context_f1": 0.4444,
+        "noise_ratio": 0.7143,
+        "pass_at_1_context": true,
+        "matched_expected_files": [
+          "src/router.ts",
+          "src/store/user.ts"
+        ],
+        "missing_expected_files": [],
+        "extra_files": [
+          "src/components/AppNavigation.spec.ts",
+          "src/components/AppNavigation.vue",
+          "src/components/ArticlesListNavigation.spec.ts",
+          "src/router.spec.ts",
+          "src/utils/test/fixtures.ts"
+        ]
+      },
+      "traditional_rag": {
+        "retrieval_mode": "traditional_rag_keyword_chunks",
+        "selected_files": [
+          "src/router.spec.ts",
+          "src/utils/test/test.utils.ts",
+          "src/router.ts",
+          "src/components/ArticlesListNavigation.vue"
+        ],
+        "selected_file_count": 4,
+        "chunk_count": 4,
+        "context_tokens_estimate": 1056,
+        "source_tokens_estimate": 1090,
+        "wall_clock_s": 0.0062,
+        "expected_hit_count": 1,
+        "expected_missing_count": 1,
+        "extra_file_count": 3,
+        "context_precision": 0.25,
+        "context_recall": 0.5,
+        "context_f1": 0.3333,
+        "noise_ratio": 0.75,
+        "pass_at_1_context": false,
+        "matched_expected_files": [
+          "src/router.ts"
+        ],
+        "missing_expected_files": [
+          "src/store/user.ts"
+        ],
+        "extra_files": [
+          "src/components/ArticlesListNavigation.vue",
+          "src/router.spec.ts",
+          "src/utils/test/test.utils.ts"
+        ]
+      }
+    },
+    {
+      "prompt_id": "profile_follow_flow",
+      "prompt": "Find the files involved when following or unfollowing a user profile.",
+      "notes": "Profile view, store, and API service flow.",
+      "expected_files": [
+        "src/pages/Profile.vue",
+        "src/composable/use-follow-profile.ts",
+        "src/composable/use-profile.ts",
+        "src/services/index.ts",
+        "src/services/api.ts"
+      ],
+      "gog_lite": {
+        "retrieval_mode": "gog_lite",
+        "selection_strategy": "gog_lite_keyword_graph",
+        "selected_files": [
+          "src/store/user.ts",
+          "playwright/specs/user.spec.ts",
+          "src/composable/use-follow-profile.ts",
+          "src/pages/Profile.spec.ts",
+          "src/utils/test/fixtures.ts",
+          "playwright/constant.ts",
+          "playwright/extends.ts",
+          "src/router.ts",
+          "src/services/api.ts",
+          "src/services/index.ts",
+          "src/utils/storage.ts",
+          "src/utils/use-async.ts"
+        ],
+        "selected_file_count": 12,
+        "relations": [],
+        "relation_count": 0,
+        "context_tokens_estimate": 3024,
+        "source_tokens_estimate": 2952,
+        "wall_clock_s": 0.0482,
+        "expected_hit_count": 3,
+        "expected_missing_count": 2,
+        "extra_file_count": 9,
+        "context_precision": 0.25,
+        "context_recall": 0.6,
+        "context_f1": 0.3529,
+        "noise_ratio": 0.75,
+        "pass_at_1_context": false,
+        "matched_expected_files": [
+          "src/composable/use-follow-profile.ts",
+          "src/services/api.ts",
+          "src/services/index.ts"
+        ],
+        "missing_expected_files": [
+          "src/composable/use-profile.ts",
+          "src/pages/Profile.vue"
+        ],
+        "extra_files": [
+          "playwright/constant.ts",
+          "playwright/extends.ts",
+          "playwright/specs/user.spec.ts",
+          "src/pages/Profile.spec.ts",
+          "src/router.ts",
+          "src/store/user.ts",
+          "src/utils/storage.ts",
+          "src/utils/test/fixtures.ts",
+          "src/utils/use-async.ts"
+        ]
+      },
+      "traditional_rag": {
+        "retrieval_mode": "traditional_rag_keyword_chunks",
+        "selected_files": [
+          "src/services/api.ts",
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/pages/Profile.vue",
+          "src/pages/Settings.spec.ts"
+        ],
+        "selected_file_count": 4,
+        "chunk_count": 4,
+        "context_tokens_estimate": 1551,
+        "source_tokens_estimate": 1606,
+        "wall_clock_s": 0.0065,
+        "expected_hit_count": 2,
+        "expected_missing_count": 3,
+        "extra_file_count": 2,
+        "context_precision": 0.5,
+        "context_recall": 0.4,
+        "context_f1": 0.4444,
+        "noise_ratio": 0.5,
+        "pass_at_1_context": false,
+        "matched_expected_files": [
+          "src/pages/Profile.vue",
+          "src/services/api.ts"
+        ],
+        "missing_expected_files": [
+          "src/composable/use-follow-profile.ts",
+          "src/composable/use-profile.ts",
+          "src/services/index.ts"
+        ],
+        "extra_files": [
+          "src/components/ArticleDetailMeta.spec.ts",
+          "src/pages/Settings.spec.ts"
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "prompt_count": 4,
+    "gog_lite": {
+      "pass_at_1_context_count": 2,
+      "avg_context_precision": 0.4589,
+      "avg_context_recall": 0.8375,
+      "avg_context_f1": 0.5565,
+      "avg_noise_ratio": 0.5411,
+      "avg_selected_file_count": 8.25,
+      "avg_context_tokens_estimate": 2197.2,
+      "avg_source_tokens_estimate": 2124.2,
+      "avg_wall_clock_s": 0.0535
+    },
+    "traditional_rag": {
+      "pass_at_1_context_count": 0,
+      "avg_context_precision": 0.375,
+      "avg_context_recall": 0.4125,
+      "avg_context_f1": 0.3819,
+      "avg_noise_ratio": 0.625,
+      "avg_selected_file_count": 4.0,
+      "avg_context_tokens_estimate": 1476.0,
+      "avg_source_tokens_estimate": 1520.5,
+      "avg_wall_clock_s": 0.0064
+    }
+  }
+}
